@@ -17,7 +17,7 @@ class Portfolio(BaseModel):
     def __init__(self, *args, **kwargs):
         """ class constructor """
         super().__init__()
-
+        self.status = "open"
         if args:
             self.name = args[0]
             self.capital = args[1]

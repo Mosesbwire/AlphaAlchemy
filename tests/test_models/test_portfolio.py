@@ -12,7 +12,7 @@ from models.portfolio import Portfolio
 import unittest
 
 
-attributes = ["name", "capital"]
+attributes = ["name", "capital", "status"]
 
 class TestPortfolio(unittest.TestCase):
 
