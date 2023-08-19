@@ -15,7 +15,7 @@ import unittest
 
 attributes = ["prev", "current", "price_change", "percentage_price_change", "high", "low", "volume", "average", "time"]
 
-class TestUser(unittest.TestCase):
+class TestStockData(unittest.TestCase):
 
     """ test class for the stock data class """
     def setUp(self):

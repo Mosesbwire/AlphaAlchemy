@@ -10,10 +10,10 @@ from models.base_model import BaseModel
 from models.stock import Stock
 import unittest
 
-class TestUser(unittest.TestCase):
-    """ test class for the user class """
+class TestStock(unittest.TestCase):
+    """ test class for the stock class """
     def setUp(self):
-        """ instantiate a user to be used in the tests """
+        """ instantiate a individual stock to be used in the tests """
 
         self.stock = Stock("SCOM","Safaricom", "Communication and technology")
         data = {
