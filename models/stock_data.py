@@ -5,14 +5,30 @@
     StockData class
 """
 
+import models
+from models.base_model import BaseModel, Base
+import sqlalchemy
+from sqlalchemy import Column, DateTime, Decimal, ForeignKey, Integer, String
 
-from models.base_model import BaseModel
 
-class StockData(BaseModel):
+class StockData(BaseModel, Base):
     """ 
         Class represents individual data points at given times
         Data points show market activity for the given stock at given time
     """
+    __tablename__ = "stock_data"
+
+    prev = Column(Integer, nullable=False)
+    current = Column(Integer, nullable=False)
+    price_change = Column(Integer, nullable=False)
+    percentage_price_change = Column(Decimal(precision= 5, scale= 4), nullable=False)
+    high = Column(Integer, nullable=False)
+    low = Column(Integer, nullable=False)
+    volume = Column(Integer, nullable=False)
+    average = Column(Integer, nullable=False)
+    time = Column(DateTime, nullable=False)
+    stock_id = Column(String, ForeignKey("stock.id"), nullable=False)
+
 
     def __init__(self, *args, **kwargs):
         """ class constructor """

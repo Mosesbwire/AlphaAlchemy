@@ -6,11 +6,22 @@
 """
 
 from datetime import datetime, timezone
+import models
+import sqlalchemy
+from sqlalchemy import Column, String, DatetTime
+from sqlalchemy.ext.declarative import declarative_base
 import uuid
+
+Base = declarative_base()
 
 
 class BaseModel:
     """ BaseModel class which provides a blueprint that other models will inherit from """
+    
+    id = Column(String(60), primary_key=True)
+    created_at = Column(DateTime, default = datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime, default = datetime.now(timezone.utc), nullable=False)
+
 
     def __init__(self):
         """ constructor function """
