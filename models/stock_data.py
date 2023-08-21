@@ -8,7 +8,10 @@
 import models
 from models.base_model import BaseModel, Base
 import sqlalchemy
-from sqlalchemy import Column, DateTime, Decimal, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+from sqlalchemy.types import Numeric
+
 
 
 class StockData(BaseModel, Base):
@@ -21,14 +24,14 @@ class StockData(BaseModel, Base):
     prev = Column(Integer, nullable=False)
     current = Column(Integer, nullable=False)
     price_change = Column(Integer, nullable=False)
-    percentage_price_change = Column(Decimal(precision= 5, scale= 4), nullable=False)
+    percentage_price_change = Column(Numeric(precision= 5, scale= 4), nullable=False)
     high = Column(Integer, nullable=False)
     low = Column(Integer, nullable=False)
     volume = Column(Integer, nullable=False)
     average = Column(Integer, nullable=False)
     time = Column(DateTime, nullable=False)
-    stock_id = Column(String, ForeignKey("stock.id"), nullable=False)
-
+    stock_id = Column(String(60), ForeignKey("stocks.id"), nullable=False)
+    stock = relationship("Stock", back_populates = "data")
 
     def __init__(self, *args, **kwargs):
         """ class constructor """

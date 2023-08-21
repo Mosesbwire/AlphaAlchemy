@@ -19,7 +19,7 @@ class User(BaseModel, Base):
     last_name = Column(String(128), nullable=False)
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)
-    portfolios = relationship("Portfolio", backref = "user",
+    portfolios = relationship("Portfolio", back_populates = "user",
             cascade = "all, delete, delete-orphan")
 
     def __init__(self, *args, **kwargs):

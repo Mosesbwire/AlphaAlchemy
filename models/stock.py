@@ -3,6 +3,7 @@
 """
     Module: stock
     stock class
+    portfolios = relationship("Portfolio", secondary= "portfolio_stocks", backref="stock")
 """
 
 import models
@@ -19,9 +20,8 @@ class Stock(BaseModel, Base):
     ticker = Column(String(60), nullable=False)
     name = Column(String(128), nullable=False)
     sector = Column(String(128), nullable=False)
-    status = Columns(Enum("active", "delisted", "suspended", name="stock_status_enum"), default= "active", nullable=False)
-    portfolios = relationship("Portfolio", secondary= "portfolio_stocks", backref="stocks")
-    data = relationship("StockData", backref="stocks")
+    status = Column(Enum("active", "delisted", "suspended", name="stock_status_enum"), default= "active", nullable=False)
+    data = relationship("StockData", back_populates = "stock")
 
     def __init__(self, *args, **kwargs):
         """ class constructor """

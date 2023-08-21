@@ -8,10 +8,10 @@
 import models
 from models.base_model import BaseModel, Base
 import sqlalchemy
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-class Transaction(BaseModel):
+class Transaction(BaseModel, Base):
     """ 
         Class represents a transactio carried out by user on given  portfolio
 
@@ -21,9 +21,10 @@ class Transaction(BaseModel):
     item = Column(String(60), nullable=False)
     price = Column(Integer, nullable=False)
     quantity = Column(Integer, nullable=False)
-    transaction_type = Column(String(60), nullable=False)
-    total = Column(Integer, nullbale=False)
+    transaction_type = Column(Enum("buy", "sell", name= "transation_type_enum"), nullable=False)
+    total = Column(Integer, nullable=False)
     portfolio_id = Column(String(60), ForeignKey("portfolios.id"), nullable=False)
+    portfolio = relationship("Portfolio", back_populates="transactions")
 
     def __init__(self, *args, **kwargs):
         """ class constructor """

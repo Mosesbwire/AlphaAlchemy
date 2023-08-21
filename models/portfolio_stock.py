@@ -9,7 +9,7 @@ import models
 from models.base_model import BaseModel, Base
 import sqlalchemy
 from sqlalchemy import Column, Integer, ForeignKey, String
-
+from sqlalchemy.orm import relationship
 
 class PortfolioStock(BaseModel, Base):
     """ 
@@ -21,6 +21,7 @@ class PortfolioStock(BaseModel, Base):
     quantity = Column(Integer, nullable=False)
     portfolio_id = Column(String(60), ForeignKey('portfolios.id'), primary_key=True, nullable=False)
     stock_id = Column(String(60), ForeignKey('stocks.id'), primary_key=True, nullable=False)
+    stock = relationship("Stock")
 
     def __init__(self, *args, **kwargs):
         """ class constructor """
