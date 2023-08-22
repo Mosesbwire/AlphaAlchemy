@@ -40,7 +40,9 @@ class Storage:
 
         if ENV == "test":
             Base.metadata.drop_all(self.__engine)
-
+    
+    def reset(self):
+        self.__session.rollback()
 
     def new(self, obj):
         """ adds a object to the session """
@@ -57,6 +59,10 @@ class Storage:
 
         if obj is not None:
             self.__session.delete(obj)
+
+    def roll_back(self):
+        """ reverts an object in session to its previous state if save has not been called """
+        self.__session.rollback()
 
 
     def close(self):
