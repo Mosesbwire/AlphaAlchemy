@@ -6,8 +6,10 @@
 """
 
 from datetime import datetime, timezone
+import json
 import models
 from models.stock import Stock
+import requests
 from validator_collection import validators, checkers, errors
 
 
@@ -57,7 +59,7 @@ class StockService:
 
         if not stock:
             return {"stock": None, "error": ["Failed to create stock"]}
-
+        
         try:
             models.storage.new(stock)
         except Exception as e:
@@ -84,7 +86,7 @@ class StockService:
     
     def get_stock_by_id(self, id):
         """ returns stock with associated id """
-
+    
         stock = None
 
         try:
@@ -93,7 +95,19 @@ class StockService:
             print(f"Error occured: {e}")
 
         return stock
-    
+
+    def get_stock_by_ticker(self, ticker):
+        """ returns first instance that matches with the given name or None """
+
+        stock = None
+        try:
+            stock = Stock.get_stock_by_ticker(ticker)
+        except Exception as e:
+            print(f"Error occured: {e}")
+
+        return stock
+
+
     def update_stock(self, stock_id, **kwargs):
         """ updates stock attributes """
 
@@ -155,3 +169,28 @@ class StockService:
             stock = None
             error = [e]
         return {"stock": stock, "error": error}
+
+    def fetch_latest_prices(self):
+        """ fetches latest stock price """
+
+        API_URL = "https://tickers.mystocks.co.ke/ticker/J$ON:RMW?app=FIB"
+
+        response = requests.get(API_URL)
+
+        if response.status_code != 200:
+            return "Error occured"
+
+        latest_data = response.json()
+
+        return latest_data.get("data")
+
+    def current_price(self, ticker, latest_data):
+        """ returns latest stock price """
+
+        for data in latest_data:
+            if data.get("a") == str.upper(ticker):
+                return data.get("c")
+
+
+
+        

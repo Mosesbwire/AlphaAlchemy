@@ -198,12 +198,8 @@ class UserService:
 
         return {"user": user, "error": error}
 
-    
+    def get_portfolios(user_id):
+        """ get the all the users portfolio """
+        portfolios = User.get_portfolios(user_id)
 
-
-
-
-
-
-        
-
+        return portfolios

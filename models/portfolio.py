@@ -35,7 +35,6 @@ class Portfolio(BaseModel, Base):
         self.status = "active"
         if args:
             self.name = args[0]
-            self.capital = args[1]
         if kwargs:
             for key, value in kwargs.items():
                 setattr(self, key, value)

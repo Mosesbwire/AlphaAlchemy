@@ -3,15 +3,14 @@
 """
     Module: stock
     stock class
-    portfolios = relationship("Portfolio", secondary= "portfolio_stocks", backref="stock")
 """
 
 import models
 from models.base_model import BaseModel, Base
 import sqlalchemy
-from sqlalchemy import Column, Enum, String
+from sqlalchemy import Column, Enum, String, select
 from sqlalchemy.orm import relationship
-
+from sqlalchemy.sql import text
 
 class Stock(BaseModel, Base):
     """ Class represents the each individual stock in the stock exchange """
@@ -35,3 +34,13 @@ class Stock(BaseModel, Base):
         if kwargs:
             for key, value in kwargs.items():
                 setattr(self, key, value)
+
+    @classmethod
+    def get_stock_by_ticker(cls, ticker):
+        """ fetches stock using name """
+        stmt = select(cls).where(cls.ticker == ticker)
+        stock = models.storage.query(stmt)
+        
+        if len(stock) == 0:
+            return None
+        return stock[0]    

@@ -41,9 +41,7 @@ class Storage:
         if ENV == "test":
             Base.metadata.drop_all(self.__engine)
     
-    def reset(self):
-        self.__session.rollback()
-
+    
     def new(self, obj):
         """ adds a object to the session """
         self.__session.add(obj)
@@ -81,6 +79,18 @@ class Storage:
             return None
         return self.__session.get(classes[cls], id)
 
+    def query(self, statement):
+        """ queries database with given statement 
+            Args: 
+                statement: sqlalchemy query
+            Returns:
+                list: a list with fetched data or empty list if data not found
+        """
+        data = []
+        results = self.__session.scalars(statement)
+        for obj in results:
+            data.append(obj)
+        return data
 
     def reload(self):
         Base.metadata.create_all(self.__engine)
