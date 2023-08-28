@@ -1,15 +1,7 @@
 import React from "react";
-import Form from "../../components/AuthForm/Form";
+import Form from "../../components/AuthForm/SignUpForm";
 import Logo from "../../components/Logo/Logo";
 import './SignUp.css'
-
-let formInputs = [
-    {name: 'first_name', type: 'text', placeholder: 'First Name'},
-    {name: 'last_name', type: 'text', placeholder: 'Last Name'},
-    {name: 'email', type: 'email', placeholder: 'Email Address'},
-    {name: 'password', type: 'password', placeholder: 'Password'},
-    {name: 'confirm_password', type: 'password', placeholder: 'Confirm Password'},
-]
 
 const SignUp = () => {
     return (
@@ -28,7 +20,7 @@ const SignUp = () => {
                     <p>Virtual Investing, Real Learning. Sign Up Now</p>
                 </div>
                 <div>
-                    <Form inputs={formInputs} btnText={'Sign Up'}/>
+                    <Form/>
                 </div>
                 <div >
                     <p className="tag-line">Already have an account? <span className="login-link">Login</span></p>

@@ -20,6 +20,7 @@
     margin-top: 3.25em;
     padding-top: 2.1875em;
     padding-bottom: 2.1875em;
+
 }
 
 .tag-line {
@@ -55,6 +56,8 @@
    .form-section {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
         margin: 0;
         height: 100vh;
         
@@ -63,6 +66,7 @@
    .sign-up-hero {
         font-size: 1em;
         margin-top: 7em;
+        max-width: 100%;
    }
 
    .sign-up-hero-container {
