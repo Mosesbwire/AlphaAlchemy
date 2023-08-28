@@ -36,6 +36,21 @@
     cursor: pointer;
 }
 
+@media(min-width: 48em){
+    .form-section{
+        width: 86%;
+        margin-inline: auto;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+        margin-top: 5em;
+    }   
+    .sign-up-hero {
+        min-width: 40%;
+        max-width: 40%;
+        margin-top: 7em;
+    }
+}
+
 @media (min-width: 64em) {
    .form-section {
         border-top-left-radius: 0;

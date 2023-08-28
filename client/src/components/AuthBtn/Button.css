@@ -9,6 +9,12 @@
     cursor: pointer;
 }
 
+@media (min-width: 48em){
+    .auth-btn{
+        max-width: 50%;
+    }
+}
+
 @media(min-width: 64em){
     .auth-btn{
         width: 40%
