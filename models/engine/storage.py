@@ -36,7 +36,7 @@ class Storage:
         """ constructor """
         self.__engine = create_engine(dburl)
 
-        ENV = "test"
+        ENV = "dev"
 
         if ENV == "test":
             Base.metadata.drop_all(self.__engine)

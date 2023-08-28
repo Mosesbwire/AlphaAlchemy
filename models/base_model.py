@@ -45,6 +45,9 @@ class BaseModel:
         
         instance_dict["updated_at"] = updated_at.strftime(date_format)
 
+        instance_dict.pop("_sa_instance_state")
+        instance_dict.pop("password", None)
+
         return instance_dict
 
 

@@ -104,6 +104,7 @@ class UserService:
         user = None
         try:
             user = models.storage.get("User", id)
+            return user
         except Exception as e:
             print (f"Error occured: {e}")
 
@@ -116,12 +117,13 @@ class UserService:
             Returns:
                 list
         """
-        users = []
+        
+        users = None
         try:
             users = models.storage.all("User")
         except Exception as e:
             print(f"Error occured: {e}")
-
+        
         return users
     
     def delete_user(self, id):
