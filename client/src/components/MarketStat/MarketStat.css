@@ -1,0 +1,18 @@
+.stat-container {
+    background-color: var(--contrast-color-dark-200);
+    text-align: center;
+    padding-top: 2.5em;
+    padding-bottom: 2.5em;
+}
+
+.stat-title {
+    color: var(--primary-text-color);
+    font-weight: 500;
+    font-size: 1.375em;
+}
+
+.market-statistic {
+    color: var(--primary-text-color);
+    font-weight: 600;
+    font-size: 1.5em;
+}
