@@ -1,0 +1,71 @@
+
+.perfomance-summary-container {
+   padding-top: 1em;
+   padding-bottom: 1em;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.125em;
+}
+.tabs > * {
+    flex: 1;
+    text-align: center;
+    
+}
+
+.active-indicator {
+    border-bottom: 3px solid var(--contrast-color-light-200);
+}
+
+.Gainers-tab {
+    color: var(--secondary-highlight-color);
+}
+.Losers-tab {
+    color: var(--danger-color);
+}
+.Movers-tab {
+    color: var(--primary-highlight-color);
+}
+
+.inactive {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.section-data {
+    position: absolute;
+    margin-top: 2em;
+    /* border: 2px dotted green; */
+    width: 90%;
+}
+
+@media(min-width: 48em){
+    .tabs {
+        display: none;
+    }
+
+    .section-data {
+        position: relative;
+        margin-inline: auto;
+    }
+
+    .inactive {
+        display: block;
+    }
+
+}
+
+@media(min-width: 64em){
+
+    .perfomance-data{
+        display: flex;
+        column-gap: 1em;
+    }
+}

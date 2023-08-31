@@ -1,0 +1,46 @@
+.input {
+    margin-bottom: 1.8125em;
+}
+
+
+.input > input{
+    width: 84%;
+    padding-left: 1em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    outline: none;
+    border: none;
+    border: 1px solid var(--secondary-highlight-color);
+    border-radius: 5px;
+}
+
+.btn {
+    margin-bottom: 1.8125em;
+}
+
+.input > input::placeholder{
+    color: #000000;
+}
+
+@media(min-width: 64em){
+    .form {
+        position: relative;
+        border: 1px solid transparent;
+       
+    }
+    #last_name {
+        position: absolute;
+        top: 0;
+        right: 4%;
+        width: 48%;
+    }
+    #first_name {
+        position: absolute;
+        top: 0;
+        left: 4%;
+        width: 48%;
+    }
+    #email {
+        margin-top: 4em;
+    }
+}
