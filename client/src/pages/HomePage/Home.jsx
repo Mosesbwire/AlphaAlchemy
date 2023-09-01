@@ -13,22 +13,7 @@ let data = [
     {title: "Deals", stat: "1120"},
 ]
 
-let dropDownData = [
-    "All Sectors",
-    "Agricultural",
-    "AutoMobiles and Accessories",
-    "Banking",
-    "Commercial and Services",
-    "Construction and Allied",
-    "Energy and Petroleum",
-    "Insuarance",
-    "Investment",
-    "Investment Services",
-    "Manufaturing and Allied",
-    "Telecommunication and Technology",
-    "Real Estate Investment Trust",
-    "Exchange Traded Fund"
-]
+
 const Home = ()=>{
     
     return(
@@ -42,10 +27,7 @@ const Home = ()=>{
             <div className="daily-market-summary">
                 <PerfomanceSummary/>
             </div>
-            <div>
-                <DropDown title={"Sector"} content={dropDownData}/>
-            </div>
-            <div>
+            <div className="current-stock-data">
                 <Table/>
             </div>
             

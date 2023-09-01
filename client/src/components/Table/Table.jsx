@@ -1,6 +1,7 @@
 import React from "react";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
+import DropDown from "../DropDown/DropDown";
 import './Table.css'
 
 const tableHeader = [
@@ -24,14 +25,34 @@ const data = [
     ["KEGN", "2.21", "2.35", "0.14", "6.33% ", "2.35", "2.30", "6,700",	"2.34"]	
 ]
 
+let dropDownData = [
+    "All Sectors",
+    "Agricultural",
+    "AutoMobiles and Accessories",
+    "Banking",
+    "Commercial and Services",
+    "Construction and Allied",
+    "Energy and Petroleum",
+    "Insuarance",
+    "Investment",
+    "Investment Services",
+    "Manufaturing and Allied",
+    "Telecommunication and Technology",
+    "Real Estate Investment Trust",
+    "Exchange Traded Fund"
+]
+
 const Table = ()=>{
     return (
         <div className="table container">
             <div>
-                <div className="">
+                <div className="stock-sector-filter">
+                    <DropDown title={"Sector"} content={dropDownData}/>
+                </div>
+                <div className="table-header_row">
                     <TableHeader header={tableHeader}/>
                 </div>
-                <div>
+                <div className="table-row_rows">
                     {data.map((dt) => (
                         <div>
                             <TableRow data={dt}/>
