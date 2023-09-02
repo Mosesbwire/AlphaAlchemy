@@ -1,0 +1,35 @@
+.portfolio__ {
+    border-radius: 15px;
+    overflow: hidden;
+    padding-bottom: 2em;
+    cursor: pointer;
+}
+
+.portfolio__border_profit {
+    border: 2px solid var(--secondary-highlight-color);
+}
+.portfolio__border_loss {
+    border: 2px solid var(--danger-color);
+}
+.chart-wrapper {
+    margin-bottom: 2em;
+    background-color: var(--contrast-color-dark-300);
+    padding: 2em 0;
+    box-shadow: 5px 0 5px 1px rgba(0, 0, 0, .5);
+}
+.port_overview_row {
+    display: flex;
+    color: var(--primary-text-color);
+    padding: .25em 1.5em; 
+}
+.f1 {
+    min-width: 120px;
+}
+
+.loss {
+    color: var(--danger-color);
+}
+
+.profit {
+    color: var(--secondary-highlight-color);
+}
