@@ -18,7 +18,7 @@ const Header = ()=>{
         
     }
     return (
-        <div>
+        <div className="header">
             <div className="header-wrapper"> 
                 <div className="logo pd-left"><Logo/></div>
                 <div className="mobile-menu" onClick={handleClick}><FontAwesomeIcon icon={faBars}/></div>

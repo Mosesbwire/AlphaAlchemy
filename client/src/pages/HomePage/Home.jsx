@@ -18,9 +18,6 @@ const Home = ()=>{
     
     return(
         <div>
-            <div className="header">
-                <Header/>
-            </div>
             <div className="market-data">
                 <MarketStatistics data={data}/>
             </div>
