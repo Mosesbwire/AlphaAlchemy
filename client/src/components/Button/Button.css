@@ -1,0 +1,35 @@
+
+.btn {
+    border:none ;
+    padding: .5em 1em;
+    cursor: pointer;
+}
+
+.primary {
+    background-color: var(--primary-highlight-color);
+    color: var(--primary-text-color);
+    border: 1px solid var(--primary-highlight-color);
+}
+.secondary {
+    background-color: var(--secondary-highlight-color);
+    color: var(--primary-text-color);
+    border: 1px solid var(--secondary-highlight-color);
+}
+
+.neutral {
+    background-color: var(--contrast-color-light-200);
+    color: var(--contrast-color-dark-400);
+    border: 1px solid var(--contrast-color-light-200);
+}
+
+.outline-primary, .outline-secondary {
+    background: none;
+}
+
+.rounded {
+    border-radius: 20px;
+}
+
+@media(min-width: 48em){
+    
+}
