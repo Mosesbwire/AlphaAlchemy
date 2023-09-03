@@ -3,7 +3,25 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons'
 import './DropDown.css'
 
+let dropDownData = [
+    "All Sectors",
+    "Agricultural",
+    "AutoMobiles and Accessories",
+    "Banking",
+    "Commercial and Services",
+    "Construction and Allied",
+    "Energy and Petroleum",
+    "Insuarance",
+    "Investment",
+    "Investment Services",
+    "Manufaturing and Allied",
+    "Telecommunication and Technology",
+    "Real Estate Investment Trust",
+    "Exchange Traded Fund"
+]
+
 const DropDown = ({title, content})=>{
+
     const [openDrop, setOpenDropDown] = useState(false)
 
     const openDropDown = ()=>{
