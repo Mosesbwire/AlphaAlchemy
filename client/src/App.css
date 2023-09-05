@@ -15,6 +15,7 @@
 
 .d-sm-block {
     display: block;
+
 }
 
 @media(min-width: 48em){
