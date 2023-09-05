@@ -1,0 +1,29 @@
+.portfolio-stat-container {
+    background-color: var(--contrast-color-dark-300);
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+    text-align: center;
+    color: var(--primary-text-color);
+}
+
+.portfolio-stat-container > :first-child {
+    font-size: 2em;
+}
+
+.portfolio-stat-container > :nth-child(2){
+    color: var(--contrast-color-light-300);
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+
+.portfolio-stat-container > :last-child {
+    font-weight: 600;
+    font-size: 1.25em;
+}
+
+.portfolio-stat-title {
+
+}
+.portfolio-statistic {
+
+}

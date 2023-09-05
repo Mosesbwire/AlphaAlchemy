@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../AuthBtn/Button'
+import Button from '../Button/Button'
 import useForm from '../../hooks/useForm'
 import apiService from '../../services/apiService'
 import './Form.css'
@@ -38,8 +38,8 @@ function SignUpForm(){
                 </div>
             ))}
 
-            <div className='btn'>
-                <Button text = {"Sign Up"} />
+            <div className='btn-wrapper'>
+                <Button primary rounded>Sign In</Button>
             </div>
         </form>
     )

@@ -14,8 +14,12 @@
     border-radius: 5px;
 }
 
-.btn {
+.btn-wrapper {
     margin-bottom: 1.8125em;
+}
+
+.btn-wrapper > * {
+    width: 70%;
 }
 
 .input > input::placeholder{

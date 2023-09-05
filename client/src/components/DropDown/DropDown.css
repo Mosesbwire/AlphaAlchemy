@@ -2,6 +2,9 @@
 .drop-down {
     color: var(--primary-text-color);
     display: flex;
+    justify-content: end;
+    position: relative;
+    min-width: 200px;
 }
 
 .content-upper-section {
@@ -15,6 +18,8 @@
     background-color: var(--contrast-color-light-200);
     color: var(--contrast-color-dark-300);
     padding: 1em;
+    position: absolute;
+    left: 0;
 }
 
 .drop-down-text {
@@ -31,9 +36,6 @@
     margin-right: .5em;
 }
 
-.drop-down-title {
-
-}
 
 .drop-down-caret {
     color: var(--secondary-highlight-color);

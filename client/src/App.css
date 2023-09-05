@@ -2,3 +2,36 @@
     width: 90%;
     margin: 0 auto;
 }
+
+.d-none {
+    display: none;
+}
+.d-block {
+    display: block;
+}
+.d-sm-none {
+    display: none;
+}
+
+.d-sm-block {
+    display: block;
+
+}
+
+@media(min-width: 48em){
+    .d-md-block {
+        display: block;
+    }
+    .d-md-none {
+        display: none;
+    }
+}
+
+@media(min-width: 64em){
+    .d-lg-block {
+        display: block;
+    }
+    .d-lg-none {
+        display: none;
+    }
+}

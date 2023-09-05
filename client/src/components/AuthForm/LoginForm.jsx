@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../AuthBtn/Button'
+import Button from '../Button/Button'
 import useForm from '../../hooks/useForm'
 import './Form.css'
 
@@ -31,8 +31,8 @@ function LoginForm(){
                 </div>
             ))}
 
-            <div className='btn'>
-                <Button text = {"Login"} />
+            <div className='btn-wrapper'>
+                <Button primary rounded >Login</Button>
             </div>
         </form>
     )

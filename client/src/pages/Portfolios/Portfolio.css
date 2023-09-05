@@ -1,0 +1,17 @@
+
+.portfolios-wrapper > * + * {
+    margin-top: 2em;
+}
+
+@media(min-width: 48em){
+    .portfolios-wrapper > * + * {
+        margin-top: 0;
+    }
+    .portfolios-wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 1em;
+        row-gap: 2em;
+
+    }
+}
