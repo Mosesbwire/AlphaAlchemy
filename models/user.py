@@ -44,3 +44,14 @@ class User(BaseModel, Base):
         portfolios = models.storage.query(stmt)
 
         return portfolios
+
+    @classmethod
+    def get_user_by_email(cls, email):
+        stmt = select(cls).where(cls.email == email)
+
+        user = models.storage.query(stmt)
+
+        if len(user) > 0:
+            return user[0]
+        
+        return None

@@ -110,6 +110,21 @@ class UserService:
 
         return user
 
+    def get_user_by_email(self, email):
+        """ retrives user by email from database
+        Args:
+            email: users email
+        Returns:
+            user: if user with email exists
+            None: if no user with email
+        """
+        try:
+            user = User.get_user_by_email(email)
+            return user
+        except Exception as e:
+            print(f"Error occured: {e}")
+
+        return None
 
     def get_users(self):
         """ retrieves all users from database 
