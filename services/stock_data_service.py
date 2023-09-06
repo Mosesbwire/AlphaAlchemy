@@ -6,6 +6,7 @@
 
 import models
 from models.stock_data import StockData
+import requests
 from services.stock_service import StockService
 from utils.currency.conversion import to_cents, to_unit_currency
 
@@ -14,6 +15,7 @@ class StockDataService:
         responsible for inserting daily stock data to db
     """
     monetary_values = ["prev", "current", "high", "low", "average"]
+    API_URL = "https://tickers.mystocks.co.ke/ticker/J$ON:RMW?app=FIB"
 
     def create(self, **kwargs):
         """ Creates an instance of StockData """
@@ -50,5 +52,3 @@ class StockDataService:
         models.storage.save()
 
         return {"data": stockData, "error": None}
-
-    

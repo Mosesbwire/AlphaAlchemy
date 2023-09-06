@@ -2,7 +2,10 @@
 
 from api.v1.views import app_views
 from api.v1.error import BadRequest
+from api.v1.views.auth import is_authenticated
 from flask import abort, jsonify, make_response, request
+import jwt
+import os
 from services.user_service import UserService
 
 
@@ -26,13 +29,19 @@ def create_user():
 
     if user_data.get("error"):
         raise BadRequest(user_data.get("error"))
+    
+    user = user_data.get("user")
+    token = jwt.encode({
+            "user": {"id": user.id}
+        },os.getenv("SECRET_KEY"), algorithm="HS256")
 
-    return make_response(jsonify(user_data.get("user").to_dict()), 201)
+
+    return make_response(jsonify({"token": token.decode("utf-8")}), 201)
 
 
 @app_views.route("/users", methods = ["GET"])
-
-def get_users():
+@is_authenticated
+def get_users(user=None):
     users_list = []
     users = service.get_users()
 
