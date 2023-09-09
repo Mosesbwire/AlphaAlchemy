@@ -8,17 +8,17 @@ const inputs = [
     {name: 'password', type: 'password', placeholder: 'Password'},
 ]
 
-function LoginForm(){
-    const initialValues = {email: "", password:""}
+function LoginForm({onSubmit}){
+    const initialValues = {email: "kianjuma@gmail.com", password:"P@ssword1"}
     const [values, handleChange, resetForm] = useForm(initialValues)
 
-    const onSubmit = async(event) =>{
+    const onSubmitForm = async(event) =>{
         event.preventDefault()
-        console.log(values)
+        await onSubmit(values)
         resetForm()
     }
     return(
-        <form className='form' onSubmit={onSubmit}>
+        <form className='form' onSubmit={onSubmitForm}>
             {inputs.map((input)=>(
                 <div key={input.name} className='input' id={input.name}>
                     <input 
