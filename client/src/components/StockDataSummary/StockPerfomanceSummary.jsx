@@ -25,7 +25,7 @@ const StockPerfomanceSummary = ({section})=>{
                         <>
                             <p>{data.ticker}</p>
                             <p>{data.price}</p>
-                            <p className={`${classes[section.title]}-change`}>{data.change}<span><FontAwesomeIcon icon={carets[section.title]}/></span></p>
+                            <p className={`${classes[section.title]}-change`}>{data["%change"]}<span><FontAwesomeIcon icon={carets[section.title]}/></span></p>
 
                         </> : 
                         <>

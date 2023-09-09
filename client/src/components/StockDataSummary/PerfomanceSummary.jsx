@@ -3,31 +3,14 @@ import StockPerfomanceSummary from "./StockPerfomanceSummary";
 import './PerfomanceSummary.css'
 
 
-const summarySections = [
-    {title: "Gainers", firstHeading: "Price", secondHeading: "Change", data: [
-        {ticker: "EQTY", price: "10.80", change: "+2.50"},
-        {ticker: "WTK", price: "500.00", change: "+10.00"},
-        {ticker: "SASN", price: "12.50", change: "+4.40"},
-        {ticker: "KCB", price: "55.03", change: "+5.25"},
-        {ticker: "SCOM", price: "15.80", change: "+7.50"},
-    ]},
-    {title: "Losers", firstHeading: "Price", secondHeading: "Change", data: [
-        {ticker: "NCBA", price: "50.05", change: "-12.50"},
-        {ticker: "BAT", price: "700.00", change: "-100.00"},
-        {ticker: "NBV", price: "1.00", change: "-0.50"},
-        {ticker: "SBIC", price: "12.10", change: "-1.25"},
-        {ticker: "CNTM", price: "27.70", change: "-7.50"},
-    ]},
-    {title: "Movers", firstHeading: "Volume", secondHeading: "", data: [
-        {ticker: "SCOM", volume: "5,462,300"},
-        {ticker: "FAHR", volume: "4,854,000"},
-        {ticker: "NCBA", volume: "512,300"},
-        {ticker: "KCB", volume: "490,500"},
-        {ticker: "KEGN", volume: "426,200"},
-    ]}
-]
 
-const PerfomanceSummary = ()=>{
+
+const PerfomanceSummary = ({gainers, losers, movers})=>{
+    const summarySections = [
+        {title: "Gainers", firstHeading: "Price", secondHeading: "Change", data: gainers},
+        {title: "Losers", firstHeading: "Price", secondHeading: "Change", data: losers},
+        {title: "Movers", firstHeading: "Volume", secondHeading: "", data: movers}
+    ]
     const tabRef = useRef(null)
     const tabBtnRef = useRef(null)
     let btnTabs;
