@@ -1,4 +1,5 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import AuthContextProvider from './context/AuthContext'
 import SignUp from './pages/SignUpPage/SignUp'
 import Login from './pages/LoginPage/Login'
 import Layout from './components/Layout/Layout'
@@ -14,18 +15,19 @@ function App() {
   return (
     <>
       <Router>
-        <Routes>
-          <Route element={<Layout/>}> 
-            <Route path="/home" element={<Home/>}/>
-            <Route path="/portfolios" element={<Portfolios/>}/>
-            <Route path="/portfolio/:id" element={<Portfolio/>}/>
-            <Route path="/buy" element={<Buy/>}/>
-            <Route path="/transactions" element={<Transaction/>}/>
-          </Route>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/sign-up" element={<SignUp/>}/>
-        </Routes>
-        
+        <AuthContextProvider>
+          <Routes>
+            <Route element={<Layout/>}> 
+              <Route path="/home" element={<Home/>}/>
+              <Route path="/portfolios" element={<Portfolios/>}/>
+              <Route path="/portfolio/:id" element={<Portfolio/>}/>
+              <Route path="/buy" element={<Buy/>}/>
+              <Route path="/transactions" element={<Transaction/>}/>
+            </Route>
+              <Route path="/login" element={<Login/>}/>
+              <Route path="/sign-up" element={<SignUp/>}/>
+          </Routes>      
+        </AuthContextProvider>
       </Router>
     </>
   )
