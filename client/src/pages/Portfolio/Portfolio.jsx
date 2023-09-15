@@ -64,7 +64,7 @@ const Portfolio = ()=>{
                 <p>Name: <span className="portfolio-name_span">{name}</span></p>
             </div>
             <div className="portfolio-actions">
-                <Link to={`/portfolio/${id}/order?action=buy&stock=""`}>
+                <Link to={`/portfolio/${id}/order?action=buy&stock=no-stock`}>
                     <Button primary outline >Buy</Button>
                 </Link>
                 <Button secondary outline>Sell All</Button>
