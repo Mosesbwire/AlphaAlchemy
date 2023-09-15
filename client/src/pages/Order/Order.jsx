@@ -12,12 +12,13 @@ const Buy = ()=>{
     const queryParams = new URLSearchParams(location.search)
     const action = queryParams.get("action")
     const stock = queryParams.get("stock")
+    const orderFunction = action === "buy" ? apiService.buyStock : apiService.sellStock
     const initialValues = {price: "", quantity: "", security: ""}
     const [values, handleChange, resetForm] = useForm(initialValues)
     const [data, error, isLoading] = useFetch(apiService.getStocks)
     const { id } = useParams()
     
-    const [onSubmit, orderData, isSubmitting, orderError] = useSubmitForm(apiService.buyStock)
+    const [onSubmit, orderData, isSubmitting, orderError] = useSubmitForm(orderFunction)
     const sortedData = data ? data : []
     const user = JSON.parse(sessionStorage.getItem("user"))
     
@@ -50,8 +51,8 @@ const Buy = ()=>{
     if (isLoading || isSubmitting){
         return <div>Loading Data.....</div>
     }
-
-    if (!isSubmitting && orderData){
+    
+    if (orderData){
         return <Navigate to={`/portfolio/${id}`}/>
     }
     
