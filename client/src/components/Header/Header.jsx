@@ -30,14 +30,14 @@ const Header = ()=>{
             
         }
 
-        if (error){
-            console.log(error)
-        }
     }, [data, error, isSubmitting])
     const handleClick = ()=>{
         setOpenMenu(!isOpen)  
     }
 
+    if (isSubmitting){
+        return <div>Creating Portfolio</div>
+    }
 
     return (
         <>

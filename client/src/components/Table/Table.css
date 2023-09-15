@@ -48,13 +48,16 @@
 
 .table-row > * {
     flex: 1;
-    /* border: 1px solid red; */
-   
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .table-header > * {
     flex: 1;
-    /* border: 1px solid red; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
