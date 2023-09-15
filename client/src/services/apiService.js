@@ -62,32 +62,79 @@ async function login(formData){
         
         if (response.status === 400 && response.statusText === "BAD REQUEST"){
             const err = await response.json()
-            return err
+            return {
+                status: 400,
+                data: null,
+                error: err
+            }
         }
         if (response.status === 404 && response.statusText === "NOT FOUND") {
             const err = await response.json()
-            return err
+            return {
+                status: 404,
+                data: null,
+                error: err
+            }
         }
 
         const data = await response.json()
         const token = data["token"]
 
         setAuthToken(token)
-        return "OK"
+        return {
+            status: 200,
+            data: "OK",
+            error: null
+        }
     } catch (error) {
-        return error
+        return {
+            status: 500,
+            data: null,
+            error: error
+        }
     }
 }
 
-async function getUsers(){
+
+
+async function getLoggedInUser(){
     const options = createRequestOptions('GET')
     try {
-        const response = await sendRequest(`${BASE_URL}/users`, options)
+        const response = await sendRequest(`${BASE_URL}/auth`, options)
+        if (response.status === 404){
+            const err = await response.json()
+            return {
+                status: 404,
+                data: null,
+                error: err
+            }
+        }
+
+        if (response.status === 401){
+            const err = await response.json()
+            return {
+                status: 401,
+                data: null,
+                error: err
+            }
+        }
+
+    
         const data = await response.json()
-        return data
+        const user = data.user
+        sessionStorage.setItem('user',JSON.stringify(user))
+        return {
+            status: 200,
+            data: user,
+            error: null
+        }
     
     } catch (error) {
-        return error
+        return {
+            status: 500,
+            data: null,
+            error: error
+        }
     }
 }
 
@@ -96,10 +143,35 @@ async function getMarketMetrics(){
     
     try {
         const response = await sendRequest(`${BASE_URL}/market-data`, options)
-        const data = await response.json()
-        return data
+        if (response.status === 404){
+            const err = await response.json()
+            return {
+                status: 404,
+                data: null,
+                error: err
+            }
+        }
+
+        if (response.status === 401){
+            const err = await response.json()
+            return {
+                status: 401,
+                data: null,
+                error: err
+            }
+        }
+
+        return {
+            status: 200,
+            data: await response.json(),
+            error: null
+        }
     } catch(error){
-        return error
+        return {
+            status: 500,
+            data: null,
+            error: error
+        }
     }
 }
 
@@ -108,7 +180,7 @@ async function createPortfolio(formData){
     try {
         const response = await sendRequest(`${BASE_URL}/portfolios`, options)
         
-        if (response.status === "400" && response.statusText === "BAD REQUEST"){
+        if (response.status === 400 && response.statusText === "BAD REQUEST"){
             const err = await response.json()
             return {
                 status: 400,
@@ -123,6 +195,152 @@ async function createPortfolio(formData){
             error: null
         }
     } catch (error) {
+        
+        return {
+            status: 500,
+            data: null,
+            error: error
+        }
+    }
+}
+
+async function getPortfolioById(portfolioId){
+    const options = createRequestOptions('GET')
+    
+    try {
+        
+        const response = await sendRequest(`${BASE_URL}/portfolios/${portfolioId}`, options)
+        
+        if (response.status === 404){
+            const err = await response.json()
+            return {
+                status:404,
+                data: null,
+                error: err
+            }
+        }
+        
+        return {
+            status: 200,
+            data: await response.json(),
+            error: null
+        }
+        
+    } catch (error){
+        return {
+            status: 500,
+            data: null,
+            error: error
+        }
+    }
+}
+
+async function getPortfolios(){
+    const options = createRequestOptions('GET')
+    
+    try {
+        const response = await sendRequest(`${BASE_URL}/portfolios`, options)
+        if (response.status === 404){
+            const err = await response.json()
+            return {
+                status: 400,
+                data: null,
+                error: err
+            }
+        }
+
+        if (response.status === 401){
+            const err = await response.json()
+            return {
+                status: 401,
+                data: null,
+                error: err
+            }
+        }
+        
+        return {
+            status: 200,
+            data: await response.json(),
+            error: null
+        }
+    } catch (error){
+        return {
+            status: 500,
+            data: null,
+            error: error
+        }
+    }
+}
+
+async function getStocks(){
+    const options = createRequestOptions("GET")
+
+    try {
+        const response = await sendRequest(`${BASE_URL}/stocks`, options)
+
+        if (response.status === 404){
+            const err = await response.json()
+            return {
+                status: 404,
+                data: null,
+                error: err
+            }
+        }
+
+        if (response.status === 401){
+            const err = await response.json()
+            return {
+                status: 401,
+                data: null,
+                error: err
+            }
+        }
+
+        return {
+            status: 200,
+            data: await response.json(),
+            error: null
+        }
+    } catch(error){
+        return {
+            status: 500,
+            data: null,
+            error: error
+        }
+    }
+}
+
+async function buyStock(data){
+    const options = createRequestOptions("POST", data)
+
+    const portfolioId = data["id"]
+    try {
+        const response = await sendRequest(`${BASE_URL}/portfolios/${portfolioId}/buy`, options)
+        if (response.status === 401){
+            const err = await response.json()
+            return {
+                status: 401,
+                data: null,
+                error: err
+            }
+        }
+
+        if (response.status === 400){
+            const err = await response.json()
+            return {
+                status: 400,
+                data: null,
+                error: err
+            }
+        }
+
+        return {
+            status: 200,
+            data: await response.json(),
+            error: null
+        }
+
+    } catch (error){
         return {
             status: 500,
             data: null,
@@ -133,7 +351,11 @@ async function createPortfolio(formData){
 
 export default  {
     createUser,
-    getUsers,
+    getLoggedInUser,
     login, getMarketMetrics,
-    createPortfolio
+    createPortfolio,
+    getPortfolioById,
+    getPortfolios,
+    getStocks,
+    buyStock
 }
