@@ -56,8 +56,6 @@ def get_user_portfolios(user_id):
 @is_authenticated
 
 def buy_stocks(portfolio_id, user_id):
-    print(portfolio_id)
-    print(user_id)
     data = request.get_json()
 
     if not data:
@@ -75,4 +73,30 @@ def buy_stocks(portfolio_id, user_id):
     data = transaction.get("transaction")
     data = data.to_dict()
     del data["portfolio"]
+    return make_response(jsonify(data))
+
+@app_views.route("/portfolios/<portfolio_id>/sell", methods = ["POST"])
+@is_authenticated
+
+def sell_stock(portfolio_id, user_id):
+    data = request.get_json()
+
+    if not data:
+        raise BadRequest("Request body is empty")
+
+    stock_id = data.get("security", None)
+    quantity = data.get("quantity", None)
+    ask_price = data.get("price", None)
+
+    transaction = service.sell_action(user_id, portfolio_id, stock_id, float(quantity), float(ask_price))
+
+    error = transaction.get("error")
+
+    if error:
+        raise BadRequest(error)
+
+    data = transaction.get("transaction")
+    data = data.to_dict()
+    del data["portfolio"]
+
     return make_response(jsonify(data))
