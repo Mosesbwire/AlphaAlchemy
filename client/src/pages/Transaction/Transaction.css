@@ -1,4 +1,108 @@
 .transaction-header {
     color: var(--primary-text-color);
-    margin-bottom: 2em;
+    margin-bottom: 1.5em;
 }
+
+.transaction-summary {
+    display: flex;
+    column-gap: 1em;
+    margin-bottom: 2em;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    max-width: 800px;
+}
+
+.transaction-summary_category {
+    border: 1px solid green;
+    position: relative;
+    border-radius: 10px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.summary_title {
+    font-size: .85em;
+    color: var(--primary-text-color);
+    background-color: var(--primary-bg-color);
+    position: absolute;
+    top: -15%;
+    left: 10%;
+    padding-left: .25em;
+    padding-right: .25em;
+    
+}
+
+.balance-category {
+    width: 35%;
+    padding-left: .95em;
+    display: grid;
+    align-items: center;
+}
+
+.cash-flow-category {
+    display: flex;
+    align-items: center;
+    width: 65%;
+}
+
+.cash-flow-category >  :is(.trs-summary-data) {
+    flex: 1;
+    padding-left: .95em;
+}
+
+.cash-flow-category > :last-child{
+    border-left: 2px solid var(--contrast-color-dark-200);
+}
+
+.trs-summary-data {
+    color: var(--primary-text-color);
+}
+
+.transaction-filters {
+    display: flex;
+    margin-bottom: 1em;
+    color: var(--contrast-color-light-200);
+
+}
+
+.transaction-filters > * {
+    padding: .25em 1em;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.transaction-filters > * + * {
+    margin-left: 1em;
+    
+}
+
+.selected-filter {
+    border-color: var(--secondary-highlight-color);
+}
+
+@media(min-width: 48em){
+    .trs-summary-data > small {
+        font-size: .85em;
+    }
+
+    .summary_title {
+        font-size: .95em;
+    }
+}
+
+@media(min-width: 64em){
+    .transaction-summary_category {
+        padding-top: 1.5em;
+        padding-bottom: 1.5em;
+    }
+
+    .transaction-filters > p:hover {
+        border-color: var(--secondary-highlight-color);
+        color: var(--primary-text-color);
+    }
+
+    .transaction-filters > p{
+        transition: 300ms ease;
+    }
+}
+
