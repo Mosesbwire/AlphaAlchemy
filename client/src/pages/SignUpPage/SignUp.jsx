@@ -1,9 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
+import {Navigate} from 'react-router-dom'
 import Form from "../../components/AuthForm/SignUpForm";
 import Logo from "../../components/Logo/Logo";
+import apiService from "../../services/apiService";
+import useSubmitForm from "../../hooks/useSubmitForm";
 import './SignUp.css'
 
 const SignUp = () => {
+    const [onSubmit, data, isSubmitting, error] = useSubmitForm(apiService.createUser)
+
+    if (isSubmitting){
+        return <div>Loading....</div>
+    }
+
+    if(error){
+        console.log(error)
+    }
+
+    if (data){
+        return <Navigate to="/home" replace={true}/>
+    }
     return (
         <div className="sign-up-page">
             <div className="sign-up-hero-container container">
@@ -20,7 +36,7 @@ const SignUp = () => {
                     <p>Virtual Investing, Real Learning. Sign Up Now</p>
                 </div>
                 <div>
-                    <Form/>
+                    <Form onSubmit={onSubmit}/>
                 </div>
                 <div >
                     <p className="tag-line">Already have an account? <span className="login-link">Login</span></p>

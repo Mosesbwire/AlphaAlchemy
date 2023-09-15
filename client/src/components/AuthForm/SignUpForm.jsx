@@ -1,7 +1,6 @@
 import React from 'react'
 import Button from '../Button/Button'
 import useForm from '../../hooks/useForm'
-import apiService from '../../services/apiService'
 import './Form.css'
 
 const inputs = [
@@ -13,19 +12,18 @@ const inputs = [
 
 ]
 
-function SignUpForm(){
+function SignUpForm({onSubmit}){
     const initialValues = {first_name: "", last_name: "",email: "", password:"", confirm_password: ""}
     const [values, handleChange, resetForm] = useForm(initialValues)
-
-    const onSubmit = async(event) =>{
-        event.preventDefault()
-        console.log(values)
-        const data = await apiService.createUser(values)
-        console.log(data)
+    
+    const submitForm = async e =>{
+        e.preventDefault()
+        onSubmit(values)
         resetForm()
-    }
+        
+    } 
     return(
-        <form className='form' onSubmit={onSubmit}>
+        <form className='form' onSubmit={submitForm}>
             {inputs.map((input)=>(
                 <div key={input.name} className='input' id={input.name}>
                     <input

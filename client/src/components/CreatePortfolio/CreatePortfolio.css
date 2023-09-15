@@ -1,0 +1,63 @@
+.create-portfolio {
+    background-color: var(--primary-text-color);
+    min-width: 350px;
+    padding: 2em .5em;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.create-portfolio-form {
+    margin-top: 1em;
+
+}
+
+.create-portfolio-form > div > h1 {
+    color: var(--contrast-color-dark-200);
+}
+
+.tag-line {
+    color: var(--secondary-highlight-color);
+    
+}
+
+.cp-form-group {
+    
+}
+
+.cp-form-group > label {
+    display: block;
+    margin-bottom: .5em;
+    margin-top: 1em;
+    color: var(--contrast-color-dark-200);
+    
+}
+
+.cp-form-group > input {
+    padding: .25em .5em;
+    width: 100%;
+    margin-bottom: 1.5em;
+    color: var(--contrast-color-dark-200);
+
+}
+
+@media(min-width: 48em){
+    .create-portfolio {
+        width: 500px;
+    }
+
+    .create-portfolio-form {
+        width: 400px;
+        display: grid;
+    }
+
+    .create-portfolio-form > div > h1, .tag-line {
+        text-align: center;
+    }
+
+    .create-portfolio-form :is(Button){
+        width: 50%;
+        justify-self: center;
+    }
+}

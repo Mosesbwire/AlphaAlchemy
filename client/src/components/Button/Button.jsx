@@ -12,7 +12,7 @@ const Button = ({children, primary, secondary, rounded, outline, neutral})=>{
         "outline-secondary": outline && secondary,
     })
     return (
-        <button className={classes} >{children}</button>
+        <button className={classes}>{children}</button>
     )
 }
 
