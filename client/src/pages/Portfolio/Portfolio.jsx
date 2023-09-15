@@ -68,7 +68,9 @@ const Portfolio = ()=>{
                     <Button primary outline >Buy</Button>
                 </Link>
                 <Button secondary outline>Sell All</Button>
-                <Button neutral >Transactions</Button>
+                <Link to={`/portfolio/${name}/transactions`}>
+                    <Button neutral >Transactions</Button>
+                </Link>
             </div>
             <div className="container portfolio-stats">
                 {portfolioData.map(data => (
