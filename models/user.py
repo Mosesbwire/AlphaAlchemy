@@ -39,11 +39,11 @@ class User(BaseModel, Base):
     
     @classmethod
     def get_portfolios(cls, user_id):
-        stmt = select(cls).where(cls.user_id == user_id)
+        stmt = select(cls).where(cls.id == user_id)
 
-        portfolios = models.storage.query(stmt)
-
-        return portfolios
+        data = models.storage.query(stmt)
+        user = data[0]
+        return user.portfolios
 
     @classmethod
     def get_user_by_email(cls, email):

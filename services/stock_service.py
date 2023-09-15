@@ -18,7 +18,7 @@ class StockService:
         class contains all logic required for the correct functioning of the Stock model
     """
     
-    def create(self, name, ticker, sector):
+    def create(self, ticker, name, sector):
         """ interface used to create a Stock instance
             
             Args:
@@ -74,10 +74,13 @@ class StockService:
     def get_stocks(self):
         """ returns a list of stocks """
 
-        stocks = None
+        stocks = []
 
         try:
-            stocks = models.storage.all("Stock")
+            data = models.storage.all("Stock")
+
+            for stock in data:
+                stocks.append(stock.to_dict())
         except Exception as e:
             print(f"Error occured: {e}")
             stocks = []
@@ -169,27 +172,6 @@ class StockService:
             stock = None
             error = [e]
         return {"stock": stock, "error": error}
-
-    def fetch_latest_prices(self):
-        """ fetches latest stock price """
-
-        API_URL = "https://tickers.mystocks.co.ke/ticker/J$ON:RMW?app=FIB"
-
-        response = requests.get(API_URL)
-
-        if response.status_code != 200:
-            return "Error occured"
-
-        latest_data = response.json()
-
-        return latest_data.get("data")
-
-    def current_price(self, ticker, latest_data):
-        """ returns latest stock price """
-
-        for data in latest_data:
-            if data.get("a") == str.upper(ticker):
-                return data.get("c")
 
 
 

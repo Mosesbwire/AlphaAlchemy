@@ -7,6 +7,7 @@
 
 import models
 from models.base_model import BaseModel, Base
+from models.daily_portfolio_valuation import DailyPortfolioValuation
 from models.portfolio import Portfolio
 from models.portfolio_stock import PortfolioStock
 from models.stock import Stock
@@ -19,6 +20,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {
+        "DailyPortfolioValuation": DailyPortfolioValuation,
         "Portfolio": Portfolio,
         "PortfolioStock": PortfolioStock,
         "Stock": Stock,
@@ -34,7 +36,7 @@ class Storage:
 
     def __init__(self, dburl):
         """ constructor """
-        self.__engine = create_engine(dburl)
+        self.__engine = create_engine(dburl, echo=False)
 
         ENV = "dev"
 
