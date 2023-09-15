@@ -148,8 +148,16 @@ class PortfolioService:
             portfolios_detailed.append(port)
 
         return portfolios_detailed
-   
     
+    def get_portfolio_transactions(self, portfolio_id):
+        """ returns the transactions of the portfolio """
+        portfolio = self.get_portfolio_by_id(portfolio_id)
+        if portfolio is None:
+            return None
+
+        transactions = portfolio.transactions
+        return transactions
+
     def buy_action(self, user_id, portfolio_id, stock_id, quantity, bid_price):
         """ add stocks to a users portfolio """
 
