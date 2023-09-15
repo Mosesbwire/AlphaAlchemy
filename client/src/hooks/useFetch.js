@@ -10,8 +10,13 @@ const useFetch = (callback, values=null)=>{
             setIsLoading(true)
             try {
                 const results = await callback(values)
-                setData(results)
-                setError(null)
+                if (results["status"] === 200){
+                    setData(results["data"])
+                }else {
+                    setError(results["error"])
+                }
+                
+                
             } catch (error) {
                 setError(error)
             } finally {
