@@ -79,6 +79,7 @@ input:focus {
 .drop-down-selector > * {
     padding-top: .5em;
     padding-bottom: .5em;
+    cursor: pointer;
 }
 
 

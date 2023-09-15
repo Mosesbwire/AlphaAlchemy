@@ -54,22 +54,29 @@ def is_authenticated(func):
             data = jwt.decode(auth_token, os.getenv("SECRET_KEY"), algorithm=["HS256"])
             user = data.get("user")
             user_id = user.get("id")
-            user = service.get_user_by_id(user_id)
-            kwargs["user"] = user
-        except:
-            raise AuthenticationFailed("Invalid/Expired Token. Login")
-
-        return func(*args,**kwargs)
+            if "user_id" in func.__code__.co_varnames:
+                kwargs["user_id"] = user_id
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("Expired Token. Login")
+        except jwt.InvalidTokenError:
+            raise AuthenticationFailed("Invalid Token")
+        except Exception as e:
+            print(e)
+            make_response(jsonify({"error": "error occured"}))
+        return func(*args, **kwargs)
     return inner_func
 
 
 @app_views.route("/auth/", methods = ["GET"])
 @is_authenticated
-def load_user(user=None):
+def load_user(user_id):
     
+    user = service.get_user_by_id(user_id)
     
     if user is None:
         abort(404)
-
-    return make_response(jsonify({"user": user.to_dict()}), 200)
+    balance = user.balance / 100
+    user = user.to_dict()
+    user["balance"] = balance
+    return make_response(jsonify({"user": user}), 200)
 

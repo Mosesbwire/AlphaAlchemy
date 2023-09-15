@@ -7,9 +7,10 @@ from flask import abort, jsonify, make_response, request
 import jwt
 import os
 from services.user_service import UserService
-
+from services.stock_service import StockService
 
 service = UserService()
+stockService = StockService()
 
 
 @app_views.route("/users", methods = ["POST"])
@@ -41,7 +42,7 @@ def create_user():
 
 @app_views.route("/users", methods = ["GET"])
 @is_authenticated
-def get_users(user=None):
+def get_users():
     users_list = []
     users = service.get_users()
 
@@ -51,6 +52,7 @@ def get_users(user=None):
     return jsonify(users_list)
 
 @app_views.route("/users/<user_id>", methods=["GET"])
+@is_authenticated
 def get_user(user_id):
 
     user = service.get_user_by_id(user_id)
@@ -60,6 +62,7 @@ def get_user(user_id):
     return jsonify(user.to_dict())
 
 @app_views.route("/users/<user_id>", methods=["PUT"])
+@is_authenticated
 def update_user(user_id):
     data = request.get_json()
     if not data:
@@ -67,6 +70,7 @@ def update_user(user_id):
 
 
 @app_views.route("/users/<user_id>", methods=["DELETE"])
+@is_authenticated
 def delete_user(user_id):
     resp = service.delete_user(user_id)
 

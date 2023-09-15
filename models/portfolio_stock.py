@@ -22,7 +22,7 @@ class PortfolioStock(BaseModel, Base):
     portfolio_id = Column(String(60), ForeignKey('portfolios.id'), primary_key=True, nullable=False)
     stock_id = Column(String(60), ForeignKey('stocks.id'), primary_key=True, nullable=False)
     stock = relationship("Stock")
-
+    
     def __init__(self, *args, **kwargs):
         """ class constructor """
         super().__init__()

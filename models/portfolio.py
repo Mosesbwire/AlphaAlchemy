@@ -25,9 +25,9 @@ class Portfolio(BaseModel, Base):
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     user = relationship("User", back_populates="portfolios")
     stocks = relationship("PortfolioStock")
-
     transactions = relationship("Transaction", back_populates = "portfolio",
             cascade = "all, delete, delete-orphan")
+    valuations = relationship("DailyPortfolioValuation", back_populates = "portfolio", cascade = "all, delete, delete-orphan")
 
     def __init__(self, *args, **kwargs):
         """ class constructor """

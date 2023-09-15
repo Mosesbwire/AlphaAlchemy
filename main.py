@@ -15,52 +15,59 @@ from models.stock_data import StockData
 from models.transaction import Transaction
 from models.user import User
 
+from services.daily_portfolio_value import DailyPortfolioValuationService
 from services.user_service import UserService
 from services.stock_service import StockService
 from services.stock_data_service import StockDataService
 from services.portfolio_service import PortfolioService
 from utils.currency.conversion import to_cents, to_unit_currency
+from utils.rate_returns import return_on_investment, time_weighted_return
+from datetime import datetime
 
+stockService = StockService()
+portfolioService = PortfolioService()
+userService = UserService()
+portfolio_id = 'be01097c-8155-4163-9702-79afa5b22c89' 
+user_id =   'fde095d7-2e6a-44aa-8af3-c8f28ac83b4e' 
+stock_id = 'a7257ed9-6804-460a-bd1c-a4b1b287e7c4'
 
 if __name__ == "__main__":
-   
-    stService = StockService()
-    usService = UserService()
-
-    stock = stService.create("SCOM", "SAFARICOM", "COMMUNICATION")
-    st = stService.create("EQTY", "EQUITY", "BANKING")
-    user = usService.create("Mose", "Bwire", "mosesbwire@gmail.com", "P@ssword1", "P@ssword1")
-    user1 = usService.create("Sheila", "Amalemba", "sheila@gmail.com", "P@ssword1", "P@ssword1")
-    user2 = usService.create("Kian", "Juma", "kianjuma@gmail.com", "P@ssword1", "P@ssword1")
-    """    
-    USER = user.get("user")
-    STOCK = stock.get("stock")
-    pService = PortfolioService()
-    portfolio = pService.create(USER.id,"growth-portfolio")
-
-    PORTFOLIO = portfolio.get("portfolio")
-
     
-    pService.buy_action(USER.id, PORTFOLIO.id, STOCK.id, 200, 12.75)
-    pService.buy_action(USER.id, PORTFOLIO.id, st.get("stock").id, 100, 35.50)
 
 
-    pService.buy_action(USER.id, PORTFOLIO.id, STOCK.id, 100, 12)
-
-    pService.sell_action(USER.id, PORTFOLIO.id, STOCK.id, 200, 13.50)
-
-    p = pService.get_portfolio_by_id(PORTFOLIO.id)
-     
-    print("captal invested")
-    print(to_unit_currency(p.capital))
-
-    print("current market value")
-
-    print(pService.portfolio_market_value(p.id))
-
-
-    users = usService.get_users()
-
-    print(users)
-    print(type(users[0]))
+    """      
+    stock = stockService.get_stock_by_ticker("SCOM")
+    """    
+        
     """
+    userService.create("Mose", "Bwire", "mosesbwire@gmail.com", "P@ssword1", "P@ssword1")
+    """
+    """
+    users = userService.get_users()
+
+    user = users[0]
+    """
+    """
+    p = portfolioService.create(user.id, "growth-portfolio")
+    
+    portfolio = p.get("portfolio")
+    """
+    """
+    portfolioService.buy_action(user_id, portfolio_id, stock_id, 100, 13.50)
+    """
+    """
+    portfolio = portfolioService.get_portfolio_by_id(portfolio_id)
+    
+
+    mv = portfolioService.calculate_market_value(portfolio.stocks)
+
+    """
+    
+    service = PortfolioService()
+
+    service.buy_action(user_id, portfolio_id, stock_id, 200, 45.50)
+
+    details = service.get_portfolio_details(portfolio_id)
+
+    print(details)
+

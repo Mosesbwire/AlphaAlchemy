@@ -215,8 +215,12 @@ class UserService:
 
         return {"user": user, "error": error}
 
-    def get_portfolios(user_id):
+    def get_portfolios(self,user_id):
         """ get the all the users portfolio """
         portfolios = User.get_portfolios(user_id)
+        data = []
+        for portfolio in portfolios:
+            stocks = portfolio.stocks  
+            data.append(portfolio)
 
-        return portfolios
+        return data

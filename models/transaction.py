@@ -19,6 +19,7 @@ class Transaction(BaseModel, Base):
     __tablename__ = "transactions"
 
     item = Column(String(60), nullable=False)
+    item_id = Column(String(60), nullable=False)
     price = Column(Integer, nullable=False)
     quantity = Column(Integer, nullable=False)
     transaction_type = Column(Enum("buy", "sell", name= "transation_type_enum"), nullable=False)
@@ -31,10 +32,11 @@ class Transaction(BaseModel, Base):
         super().__init__()
         if args:
             self.item = args[0]
-            self.price = args[1]
-            self.quantity = args[2]
-            self.transaction_type = args[3]
-            self.total = args[4]
+            self.item_id = args[1]
+            self.price = args[2]
+            self.quantity = args[3]
+            self.transaction_type = args[4]
+            self.total = args[5]
         if kwargs:
             for key, value in kwargs.items():
                 setattr(self, key, value)
