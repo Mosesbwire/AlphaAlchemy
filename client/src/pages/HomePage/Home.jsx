@@ -8,8 +8,6 @@ import useFetch from "../../hooks/useFetch";
 import {prepMarketData, prepStockData} from "../../services/processData"
 import './Home.css'
 
-
-
 const tableHeader = [
     "Ticker",
     "Prev",
@@ -29,11 +27,22 @@ const classes = ['d-block', 'd-block', 'd-block', 'd-block', 'd-sm-none d-md-blo
 
 const Home = ()=>{
     const [data, error, isLoading] = useFetch(apiService.getMarketMetrics)
+    useFetch(apiService.getLoggedInUser)
+    
     const marketData = data ? prepMarketData(data["market_metrics"]) : []
     const gainers = data ? data["gainers"] : []
     const losers = data ? data["losers"] : []
     const movers = data ? data["movers"]: []
     const stocks = data ? prepStockData(data["stocks"]): []
+
+    if (error){
+        
+        return <div>Error occured</div>
+    }
+
+    if (isLoading){
+        return <div>Loading....</div>
+    }
 
     return(
         <div>

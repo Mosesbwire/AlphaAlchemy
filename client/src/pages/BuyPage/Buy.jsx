@@ -1,26 +1,56 @@
 import React, {useState} from "react";
+import {useParams, Navigate} from 'react-router-dom'
 import Button from "../../components/Button/Button"
+import apiService from "../../services/apiService";
+import useFetch from "../../hooks/useFetch"
+import useForm from "../../hooks/useForm";
+import useSubmitForm from "../../hooks/useSubmitForm";
 import './Buy.css'
 
-const data = [
-    "ABSA", 
-    "ACK","NMG", "CARB", "KCB", "WTK", "SASN", "CAGN", "EQTY", "LKL"
-]
-
 const Buy = ()=>{
-    const [isOpenDropDown, setOpenDropDown] = useState(false)
-    const [showInfoText, setShowInfoText] = useState(false)
 
-    const handleClick = ()=>{
-        setOpenDropDown(!isOpenDropDown)
+    const initialValues = {price: "", quantity: "", security: ""}
+    const [values, handleChange, resetForm] = useForm(initialValues)
+    const [data, error, isLoading] = useFetch(apiService.getStocks)
+    const { id } = useParams()
+    const [onSubmit, buyData, isSubmitting, buyError] = useSubmitForm(apiService.buyStock)
+    const sortedData = data ? data : []
+    const user = JSON.parse(sessionStorage.getItem("user"))
+    
+
+    let orderValue = 0
+
+    if (values["price"] !== "" && values["quantity"] !== ""){
+        orderValue = Number(values["price"]) * Number(values["quantity"])
+    } 
+    const remainingBal = user.balance - orderValue
+
+    sortedData.sort((objA, objB)=>{
+        if (objA.ticker < objB.ticker) return -1
+        if (objA.ticker > objB.ticker) return 1
+        return 0
+    })
+
+    const submitForm = async (e)=>{
+        e.preventDefault()
+        const data = {...values, id: id}
+        onSubmit(data)
     }
 
+    if (isLoading || isSubmitting){
+        return <div>Loading Data.....</div>
+    }
+
+    if (!isSubmitting && buyData){
+        return <Navigate to={`/portfolio/${id}`}/>
+    }
+    
     return (
         <div className="order-action">
             <div className="d-md-none d-lg-none sm-acc-details">
                 <div className=" row-flex  container">
                     <p>Account Balance</p>
-                    <p>KES 50000.00</p>
+                    <p>KES {user.balance}</p>
                 </div>
             </div>
             <div className="buy-process">
@@ -29,27 +59,42 @@ const Buy = ()=>{
                         <p>Buy</p>
                 
                     </div>
-                    <form action="" method="post" className="order-form container">
+                    <form action="" method="post" className="order-form container" onSubmit={submitForm}>
                         <div className="select-security form-group">
-                            <label>Security Name</label>
-                            <div><input type="text" name="security" id="" placeholder="Select Company" onClick={handleClick}/></div>
-                            { isOpenDropDown ? <div className="drop-down-selector" onClick={handleClick}>
-                                {data.map(dt => (
-                                    <div>{dt}</div>
-                                ))}
-                            </div> : null}
+                            <label htmlFor="security">Security Name</label>
+                            <div>
+                                <select name="security" value={values["security"]} onChange={e => handleChange(e)}>
+                                    <option value="">Select Company</option>
+                                    {sortedData.map(data => (
+                                        <option value={data.id} >{data.ticker}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                         <div className="security-price form-group">
                             <label htmlFor="price">Price</label>
                             <div>
-                                <input type="text" name="price" id="" />
-                                <p className={`info-text ${showInfoText ? 'show-info-text': 'hide-info-text'}`}>Scom current price is KES 15.25</p>
+                                <input 
+                                    type="text" 
+                                    name="price" 
+                                    id="" 
+                                    value = {values["price"]}
+                                    onChange={e => handleChange(e)}
+                                />
+                                
                             </div>
                         </div>
                         <div className="security-quantity form-group">
                             <label htmlFor="quantity">Quantity</label>
                             <div>
-                                <input type="text" name="quantity" id="" placeholder="Should be in lots of 100 e.g 200, 300, 10000"/>
+                                <input 
+                                    type="text" 
+                                    name="quantity" 
+                                    id="" 
+                                    placeholder="Should be in lots of 100 e.g 200, 300, 10000"
+                                    value={values["quantity"]}
+                                    onChange={e => handleChange(e)}
+                                    />
                             </div>
                         </div>
                         
@@ -60,15 +105,15 @@ const Buy = ()=>{
             <div className="account-details d-sm-none d-md-block d-lg-block">
                 <div className="available-funds row-flex">
                     <p>Available Funds</p>
-                    <p>KES 50000.00</p>
+                    <p>KES {user.balance}</p>
                 </div>
                 <div className="order-value row-flex">
                     <p>Order Value</p>
-                    <p>KES 6000.00</p>
+                    <p>KES {orderValue}</p>
                 </div>
                 <div className="remaining-bal row-flex">
                     <p>Remaining Balance</p>
-                    <p>KES 6000.00</p>
+                    <p>KES {remainingBal}</p>
                 </div>
             </div>
         </div>

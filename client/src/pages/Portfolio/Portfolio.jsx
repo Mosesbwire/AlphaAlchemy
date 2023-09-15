@@ -1,51 +1,72 @@
 import React from "react";
+import { useParams, Link } from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faMoneyBill1} from '@fortawesome/free-regular-svg-icons'
-import {faChartLine, faMoneyBills,faMoneyBill, faMoneyBillAlt} from '@fortawesome/free-solid-svg-icons'
+import {faChartLine, faMoneyBillAlt} from '@fortawesome/free-solid-svg-icons'
 import Stats from "../../components/Portfolio/PortfolioStat/Stats";
 import Table from "../../components/Table/Table";
 import Button from "../../components/Button/Button";
 import Actions from "./Action";
+import apiService from "../../services/apiService";
+import useFetch from "../../hooks/useFetch"
 import './portfolio.css'
 
 
 
 const Portfolio = ()=>{
+    const { id } = useParams()
+    const [data, error, isLoading] = useFetch(apiService.getPortfolioById, id)
+    const capital = data ? data.capital : 0
+    const marketValue = data ? data.valuation : 0
+    const change = data ? (data.roi * 100).toFixed(2) : 0
+    const name = data ? data.name : 'Portfolio'
+    const stocks = data ? data.stocks: []
+    console.log(data)
     const portfolioData = [
-        {title: "Capital Employed", stat: "13000", icon: <FontAwesomeIcon icon={faMoneyBillAlt}/>},
-        {title: "Gain", stat: "25%", icon: <FontAwesomeIcon icon={faChartLine}/>},
-        {title: "Market Value", stat: "17000", icon: <FontAwesomeIcon icon={faMoneyBillAlt}/>}
+        {title: "Capital Employed", stat: capital, icon: <FontAwesomeIcon icon={faMoneyBillAlt}/>},
+        {title: "Return On Investment", stat: !change ? 0: change, icon: <FontAwesomeIcon icon={faChartLine}/>},
+        {title: "Market Value", stat: marketValue, icon: <FontAwesomeIcon icon={faMoneyBillAlt}/>}
     ]
 
     const holdingsHeader = [
-        "name","ticker", "capital", "value", "change", "quantity", "price", "actions"
+        "name","ticker", "market value", "quantity", "% weight", "price", "actions"
     ]
-    const holdings = [
-        [
-            "KCB", "KCB", "30000", "35000", "5000", "3000","30",<Actions/>
-        ],
-        [
-            "SCOM","SCOM","10000","35000","25000", "4000","10", <Actions/>
-        ],
-        [
-            "EQTY", "EQTY", "30000","35000","5000","3000","30", <Actions/>
-        ],
-        [
-            "SASN", "SASN", "10000","35000","25000","3000","30", <Actions/>
-        ],
-    ]
+    const holdings = []
+    if (stocks){
+        stocks.map(stock =>{
+            const stockData = []
+            stockData.push(stock.name)
+            stockData.push(stock.ticker)
+            stockData.push(stock.current_value)
+            stockData.push(stock.quantity)
+            stockData.push(`${stock.weight * 100}%`)
+            stockData.push(stock.current_unit_price)
+            stockData.push(<Actions/>)
+            holdings.push(stockData)
 
+        })
+    }
+    
     const classes = [
         "d-sm-none d-md-block","d-block", "d-sm-none d-md-none d-lg-block","d-sm-none d-md-block", "d-sm-none d-md-block", "d-sm-none d-md-block", "d-block", "d-block"
     ]
+    if (isLoading){
+        return <div>Loading...</div>
+    }
 
+    if (error){
+        console.log(error)
+        return <div>Error Occured. 404</div>
+    }
+    
     return(
         <div className="">
             <div className="portfolio-name container">
-                <p>Name: <span className="portfolio-name_span">Growth Portfolio</span></p>
+                <p>Name: <span className="portfolio-name_span">{name}</span></p>
             </div>
             <div className="portfolio-actions">
-                <Button primary outline >Buy</Button>
+                <Link to={`/portfolio/${id}/buy`}>
+                    <Button primary outline >Buy</Button>
+                </Link>
                 <Button secondary outline>Sell All</Button>
                 <Button neutral >Transactions</Button>
             </div>
@@ -58,7 +79,9 @@ const Portfolio = ()=>{
                 <div className="container">
                     <p>Holdings</p>
                 </div>
-                <Table header={holdingsHeader} data={holdings} classes={classes}/>
+                {stocks.length > 0 ?
+                    <Table header={holdingsHeader} data={holdings} classes={classes}/>
+                : <div>Click here to buy stocks for your portfolio</div>}
             </div>
         </div>
     )

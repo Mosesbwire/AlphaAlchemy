@@ -10,14 +10,8 @@ import "./Login.css"
 const Login = ()=>{
     const [onSubmit, data, isSubmitting, error] = useSubmitForm(apiService.login)
     const authContext = useAuthContext();
-    const {isAuthenticated, setIsAuthenticated} = authContext
-    useEffect(()=>{
-        if(data){
-            setIsAuthenticated(true)
-        }
-    }, [data])
    
-
+    
     if (isSubmitting){
         return <div>Loading...</div>
     }
@@ -26,7 +20,7 @@ const Login = ()=>{
         console.log(error)
     }
 
-    if (isAuthenticated){
+    if (!isSubmitting && !error){
         return <Navigate to={"/home"} replace={true}/>
     }
     
