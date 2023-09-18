@@ -25,7 +25,7 @@ class StockData(BaseModel, Base):
     current = Column(Integer, nullable=False)
     high = Column(Integer, nullable=False)
     low = Column(Integer, nullable=False)
-    volume = Column(Integer, nullable=False)
+    volume = Column(String(60), nullable=False)
     average = Column(Integer, nullable=False)
     stock_id = Column(String(60), ForeignKey("stocks.id"), nullable=False)
     stock = relationship("Stock", back_populates = "data")
