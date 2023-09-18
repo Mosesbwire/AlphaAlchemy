@@ -24,7 +24,7 @@ function App() {
               <Route path="/portfolios" element={<Portfolios/>}/>
               <Route path="/portfolio/:id" element={<Portfolio/>}/>
               <Route path="/portfolio/:id/order" element={<Order/>}/>
-              <Route path="/portfolio/:name/transactions" element={<Transaction/>}/>
+              <Route path="/portfolio/:name/:id/transactions" element={<Transaction/>}/>
             </Route>
               <Route path="/login" element={<Login/>}/>
               <Route path="/sign-up" element={<SignUp/>}/>

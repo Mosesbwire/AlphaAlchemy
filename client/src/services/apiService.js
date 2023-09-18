@@ -387,6 +387,46 @@ async function sellStock(data){
         }
     }
 }
+async function fetchPortfolioTransactions(portfolioId){
+    const options = createRequestOptions("GET")
+
+    try {
+        const response = await sendRequest(`${BASE_URL}/portfolio/${portfolioId}/transactions`, options)
+
+        if (response.status === 401){
+            const err = await response.json()
+            return {
+                status: 401,
+                data: null,
+                error: err
+            }
+        }
+
+        if (response.status === 400){
+            const err = await response.json()
+            return {
+                status: 400,
+                data: null,
+                error: err
+            }
+        }
+
+        return {
+            status: 200,
+            data: await response.json(),
+            error: null
+        }
+
+    } catch (error){
+        return {
+            status: 500,
+            data: null,
+            error: error
+        }
+    }
+}
+
+
 
 export default  {
     createUser,
@@ -397,5 +437,6 @@ export default  {
     getPortfolios,
     getStocks,
     buyStock,
-    sellStock
+    sellStock,
+    fetchPortfolioTransactions
 }

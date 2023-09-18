@@ -20,7 +20,7 @@ const Portfolio = ()=>{
     const change = data ? (data.roi * 100).toFixed(2) : 0
     const name = data ? data.name : 'Portfolio'
     const stocks = data ? data.stocks: []
-    console.log(data)
+    
     const portfolioData = [
         {title: "Capital Employed", stat: capital, icon: <FontAwesomeIcon icon={faMoneyBillAlt}/>},
         {title: "Return On Investment", stat: !change ? 0: change, icon: <FontAwesomeIcon icon={faChartLine}/>},
@@ -68,7 +68,7 @@ const Portfolio = ()=>{
                     <Button primary outline >Buy</Button>
                 </Link>
                 <Button secondary outline>Sell All</Button>
-                <Link to={`/portfolio/${name}/transactions`}>
+                <Link to={`/portfolio/${name}/${id}/transactions`}>
                     <Button neutral >Transactions</Button>
                 </Link>
             </div>
