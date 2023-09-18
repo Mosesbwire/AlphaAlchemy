@@ -1,27 +1,39 @@
-import React, {useState} from "react";
-import {useParams, Navigate} from 'react-router-dom'
+import React from "react";
+import {useParams, Navigate, useLocation} from 'react-router-dom'
 import Button from "../../components/Button/Button"
 import apiService from "../../services/apiService";
 import useFetch from "../../hooks/useFetch"
 import useForm from "../../hooks/useForm";
 import useSubmitForm from "../../hooks/useSubmitForm";
-import './Buy.css'
+import './Order.css'
 
 const Buy = ()=>{
-
+    const location = useLocation()
+    const queryParams = new URLSearchParams(location.search)
+    const action = queryParams.get("action")
+    const stock = queryParams.get("stock")
+    const orderFunction = action === "buy" ? apiService.buyStock : apiService.sellStock
     const initialValues = {price: "", quantity: "", security: ""}
     const [values, handleChange, resetForm] = useForm(initialValues)
     const [data, error, isLoading] = useFetch(apiService.getStocks)
     const { id } = useParams()
-    const [onSubmit, buyData, isSubmitting, buyError] = useSubmitForm(apiService.buyStock)
+    
+    const [onSubmit, orderData, isSubmitting, orderError] = useSubmitForm(orderFunction)
     const sortedData = data ? data : []
     const user = JSON.parse(sessionStorage.getItem("user"))
     
-
     let orderValue = 0
 
-    if (values["price"] !== "" && values["quantity"] !== ""){
+    if (values["price"] !== "" && values["quantity"] !== "" && stock === "no-stock"){
         orderValue = Number(values["price"]) * Number(values["quantity"])
+    } 
+
+    if (stock !== "no-stock" && data){
+        data.forEach(dt => {
+            if (dt.ticker == stock){
+                values["security"] = dt.id
+            }
+        })
     } 
     const remainingBal = user.balance - orderValue
 
@@ -30,7 +42,6 @@ const Buy = ()=>{
         if (objA.ticker > objB.ticker) return 1
         return 0
     })
-
     const submitForm = async (e)=>{
         e.preventDefault()
         const data = {...values, id: id}
@@ -40,8 +51,8 @@ const Buy = ()=>{
     if (isLoading || isSubmitting){
         return <div>Loading Data.....</div>
     }
-
-    if (!isSubmitting && buyData){
+    
+    if (orderData){
         return <Navigate to={`/portfolio/${id}`}/>
     }
     
@@ -56,15 +67,15 @@ const Buy = ()=>{
             <div className="buy-process">
                 <div className="buy-form">
                     <div className="buy-title">
-                        <p>Buy</p>
+                        <p>{action}</p>
                 
                     </div>
                     <form action="" method="post" className="order-form container" onSubmit={submitForm}>
                         <div className="select-security form-group">
                             <label htmlFor="security">Security Name</label>
                             <div>
-                                <select name="security" value={values["security"]} onChange={e => handleChange(e)}>
-                                    <option value="">Select Company</option>
+                                <select disabled={stock !== "no-stock"} className="order-form_select" name="security" value={values["security"]} onChange={e => handleChange(e)}>
+                                    <option value={''}>{stock === "no-stock" ? 'Select Company':  `${stock}`}</option>
                                     {sortedData.map(data => (
                                         <option value={data.id} >{data.ticker}</option>
                                     ))}

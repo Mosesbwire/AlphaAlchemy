@@ -2,7 +2,6 @@ import React from "react";
 import MarketStatistics from "../../components/MarketStat/TotalMarketStat";
 import PerfomanceSummary from "../../components/StockDataSummary/PerfomanceSummary";
 import Table from "../../components/Table/Table";
-import { useAuthContext } from "../../context/AuthContext";
 import apiService from "../../services/apiService";
 import useFetch from "../../hooks/useFetch";
 import {prepMarketData, prepStockData} from "../../services/processData"
