@@ -17,10 +17,14 @@ from services.data_processor import DataProcessor
 from utils.currency.conversion import to_cents, to_unit_currency
 from utils.rate_returns import return_on_investment,time_weighted_return
 
+dataProcessor = DataProcessor()
 class PortfolioService:
     """ The PortfolioService layer contains all logic for the Portfolio """
     
     __lot_size = 100
+
+    def __init__():
+        self.current_data = dataProcessor.stocks_metrics()
 
     def create(self, user_id, name = None):
         """ create a portfolio """
@@ -48,14 +52,12 @@ class PortfolioService:
 
     def calculate_market_value(self, stocks):
         """ calculates the market value of a portfolio """
-        dataProcessor = DataProcessor()
         market_value = 0
-        current_data = dataProcessor.stocks_metrics()
         stockService = StockService()
         for stock in stocks:
             st = stockService.get_stock_by_id(stock.stock_id)
             ticker = st.ticker
-            for data in current_data:
+            for data in self.current_data:
                 if data["ticker"] == ticker:
                     market_value += (to_cents(data["current"]) * stock.quantity)
 
