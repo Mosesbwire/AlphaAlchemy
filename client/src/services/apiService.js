@@ -95,6 +95,15 @@ async function login(formData){
     }
 }
 
+async function logout(){
+    sessionStorage.clear()
+    return {
+        status: 200,
+        data: "OK",
+        error: null
+    }
+}
+
 
 
 async function getLoggedInUser(){
@@ -438,5 +447,6 @@ export default  {
     getStocks,
     buyStock,
     sellStock,
-    fetchPortfolioTransactions
+    fetchPortfolioTransactions,
+    logout
 }
