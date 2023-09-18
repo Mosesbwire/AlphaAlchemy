@@ -7,23 +7,26 @@
 import models
 from models.stock_data import StockData
 import requests
+from services.data_processor import DataProcessor
 from services.stock_service import StockService
 from utils.currency.conversion import to_cents, to_unit_currency
+
+
+dataProcessor = DataProcessor()
 
 class StockDataService:
     """ Class responsible for fetching a stocks data
         responsible for inserting daily stock data to db
     """
     monetary_values = ["prev", "current", "high", "low", "average"]
-    API_URL = "https://tickers.mystocks.co.ke/ticker/J$ON:RMW?app=FIB"
-
+    
     def create(self, **kwargs):
         """ Creates an instance of StockData """
 
         error = []
         
         ticker = kwargs.get("ticker", None)
-
+    
         if ticker is None:
             msg = "ticker symbol can not be empty"
             raise ValueError(msg)
@@ -33,22 +36,31 @@ class StockDataService:
         if stock is None:
             return {"data": None, "error": ["Stock not found"]}
 
-        
+        data_dict = {}
+
         for key, value in kwargs.items():
-            if value == " " or value == "_":
-                kwargs[key] = 0
+            data_dict[key] = value
+            if value == " " or value == "_" or value == "-":
+                data_dict[key] = 0
 
             if key in self.monetary_values:
 
-                kwargs[key] = to_cents(kwargs[key])
+                data_dict[key] = to_cents(data_dict[key])
 
-        del kwargs["ticker"]
+        del data_dict["ticker"]
         
 
-        stockData = StockData(**kwargs)
+        stockData = StockData(**data_dict)
 
         stock.data.append(stockData)
 
         models.storage.save()
 
         return {"data": stockData, "error": None}
+    
+    def add_daily_stock_data(self):
+        stock_data = dataProcessor.stocks_metrics()
+
+        for stock in stock_data:
+            self.create(**stock)
+
