@@ -20,7 +20,7 @@ const Portfolio = ()=>{
     const change = data ? (data.roi * 100).toFixed(2) : 0
     const name = data ? data.name : 'Portfolio'
     const stocks = data ? data.stocks: []
-    console.log(data)
+    
     const portfolioData = [
         {title: "Capital Employed", stat: capital, icon: <FontAwesomeIcon icon={faMoneyBillAlt}/>},
         {title: "Return On Investment", stat: !change ? 0: change, icon: <FontAwesomeIcon icon={faChartLine}/>},
@@ -40,7 +40,7 @@ const Portfolio = ()=>{
             stockData.push(stock.quantity)
             stockData.push(`${stock.weight * 100}%`)
             stockData.push(stock.current_unit_price)
-            stockData.push(<Actions/>)
+            stockData.push(<Actions id={id} stock={stock.ticker}/>)
             holdings.push(stockData)
 
         })
@@ -57,18 +57,20 @@ const Portfolio = ()=>{
         console.log(error)
         return <div>Error Occured. 404</div>
     }
-    
+    const selectedStock ="SCOM"
     return(
         <div className="">
             <div className="portfolio-name container">
                 <p>Name: <span className="portfolio-name_span">{name}</span></p>
             </div>
             <div className="portfolio-actions">
-                <Link to={`/portfolio/${id}/buy`}>
+                <Link to={`/portfolio/${id}/order?action=buy&stock=no-stock`}>
                     <Button primary outline >Buy</Button>
                 </Link>
                 <Button secondary outline>Sell All</Button>
-                <Button neutral >Transactions</Button>
+                <Link to={`/portfolio/${name}/${id}/transactions`}>
+                    <Button neutral >Transactions</Button>
+                </Link>
             </div>
             <div className="container portfolio-stats">
                 {portfolioData.map(data => (

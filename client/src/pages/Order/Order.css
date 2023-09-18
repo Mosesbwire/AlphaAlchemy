@@ -50,7 +50,7 @@
     color: var(--primary-text-color);
 }
 
-.form-group > div > input{
+.form-group > div > input, select{
     background-color: var(--primary-bg-color);
     border: none;
     border-bottom: 1px solid var(--primary-text-color);
@@ -58,6 +58,7 @@
     width: 90%;
     color: var(--primary-text-color)
 }
+
 
 input:focus {
     outline: none;
