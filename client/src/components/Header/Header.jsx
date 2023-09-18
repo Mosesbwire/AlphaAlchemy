@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom"
+import {useNavigate, Link} from "react-router-dom"
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons'
 import {faBars} from '@fortawesome/free-solid-svg-icons'
@@ -10,19 +10,15 @@ import CreatePortfolio from "../CreatePortfolio/CreatePortfolio";
 import apiService from "../../services/apiService";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import './Header.css'
+import useFetch from "../../hooks/useFetch";
 
-const navItems = [
-    {name:"Home"},
-    {name:"New Portfolio"},
-    {name:"Portfolios"},
-    {name:"LogOut"}
-]
+
 const Header = ()=>{
     const [isOpen, setOpenMenu] = useState(false)
     const [openModal, modalHandler] = useModal()
     const [onSubmit, data, isSubmitting, error] = useSubmitForm(apiService.createPortfolio)
     const navigate = useNavigate()
-    
+
     useEffect(()=>{
         if (!isSubmitting && data){
             modalHandler()
@@ -31,6 +27,14 @@ const Header = ()=>{
         }
 
     }, [data, error, isSubmitting])
+
+    
+    const logout = async ()=>{
+        const data = await apiService.logout()
+        if (data.status === 200){
+            navigate('/login')
+        }
+    }
     const handleClick = ()=>{
         setOpenMenu(!isOpen)  
     }
@@ -38,6 +42,13 @@ const Header = ()=>{
     if (isSubmitting){
         return <div>Creating Portfolio</div>
     }
+
+    const navItems = [
+        <Link to={'/home'}><li className="nav-links">Home</li></Link>,
+        <li className="nav-links" onClick={modalHandler}>New Portfolio</li>,
+        <Link to={'/portfolios'}><li className="nav-links">Portfolios</li></Link>,
+        <li className="nav-links" onClick={logout}>LogOut</li>   
+    ]
 
     return (
         <>
@@ -54,7 +65,7 @@ const Header = ()=>{
                                 <FontAwesomeIcon icon={faCircleXmark}/>
                             </div>
                             {navItems.map((item) => (
-                                <li className="nav-links" onClick={modalHandler}>{item.name}</li>
+                                item
                             ))}
                         </ul>
                     </div>
