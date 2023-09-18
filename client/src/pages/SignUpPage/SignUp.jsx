@@ -1,16 +1,17 @@
-import React, {useState} from "react";
+import React from "react";
 import {Navigate} from 'react-router-dom'
 import Form from "../../components/AuthForm/SignUpForm";
 import Logo from "../../components/Logo/Logo";
 import apiService from "../../services/apiService";
 import useSubmitForm from "../../hooks/useSubmitForm";
+import Loading from "../../components/Loader/Loading";
 import './SignUp.css'
 
 const SignUp = () => {
     const [onSubmit, data, isSubmitting, error] = useSubmitForm(apiService.createUser)
 
     if (isSubmitting){
-        return <div>Loading....</div>
+        return <Loading/>
     }
 
     if(error){
