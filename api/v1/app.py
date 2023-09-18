@@ -5,7 +5,6 @@ from api.v1.error import BadRequest, AuthenticationFailed
 from flask import Flask, make_response, jsonify
 from flask_cors import CORS
 
-
 app = Flask(__name__)
 
 app.url_map.strict_slashes = False
@@ -28,6 +27,8 @@ def authentication_failed(error):
     resp = {"error": error.errors}
 
     return make_response(jsonify(resp), 401)
+def dummyJob():
+    print("running")
 
 if __name__ == "__main__":
     app.run('0.0.0.0', 5001, threaded = True, debug = True)

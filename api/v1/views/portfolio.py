@@ -100,3 +100,16 @@ def sell_stock(portfolio_id, user_id):
     del data["portfolio"]
 
     return make_response(jsonify(data))
+
+@app_views.route("/portfolio/<portfolio_id>/transactions", methods = ["GET"])
+@is_authenticated
+
+def get_portfolio_transactions(portfolio_id):
+    
+    transactions = []
+    transaction_objects = service.get_portfolio_transactions(portfolio_id)
+
+    for transaction in transaction_objects:
+        transactions.append(transaction.to_dict())
+
+    return make_response(jsonify(transactions))
