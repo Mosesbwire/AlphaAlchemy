@@ -23,7 +23,7 @@ class PortfolioService:
     
     __lot_size = 100
 
-    def __init__():
+    def __init__(self):
         self.current_data = dataProcessor.stocks_metrics()
 
     def create(self, user_id, name = None):
