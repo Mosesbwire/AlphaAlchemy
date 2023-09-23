@@ -22,7 +22,7 @@ const Header = ()=>{
     useEffect(()=>{
         if (!isSubmitting && data){
             modalHandler()
-            navigate(`/portfolio/${data.id}`)
+            navigate(`/portfolio/${data.id}`, {replace: true})
             
         }
 

@@ -286,7 +286,7 @@ async function getStocks(){
 
     try {
         const response = await sendRequest(`${BASE_URL}/stocks`, options)
-
+        
         if (response.status === 404){
             const err = await response.json()
             return {
