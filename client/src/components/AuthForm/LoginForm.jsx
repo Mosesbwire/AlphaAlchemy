@@ -9,7 +9,7 @@ const inputs = [
 ]
 
 function LoginForm({onSubmit}){
-    const initialValues = {email: "kianjuma@gmail.com", password:"P@ssword1"}
+    const initialValues = {email: "", password:""}
     const [values, handleChange, resetForm] = useForm(initialValues)
 
     const onSubmitForm = async(event) =>{
@@ -20,7 +20,7 @@ function LoginForm({onSubmit}){
     return(
         <form className='form' onSubmit={onSubmitForm}>
             {inputs.map((input)=>(
-                <div key={input.name} className='input' id={input.name}>
+                <div key={input.name} className='input input-normal' id={input.name}>
                     <input 
                         type={input.type} 
                         name={input.name} 

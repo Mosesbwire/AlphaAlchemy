@@ -95,6 +95,15 @@ async function login(formData){
     }
 }
 
+async function logout(){
+    sessionStorage.clear()
+    return {
+        status: 200,
+        data: "OK",
+        error: null
+    }
+}
+
 
 
 async function getLoggedInUser(){
@@ -277,7 +286,7 @@ async function getStocks(){
 
     try {
         const response = await sendRequest(`${BASE_URL}/stocks`, options)
-
+        
         if (response.status === 404){
             const err = await response.json()
             return {
@@ -438,5 +447,6 @@ export default  {
     getStocks,
     buyStock,
     sellStock,
-    fetchPortfolioTransactions
+    fetchPortfolioTransactions,
+    logout
 }

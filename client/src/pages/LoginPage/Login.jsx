@@ -4,11 +4,12 @@ import Form from '../../components/AuthForm/LoginForm'
 import Logo from "../../components/Logo/Logo"
 import useSubmitForm from "../../hooks/useSubmitForm"
 import apiService from "../../services/apiService"
+import { useAuthContext } from "../../context/AuthContext"
 import "./Login.css"
 
 const Login = ()=>{
     const [onSubmit, data, isSubmitting, error] = useSubmitForm(apiService.login)
-
+    const {isAuthenticated, setIsAuthenticated} = useAuthContext()
     if (isSubmitting){
         return <div>Loading...</div>
     }
@@ -18,6 +19,7 @@ const Login = ()=>{
     }
 
     if (data && !isSubmitting){
+        setIsAuthenticated(true)
         return <Navigate to={"/home"} replace={true}/>
     }
     console.log(data)

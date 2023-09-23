@@ -1,23 +1,25 @@
-import React, {useState} from "react";
-import {Navigate} from 'react-router-dom'
+import React from "react";
+import {Navigate, Link} from 'react-router-dom'
 import Form from "../../components/AuthForm/SignUpForm";
 import Logo from "../../components/Logo/Logo";
 import apiService from "../../services/apiService";
 import useSubmitForm from "../../hooks/useSubmitForm";
+import Loading from "../../components/Loader/Loading";
+import { useAuthContext } from "../../context/AuthContext";
 import './SignUp.css'
 
 const SignUp = () => {
     const [onSubmit, data, isSubmitting, error] = useSubmitForm(apiService.createUser)
+    const {isAuthenticated, setIsAuthenticated} = useAuthContext()
 
     if (isSubmitting){
-        return <div>Loading....</div>
+        return <Loading/>
     }
 
-    if(error){
-        console.log(error)
-    }
+    
 
     if (data){
+        setIsAuthenticated(true)
         return <Navigate to="/home" replace={true}/>
     }
     return (
@@ -36,10 +38,14 @@ const SignUp = () => {
                     <p>Virtual Investing, Real Learning. Sign Up Now</p>
                 </div>
                 <div>
-                    <Form onSubmit={onSubmit}/>
+                    <Form onSubmit={onSubmit} error={error}/>
                 </div>
                 <div >
-                    <p className="tag-line">Already have an account? <span className="login-link">Login</span></p>
+                    <p className="tag-line">Already have an account?
+                        <Link to={'/login'}>
+                            <span className="login-link">Login</span>
+                        </Link>
+                    </p>
                 </div>
             </div>
         </div>
