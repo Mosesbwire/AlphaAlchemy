@@ -8,8 +8,7 @@ import Portfolios from './pages/Portfolios/Portfolios'
 import Portfolio from './pages/Portfolio/Portfolio'
 import Order from './pages/Order/Order'
 import Transaction from './pages/Transaction/Transaction'
-import apiService from './services/apiService'
-import useFetch from './hooks/useFetch'
+
 import './App.css'
 
 function App() {

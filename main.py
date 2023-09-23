@@ -62,7 +62,7 @@ if __name__ == "__main__":
     mv = portfolioService.calculate_market_value(portfolio.stocks)
 
     """
-    
+    """ 
     service = PortfolioService()
 
     service.buy_action(user_id, portfolio_id, stock_id, 200, 45.50)
@@ -70,4 +70,8 @@ if __name__ == "__main__":
     details = service.get_portfolio_details(portfolio_id)
 
     print(details)
+    """
 
+    returns = return_on_investment(200, 250)
+
+    print(returns)

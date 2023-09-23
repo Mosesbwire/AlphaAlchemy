@@ -25,8 +25,11 @@ const useSubmitForm = (callback)=>{
     }
 
     const onSubmit = async (formData) =>{
-
-        await submitData(formData)
+        try {
+            await submitData(formData)
+        } catch (error) {
+            setError(error)
+        }
     }
 
     return [onSubmit, data, isSubmitting, error]

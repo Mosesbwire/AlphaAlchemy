@@ -17,7 +17,7 @@ class User(BaseModel, Base):
 
     first_name = Column(String(128), nullable=False)
     last_name = Column(String(128), nullable=False)
-    email = Column(String(128), nullable=False)
+    email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     balance = Column(BigInteger, default = 5000000, nullable = False)
     portfolios = relationship("Portfolio", back_populates = "user",

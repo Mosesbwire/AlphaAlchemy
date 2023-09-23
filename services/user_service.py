@@ -44,29 +44,26 @@ class UserService:
         try:
             first_name = validators.string(first_name.strip(), allow_empty = False, minimum_length = 1)
         except errors.EmptyValueError as e:
-            error.append("First name cannot be empty")
+            error.append({"first_name":"First name cannot be empty"})
 
         try:
             last_name = validators.string(last_name.strip(), allow_empty = False, minimum_length = 1)
         except errors.EmptyValueError as e:
-            error.append("Last name cannot be empty")
+            error.append({"last_name":"Last name cannot be empty"})
 
         try:
             email = validators.email(email.strip(), allow_empty = False)
         except errors.EmptyValueError as e:
-            error.append("Email cannot be empty")
+            error.append({"email":"Email cannot be empty"})
         except errors.InvalidEmailError as e:
-            error.append("Email format is incorrect")
+            error.append({"email":"Email format is incorrect"})
 
 
         if not passwordSchema.validate(password):
-            error.append("Password must be more than 6 characters long.\n\
-                    Password should have atleast 1 uppercase letter.\n\
-                    Password should have atleast 1 digit.\n\
-                    Password should have atleast 1 symbol.")
+            error.append({"password": "Length must be more than 6 characters, have 1 alphabet, 1 special character and 1 digit"})
 
         if password != confirm_password:
-            error.append("Confirm password must be equal to password")
+            error.append({"password":"Confirm password must be equal to password"})
 
         if len(error) != 0:
             return {"user": None, "error": error}
