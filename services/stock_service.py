@@ -173,6 +173,16 @@ class StockService:
             error = [e]
         return {"stock": stock, "error": error}
 
-
-
+    def fetch_stocks(self):
         
+        API_URL = "https://live.mystocks.co.ke/ajax/stocksectors/"
+
+        data = requests.get(API_URL)
+
+        data = data.json()
+
+        for sector, companies in data.items():
+            for ticker, company in companies.items():
+                self.create(company, ticker, sector)
+
+        models.storage.save()
