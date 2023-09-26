@@ -14,7 +14,7 @@ from models.stock import Stock
 from models.stock_data import StockData
 from models.transaction import Transaction
 from models.user import User
-from os import getenv
+import os
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -38,9 +38,9 @@ class Storage:
         """ constructor """
         self.__engine = create_engine(dburl, echo=False)
 
-        ENV = "dev"
+        ENV = os.getenv("ENV")
 
-        if ENV == "test":
+        if ENV == "TEST":
             Base.metadata.drop_all(self.__engine)
     
     
