@@ -11,6 +11,10 @@ import os
 
 service = UserService()
 
+@app_views.route("/", methods=["GET"])
+def api_status():
+    return make_response(jsonify({"status": "OK"}), 200)
+
 
 @app_views.route("/auth/login", methods =["POST"])
 def login():
@@ -38,7 +42,7 @@ def login():
             "user": {"id": user.id}
         }, os.getenv("SECRET_KEY"), algorithm="HS256")
 
-    return make_response(jsonify({"token": token.decode("utf-8")}), 200)
+    return make_response(jsonify({"token": token}), 200)
 
 
 def is_authenticated(func):
@@ -51,7 +55,7 @@ def is_authenticated(func):
             raise AuthenticationFailed("Missing header x-auth-token")
         user_id = None
         try:
-            data = jwt.decode(auth_token, os.getenv("SECRET_KEY"), algorithm=["HS256"])
+            data = jwt.decode(auth_token, os.getenv("SECRET_KEY"), algorithms="HS256")
             user = data.get("user")
             user_id = user.get("id")
             if "user_id" in func.__code__.co_varnames:

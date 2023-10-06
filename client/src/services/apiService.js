@@ -1,5 +1,8 @@
 import setAuthToken from "./setAuthToken"
-const BASE_URL = "http://localhost:5001/api/v1"
+
+const HOST = import.meta.env.VITE_BACKEND_HOST
+const PORT = import.meta.env.VITE_PORT 
+const BASE_URL = `http://${HOST}:${PORT}/api/v1`
 
 async function sendRequest(url, options){
     

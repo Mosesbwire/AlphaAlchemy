@@ -37,7 +37,7 @@ def create_user():
         },os.getenv("SECRET_KEY"), algorithm="HS256")
 
 
-    return make_response(jsonify({"token": token.decode("utf-8")}), 201)
+    return make_response(jsonify({"token": token }), 201)
 
 
 @app_views.route("/users", methods = ["GET"])

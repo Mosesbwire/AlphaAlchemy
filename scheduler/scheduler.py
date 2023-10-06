@@ -15,6 +15,7 @@ schedule.every().day.at("17:05").do(valuationService.scheduled_portfolio_valuati
 
 if __name__ == "__main__":
     while True:   
+        print("Running")
         schedule.run_pending()
         time.sleep(1)
         

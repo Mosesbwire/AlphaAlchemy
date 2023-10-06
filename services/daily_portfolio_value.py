@@ -17,7 +17,7 @@ class DailyPortfolioValuationService:
         models.storage.new(daily_valuation)
         models.storage.save()
 
-    def scheduled_portfolio_valuation_job():
+    def scheduled_portfolio_valuation_job(self):
         portfolioService = PortfolioService()
 
         portfolios = models.storage.all("Portfolio")
