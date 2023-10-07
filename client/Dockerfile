@@ -7,6 +7,16 @@ RUN npm install
 
 COPY . .
 
+ARG HOST
+
+ARG PORT
+
+ENV HOST=$HOST
+
+ENV PORT=$PORT
+
+RUN ./script.sh
+
 RUN npm run build
 
 FROM nginx
