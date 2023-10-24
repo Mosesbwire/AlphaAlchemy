@@ -5,76 +5,62 @@
     Contains unittest for the user class
 """
 
-from datetime import datetime
-from models.base_model import BaseModel
 from models.user import User
 import unittest
 
+
 class TestUser(unittest.TestCase):
     """ test class for the user class """
-    def setUp(self):
-        """ instantiate a user to be used in the tests """
 
-        self.user = User("user","super", "user@gmail.com", "password")
-        data = {
-            "first_name": "super",
-            "last_name": "user",
-            "email": "superuser@gmail.com",
-            "password": "password"
-        }
+    def test_invalid_first_name(self):
+        """test a valueError exception is raised"""
 
-        self.superUser = User(**data)
+        self.assertRaises(ValueError, User, "", "lastname",
+                          "email", "password", 50000)
+        self.assertRaises(ValueError, User, "x", "lastname",
+                          "email", "password", 50000)
 
-    def test_is_subclass(self):
-        """ test that user inherits from the BaseModel """
+    def test_invalid_last_name(self):
+        """test a valueError exception is raised"""
 
-        self.assertIsInstance(self.user, BaseModel)
-        self.assertIsInstance(self.superUser, BaseModel)
+        self.assertRaises(ValueError, User, "first", "",
+                          "email", "password", 50000)
+        self.assertRaises(ValueError, User, "first", "l",
+                          "email", "password", 50000)
 
-        self.assertTrue(hasattr(self.user, "id"))
-        self.assertTrue(hasattr(self.user, "created_at"))
-        self.assertTrue(hasattr(self.user, "updated_at"))
-        self.assertTrue(hasattr(self.superUser, "id"))
-        self.assertTrue(hasattr(self.superUser, "created_at"))
-        self.assertTrue(hasattr(self.superUser, "updated_at"))
+    def test_invalid_email_address(self):
+        """test a valueError exception is raised"""
 
-    def test_name(self):
-        """ test that user has attribute first_name, last_name"""
-        self.assertTrue(hasattr(self.user, "first_name"))
-        self.assertTrue(hasattr(self.user, "last_name"))
-        self.assertTrue(hasattr(self.superUser, "first_name"))
-        self.assertTrue(hasattr(self.superUser, "last_name"))
+        self.assertRaises(ValueError, User, "name",
+                          "lastname", "", "password", 50000)
+        self.assertRaises(ValueError, User, "name",
+                          "lastname", "email", "password", 50000)
 
-    def test_email(self):
-        """ test user has attribute email """
+    def test_invalid_password(self):
+        """test a valueError exception is raised"""
 
-        self.assertTrue(hasattr(self.user, "email"))
-        self.assertTrue(hasattr(self.superUser, "email"))
+        self.assertRaises(ValueError, User, "name", "last",
+                          "email@gmail.com", "pssword")
+        self.assertRaises(ValueError, User, "name", "last",
+                          "email@gamil.com", "PASSWORD")
+        self.assertRaises(ValueError, User, "name", "last",
+                          "email@gamil.com", "password")
+        self.assertRaises(ValueError, User, "name", "last",
+                          "email@gamil.com", "Password")
 
-    def test_password(self):
-        """ test user has attribute password """
-        self.assertTrue(hasattr(self.user, "password"))
-        self.assertTrue(hasattr(self.superUser, "password"))
-    
-    def test_to_dict(self):
-        """ test the to dict function returns a dictionary with correct attr """
+    def test_balance_is_increased(self):
+        """test that a user balance gets increased"""
 
-        instance_dict = self.user.to_dict()
+        user = User("first", "last", "email@gmail.com", "Password1")
+        new_balance = user.balance + 5000
 
-        self.assertIsInstance(instance_dict, dict)
-        self.assertIn("first_name", instance_dict)
-        self.assertIn("last_name", instance_dict)
-        self.assertIn("email", instance_dict)
-        self.assertIn("password", instance_dict)
-        self.assertIn("id", instance_dict)
-        self.assertIn("created_at", instance_dict)
-        self.assertIn("updated_at", instance_dict)
+        self.assertEqual(new_balance, user.increase_balance(5000))
+        self.assertEqual(user.balance, new_balance)
 
-    def test_str(self):
-        """ test __str__ returns expected string format """
+    def test_balance_is_decreased(self):
+        """test that a user balance is decresed"""
+        user = User("first", "last", "email@gmail.com", "Password1")
+        new_balance = user.balance - 5000
 
-        expected = f"[User] ({self.user.id}) {self.user.__dict__}"
-        actual = str(self.user)
-
-        self.assertEqual(expected, actual)
-
+        self.assertEqual(new_balance, user.decrease_balance(5000))
+        self.assertEqual(user.balance, new_balance)
