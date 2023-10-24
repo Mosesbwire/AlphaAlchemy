@@ -11,7 +11,7 @@ import sqlalchemy
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import Numeric
-
+from utils.currency.conversion import to_cents, to_unit_currency
 
 
 class StockData(BaseModel, Base):
@@ -21,26 +21,35 @@ class StockData(BaseModel, Base):
     """
     __tablename__ = "stock_data"
 
-    prev = Column(Integer, nullable=False)
-    current = Column(Integer, nullable=False)
-    high = Column(Integer, nullable=False)
-    low = Column(Integer, nullable=False)
+    price = Column(Integer, nullable=False)
     volume = Column(String(60), nullable=False)
-    average = Column(Integer, nullable=False)
     stock_id = Column(String(60), ForeignKey("stocks.id"), nullable=False)
-    stock = relationship("Stock", back_populates = "data")
+    stock = relationship("Stock", back_populates="data")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, current_price: float, vol: int):
         """ class constructor """
         super().__init__()
+        self._price = None
+        self._volume = None
+        self.price = current_price
+        self.volume = vol
 
-        if args:
-            self.prev = args[0]
-            self.current = args[1]
-            self.high = args[2]
-            self.low = args[3]
-            self.volume = args[4]
-            self.average = args[5]
-        if kwargs:
-            for key, value in kwargs.items():
-                setattr(self, key, value)
+    @property
+    def price(self):
+        return to_unit_currency(self._price)
+
+    @price.setter
+    def price(self, price):
+        if (price < 0):
+            raise ValueError("Price cannot be less than zero.")
+        self._price = to_cents(price)
+
+    @property
+    def volume(self):
+        return self._volume
+
+    @volume.setter
+    def volume(self, vol):
+        if (vol < 0):
+            raise ValueError("Volume traded cannot be less than zero")
+        self._volume = vol
