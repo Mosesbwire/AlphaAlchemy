@@ -65,15 +65,15 @@ class TestUser(unittest.TestCase):
         """test that a user balance gets increased"""
 
         user = User("first", "last", "email@gmail.com", "Password1")
-        new_balance = user.balance + 5000
+        new_balance = user.acc_balance + 5000
 
         self.assertEqual(new_balance, user.increase_balance(5000))
-        self.assertEqual(user.balance, new_balance)
+        self.assertEqual(user.acc_balance, new_balance)
 
     def test_balance_is_decreased(self):
         """test that a user balance is decreased"""
         user = User("first", "last", "email@gmail.com", "Password1")
-        new_balance = user.balance - 5000
+        new_balance = user.acc_balance - 5000
 
         self.assertEqual(new_balance, user.decrease_balance(5000))
-        self.assertEqual(user.balance, new_balance)
+        self.assertEqual(user.acc_balance, new_balance)
