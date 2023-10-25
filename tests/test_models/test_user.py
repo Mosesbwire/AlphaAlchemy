@@ -48,6 +48,19 @@ class TestUser(unittest.TestCase):
         self.assertRaises(ValueError, User, "name", "last",
                           "email@gamil.com", "Password")
 
+    def test_password_is_hashed(self):
+        """test that a user password is hashed"""
+        password = "Password1"
+        user = User("first", "last", "email@gmail.com", password)
+
+        self.assertNotEqual(password, user.hash_password(password))
+
+    def test_password_is_decrypted(self):
+        """ test that a user password is correctly decrypted"""
+        password = "Password1"
+        user = User("first", "last", "email@gmail.com", password)
+        self.assertTrue(user.decrypt_password(password))
+
     def test_balance_is_increased(self):
         """test that a user balance gets increased"""
 
@@ -58,7 +71,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(user.balance, new_balance)
 
     def test_balance_is_decreased(self):
-        """test that a user balance is decresed"""
+        """test that a user balance is decreased"""
         user = User("first", "last", "email@gmail.com", "Password1")
         new_balance = user.balance - 5000
 

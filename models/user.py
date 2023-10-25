@@ -26,9 +26,9 @@ class User(BaseModel, Base):
     portfolios = relationship("Portfolio", back_populates="user",
                               cascade="all, delete, delete-orphan")
 
-    DEFAULT_BALANCE: int = 50000
+    __DEFAULT_BALANCE: int = 50000
 
-    def __init__(self, first_name: str, last_name: str, email: str, password: str, balance: int = DEFAULT_BALANCE):
+    def __init__(self, first_name: str, last_name: str, email: str, password: str, balance: int = __DEFAULT_BALANCE):
         """ class constructor """
         super().__init__()
         self._first_name = None
@@ -99,6 +99,11 @@ class User(BaseModel, Base):
         salt = bcrypt.gensalt()
         return bcrypt.hashpw(password.encode('utf-8'), salt)
 
+    def decrypt_password(self, password):
+        if not bcrypt.checkpw(password.encode("utf-8"), self.password):
+            return False
+        return True
+
     @property
     def balance(self):
         return to_unit_currency(self._balance)
@@ -114,14 +119,6 @@ class User(BaseModel, Base):
     def decrease_balance(self, amount):
         self.balance = self.balance - amount
         return self.balance
-
-    @classmethod
-    def get_portfolios(cls, user_id):
-        stmt = select(cls).where(cls.id == user_id)
-
-        data = models.storage.query(stmt)
-        user = data[0]
-        return user.portfolios
 
     @classmethod
     def get_user_by_email(cls, email):
