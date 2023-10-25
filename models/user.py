@@ -99,7 +99,7 @@ class User(BaseModel, Base):
         salt = bcrypt.gensalt()
         return bcrypt.hashpw(password.encode('utf-8'), salt)
 
-    def decrypt_password(self, password):
+    def compare_password(self, password):
         if not bcrypt.checkpw(password.encode("utf-8"), self.password):
             return False
         return True

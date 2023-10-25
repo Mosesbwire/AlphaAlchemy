@@ -59,7 +59,7 @@ class TestUser(unittest.TestCase):
         """ test that a user password is correctly decrypted"""
         password = "Password1"
         user = User("first", "last", "email@gmail.com", password)
-        self.assertTrue(user.decrypt_password(password))
+        self.assertTrue(user.compare_password(password))
 
     def test_balance_is_increased(self):
         """test that a user balance gets increased"""
