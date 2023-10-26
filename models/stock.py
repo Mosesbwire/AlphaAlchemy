@@ -33,51 +33,46 @@ class Stock(BaseModel, Base):
     def __init__(self, stock_ticker: str, stock_name: str, stock_sector: str, stock_status: str = __stock_status["ACTIVE"]):
         """ class constructor """
         super().__init__()
-
-        self._ticker = None
-        self._name = None
-        self._sector = None
-        self._status = None
-        self.ticker = stock_ticker
-        self.name = stock_name
-        self.sector = stock_sector
-        self.status = stock_status
+        self.stock_ticker = stock_ticker
+        self.stock_name = stock_name
+        self.stock_sector = stock_sector
+        self.stock_status = stock_status
 
     @property
-    def ticker(self):
-        return self._ticker
+    def stock_ticker(self):
+        return self.ticker
 
-    @ticker.setter
-    def ticker(self, ticker):
+    @stock_ticker.setter
+    def stock_ticker(self, ticker):
         if len(ticker) > 6:
             raise ValueError("Ticker symbol cannot be more than 6 characters")
-        self._ticker = ticker.upper()
+        self.ticker = ticker.upper()
 
     @property
-    def name(self):
-        return self._name
+    def stock_name(self):
+        return self.name
 
-    @name.setter
-    def name(self, name):
-        self._name = name
-
-    @property
-    def sector(self):
-        return self._sector
-
-    @sector.setter
-    def sector(self, sec):
-        self._sector = sec
+    @stock_name.setter
+    def stock_name(self, name):
+        self.name = name
 
     @property
-    def status(self):
-        return self._status
+    def stock_sector(self):
+        return self.sector
 
-    @status.setter
-    def status(self, status):
+    @stock_sector.setter
+    def stock_sector(self, sec):
+        self.sector = sec
+
+    @property
+    def stock_status(self):
+        return self.status
+
+    @stock_status.setter
+    def stock_status(self, status):
         if status not in self.__stock_status:
             raise ValueError("Invalid status type")
-        self._status = self.__stock_status[status]
+        self.status = self.__stock_status[status]
 
     @classmethod
     def get_stock_by_ticker(cls, ticker):

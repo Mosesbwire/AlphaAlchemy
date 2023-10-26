@@ -29,27 +29,29 @@ class StockData(BaseModel, Base):
     def __init__(self, current_price: float, vol: int):
         """ class constructor """
         super().__init__()
-        self._price = None
-        self._volume = None
-        self.price = current_price
-        self.volume = vol
+        self.stock_price = current_price
+        self.traded_volume = vol
 
     @property
-    def price(self):
-        return to_unit_currency(self._price)
+    def stock_price(self):
+        return to_unit_currency(self.price)
 
-    @price.setter
-    def price(self, price):
+    @stock_price.setter
+    def stock_price(self, price):
         if (price < 0):
             raise ValueError("Price cannot be less than zero.")
-        self._price = to_cents(price)
+        self.price = to_cents(price)
 
     @property
-    def volume(self):
-        return self._volume
+    def traded_volume(self):
+        return self.volume
 
-    @volume.setter
-    def volume(self, vol):
+    @traded_volume.setter
+    def traded_volume(self, vol):
         if (vol < 0):
             raise ValueError("Volume traded cannot be less than zero")
-        self._volume = vol
+        self.volume = vol
+
+    def create(self, stock):
+        stock.data.append(self)
+        return self
