@@ -5,6 +5,8 @@
 """
 
 from models.engine.storage import Storage
+from models.stock import Stock
+from services.fetch_data import FetchData
 import os
 
 
@@ -18,3 +20,14 @@ DB_URL = f"mysql+mysqldb://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 
 storage = Storage(DB_URL)
 storage.reload()
+
+
+stocks = FetchData.get_stocks()
+
+for stock in stocks:
+
+    try:
+        st = Stock(stock["ticker"], stock["name"], stock["sector"])
+        st.save()
+    except ValueError as e:
+        print("Error occured")
