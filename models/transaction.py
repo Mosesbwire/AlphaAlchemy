@@ -95,3 +95,7 @@ class Transaction(BaseModel, Base):
         """calculate total cost of transaction"""
         total_cost = self.item_price * self.item_quantity
         return to_cents(total_cost)
+
+    def create(self, portfolio):
+        portfolio.transactions.append(self)
+        return self
