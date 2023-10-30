@@ -5,7 +5,7 @@
     Module: test_portfolio
     Contains unittest for the portfolio class
 """
-
+from dotmap import DotMap
 from models.portfolio import Portfolio
 import unittest
 from unittest.mock import Mock, patch
@@ -20,8 +20,8 @@ class TestPortfolio(unittest.TestCase):
         """test that valuation is calculated using recent data"""
 
         mock_db.storage.execute.return_value = [
-            {"ticker": "SCOM", "quantity": 200},
-            {"ticker": "EQTY", "quantity": 200}
+            DotMap(ticker="SCOM", quantity=200),
+            DotMap({"ticker": "EQTY", "quantity": 200})
         ]
 
         stock_data = [

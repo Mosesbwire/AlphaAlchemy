@@ -41,9 +41,10 @@ class Portfolio(BaseModel, Base):
             PortfolioStock.stock).where(PortfolioStock.portfolio_id == self.id)
         valuation = 0
         data = models.storage.execute(statement)
+
         for st_data in stock_data:
             ticker = st_data.get("ticker")
             for dt in data:
-                if ticker == dt.get("ticker"):
-                    valuation += (dt.get("quantity") * st_data.get("price"))
+                if ticker == dt.ticker:
+                    valuation += (dt.quantity * st_data.get("price"))
         return valuation
