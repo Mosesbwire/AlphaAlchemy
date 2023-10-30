@@ -7,7 +7,6 @@
 
 import models
 from models.base_model import BaseModel, Base
-from models.daily_portfolio_valuation import DailyPortfolioValuation
 from models.portfolio import Portfolio
 from models.portfolio_stock import PortfolioStock
 from models.stock import Stock
@@ -16,18 +15,19 @@ from models.transaction import Transaction
 from models.user import User
 import os
 import sqlalchemy
+from sqlalchemy.sql import text
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {
-        "DailyPortfolioValuation": DailyPortfolioValuation,
-        "Portfolio": Portfolio,
-        "PortfolioStock": PortfolioStock,
-        "Stock": Stock,
-        "StockData": StockData,
-        "Transaction": Transaction,
-        "User": User
+    "Portfolio": Portfolio,
+    "PortfolioStock": PortfolioStock,
+    "Stock": Stock,
+    "StockData": StockData,
+    "Transaction": Transaction,
+    "User": User
 }
+
 
 class Storage:
     """ Provides the connection between the application and the database """
@@ -42,17 +42,14 @@ class Storage:
 
         if ENV == "TEST":
             Base.metadata.drop_all(self.__engine)
-    
-    
+
     def new(self, obj):
         """ adds a object to the session """
         self.__session.add(obj)
 
-
     def save(self):
         """ saves objects in the current session to the database """
         self.__session.commit()
-
 
     def delete(self, obj=None):
         """ deletes object from the current database session """
@@ -64,11 +61,10 @@ class Storage:
         """ reverts an object in session to its previous state if save has not been called """
         self.__session.rollback()
 
-
     def close(self):
         """ closes the current database session """
         self.__session.remove()
-    
+
     def all(self, cls):
         """ returns all objects that are instances of cls """
         if cls not in classes:
@@ -94,9 +90,17 @@ class Storage:
             data.append(obj)
         return data
 
+    def execute(self, sql_query):
+        cursor = self.__session.execute(sql_query)
+        return cursor.all()
+
+    def execute_query(self, sql_query):
+        cursor = self.__session.execute(text(sql_query))
+        return cursor.all()
+
     def reload(self):
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind = self.__engine, expire_on_commit = False)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session
-
