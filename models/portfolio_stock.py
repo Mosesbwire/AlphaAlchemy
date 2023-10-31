@@ -33,6 +33,16 @@ class PortfolioStock(BaseModel, Base):
         self.stock = stock
         self._portfolio = portfolio
 
+    @property
+    def stock_quantity(self):
+        return self.quantity
+
+    @stock_quantity.setter
+    def stock_quantity(self, qty):
+        if qty <= 0:
+            raise ValueError("Quantity cannot be zero or less than zero")
+        self.quantity = qty
+
     def create(self):
         self._portfolio.stocks.append(self)
         return self
