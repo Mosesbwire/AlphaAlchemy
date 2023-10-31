@@ -77,3 +77,8 @@ class TestUser(unittest.TestCase):
 
         self.assertEqual(new_balance, user.decrease_balance(5000))
         self.assertEqual(user.acc_balance, new_balance)
+
+    def test_error_raised_if_amount_to_deduct_is_larger_than_bal(self):
+        """Amount to deduct from balance should be lesser than balance"""
+        user = User("first", "last", "email@gmail.com", "Password1")
+        self.assertRaises(ValueError, user.decrease_balance, 50001)
