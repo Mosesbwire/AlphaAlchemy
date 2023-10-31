@@ -39,8 +39,8 @@ class PortfolioStock(BaseModel, Base):
 
     @stock_quantity.setter
     def stock_quantity(self, qty):
-        if qty <= 0:
-            raise ValueError("Quantity cannot be zero or less than zero")
+        if qty < 0:
+            raise ValueError("Quantity cannot be less than zero")
         self.quantity = qty
 
     def create(self):
