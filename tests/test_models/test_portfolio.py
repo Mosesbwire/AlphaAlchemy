@@ -205,3 +205,29 @@ class TestPortfolio(unittest.TestCase):
 
         self.assertRaises(ValueError, portfolio.sell_stock,
                           10.10, 199, mock_stock)
+
+    @patch("models.portfolio.models")
+    def test_portfolio_details(self, mock_db):
+        """test portfolio stock details returned"""
+        mock_db.storage.execute.return_value = [
+            DotMap(ticker="SCOM", quantity=200, name="Safaricom Plc"),
+            DotMap({"ticker": "EQTY", "quantity": 200,
+                   "name": "Equity Group Holdings"})
+        ]
+
+        stock_data = [
+            {"ticker": "SCOM", "price": 13.00},
+            {"ticker": "EQTY", "price": 37.95}
+        ]
+        portfolio = Portfolio()
+
+        expected = [
+            {"ticker": "SCOM", "name": "Safaricom Plc",
+                "quantity": 200, "price": 13.00},
+            {"ticker": "EQTY", "name": "Equity Group Holdings",
+                "quantity": 200, "price": 37.95}
+        ]
+
+        actual = portfolio.portfolio_details(stock_data)
+
+        self.assertEqual(expected, actual)
