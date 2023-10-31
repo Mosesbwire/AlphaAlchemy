@@ -80,6 +80,9 @@ class Portfolio(BaseModel, Base):
         stmt = select(PortfolioStock).where(
             PortfolioStock.stock_id == stock.id)
 
+        if bid_price <= 0:
+            raise ValueError("Bid price cannot be zero or less than zero")
+
         if not self.valid_lot_size(quantity):
             raise ValueError(
                 "Transaction quantity must be in multiples of 100")
@@ -102,4 +105,44 @@ class Portfolio(BaseModel, Base):
         if not order:
             return None
 
+        return self
+
+    def remove_stock(self, stock: Stock, quantity: int):
+        stmt = select(PortfolioStock).where(
+            PortfolioStock.stock_id == stock.id)
+        portfolio_stock = models.storage.query(stmt)
+
+        if not portfolio_stock:
+            raise ValueError(f"Stock: {stock.ticker} not found in portfolio.")
+
+        portfolio_stock = portfolio_stock[0]
+        if quantity > portfolio_stock.stock_quantity:
+            raise ValueError(
+                f"Action cannot be completed. {quantity} is larger than quantity in portfolio. {portfolio_stock.stock_quantity}")
+
+        qty = portfolio_stock.stock_quantity - quantity
+        portfolio_stock.stock_quantity = qty
+
+        return portfolio_stock
+
+    def sell_stock(self, ask_price: float, quantity: int, stock: Stock):
+        transaction_type = "sell"
+
+        if ask_price <= 0:
+            raise ValueError("Ask Price cannot be zero or less than zero")
+
+        if not self.valid_lot_size(quantity):
+            raise ValueError(
+                "Transaction quantity must be in multiples of 100")
+
+        try:
+            self.remove_stock(stock, quantity)
+        except ValueError:
+            # add robust error handling
+            raise
+        order = self.create_order_transaction(
+            stock, ask_price, quantity, transaction_type)
+
+        if not order:
+            return None
         return self

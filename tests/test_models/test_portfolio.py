@@ -125,3 +125,83 @@ class TestPortfolio(unittest.TestCase):
 
         self.assertRaises(ValueError, portfolio.buy_stock,
                           12.05, 199, mock_stock)
+
+    @patch("models.portfolio.models")
+    def test_stock_not_found_in_portfolio_value_error_raised(self, mock_db):
+        """raise valueError if stock not found"""
+        mock_db.storage.query.return_value = []
+        portfolio = Portfolio()
+        mock_stock = Mock()
+        mock_stock.stock_ticker.return_value = "SCOM"
+        mock_stock.id.return_value = "scom_id"
+        mock_db.stop()
+        self.assertRaises(ValueError, portfolio.remove_stock, mock_stock, 100)
+        mock_db.storage.query.assert_called_once()
+
+    @patch("models.portfolio.models")
+    def test_quantity_larger_than_stock_quantity_value_error_raised(self, mock_db):
+        "raise valueError if quantity sold is more than available stock amount"
+        mock_db.storage.query.return_value = [
+            DotMap({"ticker": "SCOM", "stock_quantity": 200})
+        ]
+        portfolio = Portfolio()
+        mock_stock = Mock()
+        mock_stock.stock_ticker.return_value = "SCOM"
+        mock_stock.id.return_value = "scom_id"
+        mock_db.stop()
+        qty = 250
+
+        self.assertRaises(ValueError, portfolio.remove_stock, mock_stock, qty)
+
+    @patch("models.portfolio.models")
+    def test_portfolio_stock_quantity_is_correctly_adjusted_on_sell(self, mock_db):
+        """test the quantity is correctly decreased by quantity argument"""
+        mock_db.storage.query.return_value = [
+            DotMap({"ticker": "SCOM", "stock_quantity": 300})
+        ]
+        portfolio = Portfolio()
+        mock_stock = Mock()
+        mock_stock.stock_ticker.return_value = "SCOM"
+        mock_stock.id.return_value = "scom_id"
+        mock_db.stop()
+        qty = 100
+        portfolio_stock = portfolio.remove_stock(mock_stock, qty)
+        expected_qty = 200
+        actual_qty = portfolio_stock.stock_quantity
+
+        self.assertEqual(expected_qty, actual_qty)
+
+    @patch("models.portfolio.models")
+    def test_sell_stock_successful(self, mock_db):
+        """test sell action is carried out correctly"""
+        mock_db.storage.query.return_value = [
+            DotMap({"ticker": "SCOM", "stock_quantity": 300})
+        ]
+        portfolio = Portfolio()
+        mock_stock = Mock()
+        mock_stock.stock_ticker.return_value = "SCOM"
+        mock_stock.id.return_value = "scom_id"
+        mock_db.stop()
+        p = portfolio.sell_stock(10.10, 200, mock_stock)
+
+        self.assertEqual(portfolio, p)
+
+    def test_sell_stock_raise_value_error_invalid_ask_price(self):
+        """error is raised if ask price is invalid"""
+        portfolio = Portfolio()
+        mock_stock = Mock()
+        mock_stock.stock_ticker.return_value = "SCOM"
+        mock_stock.id.return_value = "scom_id"
+
+        self.assertRaises(ValueError, portfolio.sell_stock, -
+                          10.10, 200, mock_stock)
+
+    def test_sell_stock_raise_value_error_invalid_quantity(self):
+        """error is raised if quantity is invalid"""
+        portfolio = Portfolio()
+        mock_stock = Mock()
+        mock_stock.stock_ticker.return_value = "SCOM"
+        mock_stock.id.return_value = "scom_id"
+
+        self.assertRaises(ValueError, portfolio.sell_stock,
+                          10.10, 199, mock_stock)
