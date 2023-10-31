@@ -17,7 +17,7 @@ class Stock(BaseModel, Base):
     """ Class represents the each individual stock in the stock exchange """
     __tablename__ = "stocks"
 
-    ticker = Column(String(60), nullable=False)
+    ticker = Column(String(60), unique=True, nullable=False)
     name = Column(String(128), nullable=False)
     sector = Column(String(128), nullable=False)
     status = Column(Enum("active", "delisted", "suspended",
@@ -30,7 +30,7 @@ class Stock(BaseModel, Base):
         "SUSPENDED": "suspended"
     }
 
-    def __init__(self, stock_ticker: str, stock_name: str, stock_sector: str, stock_status: str = __stock_status["ACTIVE"]):
+    def __init__(self, stock_ticker: str, stock_name: str, stock_sector: str, stock_status: str = "ACTIVE"):
         """ class constructor """
         super().__init__()
         self.stock_ticker = stock_ticker
