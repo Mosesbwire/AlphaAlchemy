@@ -19,12 +19,15 @@ class TestTransaction(unittest.TestCase):
     def test_error_raised_on_incorrect_price(self):
         """test ValueError is raised if price is incorrect"""
 
-        self.assertRaises(ValueError, Transaction, "SCOM", 0, 100, "buy")
+        self.assertRaises(ValueError, Transaction, "SCOM",
+                          "items_id", 0, 100, "buy")
 
     def test_error_raised_on_incorrect_quantity(self):
         """test value error is raised if quantity is incorrect"""
-        self.assertRaises(ValueError, Transaction, "KCB", 23, 0, "sell")
+        self.assertRaises(ValueError, Transaction, "KCB",
+                          "item_id", 23, 0, "sell")
 
     def test_error_raised_on_incorrect_transaction_type(self):
         """test value error is raised if transaction type is incorrect"""
-        self.assertRaises(ValueError, Transaction, "NMG", 23, 100, "UNKNONW")
+        self.assertRaises(ValueError, Transaction, "NMG",
+                          "item_id", 23, 100, "UNKNONW")

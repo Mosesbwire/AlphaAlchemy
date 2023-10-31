@@ -31,10 +31,11 @@ class Transaction(BaseModel, Base):
         "portfolios.id"), nullable=False)
     portfolio = relationship("Portfolio", back_populates="transactions")
 
-    def __init__(self, item: str, price: float, quantity: int, transaction_type: str):
+    def __init__(self, item: str, item_id: str, price: float, quantity: int, transaction_type: str):
         """ class constructor """
         super().__init__()
         self.transaction_item = item
+        self.item_id = item_id
         self.item_price = price
         self.item_quantity = quantity
         self.type_transaction = transaction_type
