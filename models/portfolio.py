@@ -146,3 +146,23 @@ class Portfolio(BaseModel, Base):
         if not order:
             return None
         return self
+
+    def portfolio_details(self, stock_data):
+        """Provides a quick view of a portfolio's details"""
+        statement = select(PortfolioStock.quantity, Stock.ticker, Stock.name).join(
+            PortfolioStock.stock).where(PortfolioStock.portfolio_id == self.id)
+        details = []
+        data = models.storage.execute(statement)
+
+        for st_stock in stock_data:
+            ticker = st_stock.get("ticker")
+            for dt in data:
+                if ticker == dt.ticker:
+                    obj = {}
+                    obj["ticker"] = ticker
+                    obj["name"] = dt.name
+                    obj["quantity"] = dt.quantity
+                    obj["price"] = st_stock.get("price")
+                    details.append(obj)
+
+        return details
