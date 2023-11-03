@@ -5,10 +5,9 @@
 """Handles client requests and coordinates flow of the application"""
 from flask import make_response, jsonify
 from models.user import User
+from services.auth import Auth, AuthenticationError
 from sqlalchemy import exc
 from utils.validate_data import validate_user_data
-import jwt
-import os
 
 
 class UserController:
@@ -16,11 +15,12 @@ class UserController:
 
     @staticmethod
     def create(req):
+
         data = req.get_json()
         if not data:
             return make_response(jsonify({"error": {
-                "message": "Cannot process empty data",
-                "errors": "Empty form fields"
+                "message": "Cannot process empty data fields",
+                "errors": []
             }}), 400)
 
         is_errors = validate_user_data(data)
@@ -39,7 +39,7 @@ class UserController:
         if password != confirm_password:
             return make_response(jsonify({"error": {
                 "message": "Unprocesable data",
-                "error": {"confirm_password": "password must match confirm password"}
+                "error": [{"confirm_password": "password must match confirm password"}]
             }}), 400)
         try:
             user = User(fname, lname, email, password)
@@ -52,10 +52,46 @@ class UserController:
         except ValueError as err:
             return make_response(jsonify({"error": {
                 "message": "Unprocessable entity",
-                "error": err
+                "error": [err]
             }}), 400)
         except exc.IntegrityError as err:
             return make_response(jsonify({"error": {
                 "message": "User with email already exists",
-                "error": ""
+                "error": []
+            }}), 400)
+
+    @staticmethod
+    def login(req):
+        data = req.get_json()
+
+        if not data:
+            return make_response(jsonify({
+                "error": {
+                    "message": "Cannot process empty data",
+                    "error": [
+                        {"email": "Provide a valid email address"},
+                        {"password": "provide your password to login"}
+                    ]
+                }
+            }), 400)
+        email = data.get("email")
+        password = data.get("password")
+
+        user = User.get_user_by_email(email)
+
+        if not user:
+            return make_response(jsonify({
+                "error": {
+                    "message": "User not found",
+                    "error": []
+                }
+            }), 404)
+
+        try:
+            jwt_token = Auth.authenticate(user, password)
+            return make_response(jsonify(jwt_token), 200)
+        except AuthenticationError as err:
+            return make_response(jsonify({"error": {
+                "message": err.errors,
+                "error": [{"password": err.errors}]
             }}), 400)
