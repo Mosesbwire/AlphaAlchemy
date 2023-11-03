@@ -40,11 +40,12 @@ class Auth:
             if not token:
                 raise AuthenticationError("Missing header: x-auth-token")
             try:
-                data = jwt.decode(token, cls._key, algorithm="HS256")
+                data = jwt.decode(token, cls._key, algorithms=["HS256"])
                 user = data.get("user")
                 user_id = user.get("id")
                 if "user_id" in func.__code__.co_varnames:
                     kwargs["user_id"] = user_id
+                setattr(cls._req, "user_id", user_id)
             except jwt.ExpiredSignatureError:
                 raise AuthenticationError("Expired Token. Login")
             except jwt.InvalidTokenError:
