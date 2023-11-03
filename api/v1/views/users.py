@@ -3,11 +3,13 @@
 from api.v1.views import app_views
 from api.v1.error import BadRequest
 from api.v1.views.auth import is_authenticated
+
 from flask import abort, jsonify, make_response, request, Response
 import jwt
 import os
 from services.user_service import UserService
 from services.stock_service import StockService
+from services.auth import Auth
 from controllers.users import UserController
 
 service = UserService()
@@ -21,7 +23,7 @@ def create_user():
 
 
 @app_views.route("/users", methods=["GET"])
-@is_authenticated
+@Auth.is_authenticated
 def get_users():
     users_list = []
     users = service.get_users()
@@ -33,7 +35,7 @@ def get_users():
 
 
 @app_views.route("/users/<user_id>", methods=["GET"])
-@is_authenticated
+@Auth.is_authenticated
 def get_user(user_id):
 
     user = service.get_user_by_id(user_id)
@@ -44,7 +46,7 @@ def get_user(user_id):
 
 
 @app_views.route("/users/<user_id>", methods=["PUT"])
-@is_authenticated
+@Auth.is_authenticated
 def update_user(user_id):
     data = request.get_json()
     if not data:
@@ -52,7 +54,7 @@ def update_user(user_id):
 
 
 @app_views.route("/users/<user_id>", methods=["DELETE"])
-@is_authenticated
+@Auth.is_authenticated
 def delete_user(user_id):
     resp = service.delete_user(user_id)
 
