@@ -2,7 +2,6 @@
 
 from api.v1.views import app_views
 from api.v1.error import BadRequest
-from api.v1.views.auth import is_authenticated
 
 from flask import abort, jsonify, make_response, request, Response
 import jwt
