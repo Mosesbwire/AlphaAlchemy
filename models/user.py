@@ -95,7 +95,9 @@ class User(BaseModel, Base):
         return bcrypt.hashpw(password.encode('utf-8'), salt)
 
     def compare_password(self, password):
-        if not bcrypt.checkpw(password.encode("utf-8"), self.user_password):
+        pwd = password.encode("utf-8")
+        p = bytes(str(self.user_password), "utf-8")
+        if not bcrypt.checkpw(pwd, p):
             return False
         return True
 
@@ -129,4 +131,13 @@ class User(BaseModel, Base):
         if len(user) > 0:
             return user[0]
 
+        return None
+
+    @classmethod
+    def get_user_by_id(cls, user_id):
+        stmt = select(cls).where(cls.id == user_id)
+        user = models.storage.query(stmt)
+
+        if len(user) > 0:
+            return user[0]
         return None
