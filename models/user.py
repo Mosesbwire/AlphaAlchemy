@@ -110,12 +110,13 @@ class User(BaseModel, Base):
         self.balance = to_cents(bal)
 
     def increase_balance(self, amount):
-        bal = self.acc_balance + amount
+        bal = float(self.acc_balance) + amount
         self.acc_balance = bal
         return self.acc_balance
 
     def decrease_balance(self, amount):
-        if amount > self.acc_balance:
+        print(amount)
+        if amount > float(self.acc_balance):
             raise ValueError(
                 f"Action cannot be completed. {amount} is larger that current account balance: {self.acc_balance}")
         bal = float(self.acc_balance) - amount
