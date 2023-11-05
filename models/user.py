@@ -118,9 +118,15 @@ class User(BaseModel, Base):
         if amount > self.acc_balance:
             raise ValueError(
                 f"Action cannot be completed. {amount} is larger that current account balance: {self.acc_balance}")
-        bal = self.acc_balance - amount
+        bal = float(self.acc_balance) - amount
         self.acc_balance = bal
         return self.acc_balance
+
+    def user_portfolio(self):
+        portfolios = self.portfolios
+        if not portfolios:
+            return None
+        return portfolios[0]
 
     @classmethod
     def get_user_by_email(cls, email):
@@ -133,11 +139,9 @@ class User(BaseModel, Base):
 
         return None
 
-    @classmethod
-    def get_user_by_id(cls, user_id):
-        stmt = select(cls).where(cls.id == user_id)
-        user = models.storage.query(stmt)
-
-        if len(user) > 0:
-            return user[0]
-        return None
+    @staticmethod
+    def get_user_by_id(user_id):
+        user = models.storage.get("User", user_id)
+        if not user:
+            return None
+        return user
