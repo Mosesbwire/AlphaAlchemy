@@ -26,3 +26,12 @@ def buy():
     resp = PortfolioController.buy_stock(user, request)
 
     return resp
+
+
+@app_views.route("/portfolios/sell", methods=["POST"])
+@Auth.is_authenticated
+def sell():
+    user = Auth.logged_user(request)
+    resp = PortfolioController.sell_stock(user, request)
+
+    return resp

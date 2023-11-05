@@ -74,5 +74,38 @@ class PortfolioController:
             return resp
         except ValueError as err:
             msg = err.args[0]
-            print(msg)
+            return make_response(jsonify({"error": msg}), 400)
+
+    @staticmethod
+    def sell_stock(user, req):
+        if not user:
+            return make_response(jsonify({"error": {
+                "message": "User not found",
+                "error": []
+            }}), 404)
+        portfolio = user.user_portfolio()
+
+        if not portfolio:
+            return make_response(jsonify({"message": "User does not have a portfolio. Create portfolio"}), 400)
+
+        data = req.get_json()
+        stock_id = data.get("stock_id")
+        ask_price = data.get("ask_price")
+        quantity = data.get("quantity")
+
+        stock = Stock.get_stock_by_id(stock_id)
+
+        if not stock:
+            return make_response(jsonify({"message": "Stock not found. The id provided is incorrect"}), 404)
+        try:
+            updated_portfolio = portfolio.sell_stock(
+                float(ask_price), int(quantity), stock)
+            if not updated_portfolio:
+                return make_response(jsonify({"error": {"message": "Transaction failed"}}), 400)
+            user.increase_balance(float(quantity))
+            portfolio.update()
+            resp = UserController.get_portfolio(user)
+            return resp
+        except ValueError as err:
+            msg = err.args[0]
             return make_response(jsonify({"error": msg}), 400)
