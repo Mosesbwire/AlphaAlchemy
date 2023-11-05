@@ -5,6 +5,7 @@
 """Authenticates user"""
 from flask import request
 from functools import wraps
+from models.user import User
 import jwt
 import os
 
@@ -52,3 +53,11 @@ class Auth:
                 raise AuthenticationError("Token provided is Invalid.")
             return func(*args, **kwargs)
         return inner_func
+
+    @staticmethod
+    def logged_user(req):
+        user_id = req.user_id  # type: ignore
+        user = User.get_user_by_id(user_id)
+        if not user:
+            return None
+        return user
