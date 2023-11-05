@@ -83,3 +83,10 @@ class Stock(BaseModel, Base):
         if len(stock) == 0:
             return None
         return stock[0]
+
+    @staticmethod
+    def get_stock_by_id(stock_id):
+        stock = models.storage.get("Stock", stock_id)
+        if not stock:
+            return None
+        return stock
