@@ -6,6 +6,7 @@
 from flask import make_response, jsonify
 from models.user import User
 from services.auth import Auth, AuthenticationError
+from services.fetch_data import FetchData
 from sqlalchemy import exc
 from utils.validate_data import validate_user_data
 
@@ -95,3 +96,22 @@ class UserController:
                 "message": err.errors,
                 "error": [{"password": err.errors}]
             }}), 400)
+
+    @staticmethod
+    def get_portfolio(user):
+        if not user:
+            return make_response(jsonify({"error": {
+                "message": "user not found",
+                "error": []
+            }}), 404)
+        portfolio = user.user_portfolio()
+
+        if not portfolio:
+            return make_response(jsonify({"User has no portfolio. Create portfolio"}), 200)
+        data = FetchData.get_stock_action()
+        full_portfolio = {}
+        stocks = portfolio.portfolio_details(data)
+        valuation = portfolio.portfolio_stocks_valuation(data)
+        full_portfolio["stocks"] = stocks
+        full_portfolio["market_valuation"] = valuation
+        return make_response(jsonify(full_portfolio), 200)
