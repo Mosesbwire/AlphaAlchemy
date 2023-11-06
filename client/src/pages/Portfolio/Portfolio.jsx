@@ -1,10 +1,11 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartLine, faMoneyBillAlt } from '@fortawesome/free-solid-svg-icons'
+import { faMoneyBillAlt } from '@fortawesome/free-solid-svg-icons'
 import Stats from "../../components/Portfolio/PortfolioStat/Stats";
 import Table from "../../components/Table/Table";
 import Button from "../../components/Button/Button";
+import DoughnutChart from "../../components/Chart/Doughnut/Doughnut";
 import Actions from "./Action";
 import apiService from "../../services/apiService";
 import useFetch from "../../hooks/useFetch"
@@ -25,8 +26,10 @@ const Portfolio = () => {
         "name", "ticker", "market value", "quantity", "% weight", "price", "actions"
     ]
     const holdings = []
+    let chartData = {}
     if (stocks) {
-
+        const labels = []
+        const data = []
         stocks.map(stock => {
             const stockData = []
             stockData.push(stock.name)
@@ -37,8 +40,13 @@ const Portfolio = () => {
             stockData.push(stock.price)
             stockData.push(<Actions stock={stock.ticker} />)
             holdings.push(stockData)
+            labels.push(stock.ticker)
+            data.push(stock.quantity)
 
         })
+        chartData.labels = labels
+        chartData.data = data
+        chartData.label = "# of stocks"
     }
 
     const classes = [
@@ -64,10 +72,14 @@ const Portfolio = () => {
                 </Link>
             </div>
             <div className="container portfolio-stats">
-                {portfolioData.map(data => (
-                    <Stats data={data} />
-                ))}
+                <div>
+                    <Stats data={{ title: "Market Value", stat: marketValue, icon: <FontAwesomeIcon icon={faMoneyBillAlt} /> }} />
+                </div>
+                <div className="chart">
+                    <DoughnutChart userData={chartData} />
+                </div>
             </div>
+
             <div className="holdings">
                 <div className="container">
                     <p>Holdings</p>

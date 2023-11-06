@@ -2,16 +2,19 @@
 
     padding-bottom: 1.5em;
 }
-.portfolio-name > p {
+
+.portfolio-name>p {
     color: var(--primary-text-color);
     font-size: 1em;
 }
+
 .portfolio-name_span {
     text-transform: uppercase;
     color: var(--primary-highlight-color);
     font-size: .8em;
     font-weight: 600;
 }
+
 .portfolio-actions {
     display: flex;
     column-gap: 1em;
@@ -26,13 +29,20 @@
     box-shadow: 2px 0 10px 5px rgba(0, 0, 0, 0.5);
     z-index: 100;
 }
-.portfolio-actions > * {
+
+.portfolio-actions>* {
     flex: 1;
 }
 
 .portfolio-stats {
     display: grid;
     row-gap: 1em;
+    overflow: hidden;
+}
+
+.chart {
+
+    width: 100%;
 }
 
 .stock-action {
@@ -45,23 +55,28 @@
     margin-bottom: 4em;
 }
 
-.holdings > :first-child {
+.holdings> :first-child {
     color: var(--secondary-highlight-color);
     font-weight: 600;
     margin-bottom: 1em;
 }
 
-@media(min-width: 48em){
+@media(min-width: 48em) {
     .portfolio-stats {
         grid-template-columns: repeat(2, 1fr);
         column-gap: 1em;
     }
 }
 
-@media(min-width: 64em){
+@media(min-width: 64em) {
     .portfolio-stats {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
+
+    .chart {
+        width: 50%;
+    }
+
 
     .portfolio-actions {
         position: relative;
