@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
-from services.fetch_data import fetchStockData
+from services.fetch_data import FetchData
 from utils.currency.conversion import to_cents
+
 
 class DataProcessor:
 
@@ -11,29 +12,29 @@ class DataProcessor:
         self.fetchData()
 
     def fetchData(self):
-        self.__data = fetchStockData()
-
+        self.__data = FetchData.get_stock_action()
 
     def stocks_metrics(self):
         if not self.__data:
             self.fetchData()
 
         data = []
+        if self.__data:
+            for dt in self.__data:
+                stock_data = {}
+                stock_data["ticker"] = dt.get("ticker")
+                stock_data["prev"] = dt.get("b")
+                stock_data["current"] = dt.get("price")
+                stock_data["change"] = dt.get("d")
+                stock_data["%change"] = dt.get("e")
+                stock_data["high"] = dt.get("f")
+                stock_data["low"] = dt.get("g")
+                stock_data["volume"] = dt.get("volume")
+                stock_data["average"] = dt.get("j")
 
-        for dt in self.__data.get("data"):
-            stock_data = {}
-            stock_data["ticker"] = dt.get("a")
-            stock_data["prev"] = dt.get("b")
-            stock_data["current"] = dt.get("c")
-            stock_data["change"] = dt.get("d")
-            stock_data["%change"] = dt.get("e")
-            stock_data["high"] = dt.get("f")
-            stock_data["low"] = dt.get("g")
-            stock_data["volume"] = dt.get("h")
-            stock_data["average"] = dt.get("j")
+                data.append(stock_data)
 
-            data.append(stock_data)
-        return data 
+        return data
 
     def sorted_data_gains(self):
         """ returns stock data list sorted in ascending order according to percentage price gain """
@@ -41,16 +42,17 @@ class DataProcessor:
         dataset = self.stocks_metrics()
 
         for data in dataset:
+
             if data["change"] != "-":
-                data["change"] = (to_cents(data["current"]) - to_cents(data["prev"])) / 100
+                data["change"] = (to_cents(data["current"]) -
+                                  to_cents(data["prev"])) / 100
             else:
                 data["change"] = 0
                 data["prev"] = 0
-        
-        
-        sorted_data = sorted(dataset, key=lambda obj : (obj.get("change") / float(obj.get("prev"))) if obj.get("prev") != 0 else 0 )
-        
-        
+
+        sorted_data = sorted(dataset, key=lambda obj: (
+            obj.get("change") / float(obj.get("prev"))) if obj.get("prev") != 0 else 0)
+
         return sorted_data
 
     def top_gainers(self, number=5):
@@ -69,8 +71,8 @@ class DataProcessor:
         segment_data.reverse()
 
         return segment_data
-    
-    def top_losers(self, number = 5):
+
+    def top_losers(self, number=5):
         """ returns top 5 losers by default if Number not provided """
         data = self.sorted_data_gains()
 
@@ -87,30 +89,11 @@ class DataProcessor:
         if not self.__data:
             self.fetchData()
 
-        data = {}
-
-        data["volume"] = self.__data.get("v")
-        data["deals"] = self.__data.get("d")
-        data["turnover"] = self.__data.get("t")
-        data["status"] = self.__data.get("s")
-
-        return data
+        return FetchData.market_activity()
 
     def sorted_by_volume(self):
         """ returns stock market data sorted by volume in ascending order"""
         dataset = self.stocks_metrics()
-
-        for data in dataset:
-            volume = data.get("volume")
-            if volume == "-":
-                volume = 0
-            elif "M" in volume:
-                volume = volume.replace("M", "")
-                volume = int(float(volume) * 1000000)
-            else:
-                volume = volume.replace(",","")
-            data["volume"] = volume
-
 
         sorted_data = sorted(dataset, key=lambda obj: int(obj.get("volume")))
 
@@ -126,16 +109,16 @@ class DataProcessor:
         volume = self.sorted_by_volume()
 
         data["losers"] = losers
-        data["gainers"]= gainers
+        data["gainers"] = gainers
         data["stocks"] = stocks
         data["market_metrics"] = market_metrics
-        
+
         movers = volume[-5:]
         movers.reverse()
         data["movers"] = movers
 
         return data
-    
+
     def current_stock_price(self, ticker):
         """ returns the latest price of a stock """
         latest_market_data = self.stocks_metrics()
