@@ -21,13 +21,13 @@ DB_URL = f"mysql+mysqldb://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 storage = Storage(DB_URL)
 storage.reload()
 
+if os.getenv("ENV") == "PRODUCTION":
+    stocks = FetchData.get_stocks()
 
-stocks = FetchData.get_stocks()
+    for stock in stocks:
 
-for stock in stocks:
-
-    try:
-        st = Stock(stock["ticker"], stock["name"], stock["sector"])
-        st.save()
-    except ValueError as e:
-        print("Error occured")
+        try:
+            st = Stock(stock["ticker"], stock["name"], stock["sector"])
+            st.save()
+        except ValueError as e:
+            print("Error occured")

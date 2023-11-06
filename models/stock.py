@@ -90,3 +90,8 @@ class Stock(BaseModel, Base):
         if not stock:
             return None
         return stock
+
+    @classmethod
+    def get_stocks(cls):
+        stocks = models.storage.all("Stock")
+        return stocks

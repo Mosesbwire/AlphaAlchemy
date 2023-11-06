@@ -156,6 +156,7 @@ class Portfolio(BaseModel, Base):
 
         for st_stock in stock_data:
             ticker = st_stock.get("ticker")
+
             for dt in data:
                 if ticker == dt.ticker:
                     obj = {}
@@ -163,6 +164,7 @@ class Portfolio(BaseModel, Base):
                     obj["name"] = dt.name
                     obj["quantity"] = dt.quantity
                     obj["price"] = st_stock.get("price")
+
                     details.append(obj)
 
         return details

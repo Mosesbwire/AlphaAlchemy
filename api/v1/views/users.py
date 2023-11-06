@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
 from api.v1.views import app_views
-from api.v1.error import BadRequest
-
 from flask import request
 from services.auth import Auth
 from controllers.users import UserController

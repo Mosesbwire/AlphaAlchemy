@@ -34,6 +34,9 @@ class BaseModel:
         models.storage.new(self)
         models.storage.save()
 
+    def update(self):
+        models.storage.save()
+
     def __str__(self):
         """ returns string representation of the object when printed """
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)

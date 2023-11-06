@@ -1,15 +1,9 @@
 #!/usr/bin/python3
 
 from api.v1.views import app_views
-from api.v1.error import BadRequest
 from controllers.portfolio import PortfolioController
-from flask import abort, jsonify, make_response, request
+from flask import request
 from services.auth import Auth
-from services.portfolio_service import PortfolioService
-from services.user_service import UserService
-
-service = PortfolioService()
-userService = UserService()
 
 
 @app_views.route("/portfolios", methods=["POST"])

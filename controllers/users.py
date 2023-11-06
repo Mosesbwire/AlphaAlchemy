@@ -115,3 +115,18 @@ class UserController:
         full_portfolio["stocks"] = stocks
         full_portfolio["market_valuation"] = valuation
         return make_response(jsonify(full_portfolio), 200)
+
+    @staticmethod
+    def get_user_by_id(req):
+        user_id = req.user_id
+        user = User.get_user_by_id(user_id)
+
+        if not user:
+            return make_response(jsonify({"error": {
+                "message": "User not found",
+                "error": []
+            }}), 404)
+        user_dict = user.to_dict()
+
+        user_dict["balance"] = user.acc_balance
+        return make_response(jsonify({"user": user_dict}), 200)
