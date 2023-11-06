@@ -10,6 +10,8 @@ STOCK_API_URL = "https://live.mystocks.co.ke/ajax/stocksectors/"
 
 class FetchData:
 
+    market_data = {}
+
     @staticmethod
     def format_volume_string(string):
         new_str: int = 0
@@ -20,9 +22,10 @@ class FetchData:
             new_str = int(temp_val * 1000000)
         return new_str
 
-    @staticmethod
-    def get_stock_action():
+    @classmethod
+    def get_stock_action(cls):
         price_data = requests.get(DAILY_PRICE_API_URL).json()
+        cls.market_data = price_data
         action = price_data["data"]
         for at in action:
             price = 0
@@ -47,3 +50,13 @@ class FetchData:
                     {"ticker": ticker, "sector": sector, "name": company})
 
         return stocks
+
+    @classmethod
+    def market_activity(cls):
+        market_data = {}
+        if cls.market_data:
+            market_data["volume"] = cls.market_data["v"]
+            market_data["deals"] = cls.market_data["d"]
+            market_data["turnover"] = cls.market_data["t"]
+            market_data["status"] = cls.market_data["s"]
+        return market_data
