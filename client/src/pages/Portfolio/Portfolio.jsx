@@ -18,9 +18,6 @@ const Portfolio = () => {
     const marketValue = data ? data.market_valuation : 0
     const stocks = data ? data.stocks : []
 
-    const portfolioData = [
-        { title: "Market Value", stat: marketValue, icon: <FontAwesomeIcon icon={faMoneyBillAlt} /> }
-    ]
 
     const holdingsHeader = [
         "name", "ticker", "market value", "quantity", "% weight", "price", "actions"
@@ -34,7 +31,7 @@ const Portfolio = () => {
             const stockData = []
             stockData.push(stock.name)
             stockData.push(stock.ticker)
-            stockData.push(stock.price * stock.quantity)
+            stockData.push((stock.price * stock.quantity).toFixed())
             stockData.push(stock.quantity)
             stockData.push((((stock.price * stock.quantity) / marketValue) * 100).toFixed())
             stockData.push(stock.price)

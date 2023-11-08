@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams, Navigate, useLocation} from 'react-router-dom'
+import { useParams, Navigate, useLocation } from 'react-router-dom'
 import Button from "../../components/Button/Button"
 import apiService from "../../services/apiService";
 import useFetch from "../../hooks/useFetch"
@@ -7,55 +7,52 @@ import useForm from "../../hooks/useForm";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import './Order.css'
 
-const Buy = ()=>{
+const Buy = () => {
     const location = useLocation()
     const queryParams = new URLSearchParams(location.search)
     const action = queryParams.get("action")
     const stock = queryParams.get("stock")
     const orderFunction = action === "buy" ? apiService.buyStock : apiService.sellStock
-    const initialValues = {price: "", quantity: "", security: ""}
+    const initialValues = { price: "", quantity: "", stock_id: "" }
     const [values, handleChange, resetForm] = useForm(initialValues)
     const [data, error, isLoading] = useFetch(apiService.getStocks)
-    const { id } = useParams()
-    
+
     const [onSubmit, orderData, isSubmitting, orderError] = useSubmitForm(orderFunction)
-    const sortedData = data ? data : []
+    const sortedData = data ? data.stocks : []
     const user = JSON.parse(sessionStorage.getItem("user"))
-    
+
     let orderValue = 0
 
-    if (values["price"] !== "" && values["quantity"] !== "" && stock === "no-stock"){
-        orderValue = Number(values["price"]) * Number(values["quantity"])
-    } 
 
-    if (stock !== "no-stock" && data){
-        data.forEach(dt => {
-            if (dt.ticker == stock){
-                values["security"] = dt.id
+    orderValue = Number(values.price) * Number(values.quantity)
+
+    if (stock !== "no-stock" && data) {
+        data.stocks.forEach(dt => {
+            if (dt.ticker == stock) {
+                values["stock_id"] = dt.id
             }
         })
-    } 
-    const remainingBal = user.balance - orderValue
+    }
+    const remainingBal = action === "buy" ? user.balance - orderValue : user.balance + orderValue
 
-    sortedData.sort((objA, objB)=>{
+    sortedData.sort((objA, objB) => {
         if (objA.ticker < objB.ticker) return -1
         if (objA.ticker > objB.ticker) return 1
         return 0
     })
-    const submitForm = async (e)=>{
+    const submitForm = async (e) => {
         e.preventDefault()
-        const data = {...values, id: id}
-        onSubmit(data)
+        onSubmit(values)
     }
 
-    if (isLoading || isSubmitting){
+    if (isLoading || isSubmitting) {
         return <div>Loading Data.....</div>
     }
-    
-    if (orderData){
-        return <Navigate to={`/portfolio/${id}`}/>
+
+    if (orderData) {
+        return <Navigate to={`/portfolio`} />
     }
-    
+
     return (
         <div className="order-action">
             <div className="d-md-none d-lg-none sm-acc-details">
@@ -68,14 +65,14 @@ const Buy = ()=>{
                 <div className="buy-form">
                     <div className="buy-title">
                         <p>{action}</p>
-                
+
                     </div>
                     <form action="" method="post" className="order-form container" onSubmit={submitForm}>
                         <div className="select-security form-group">
-                            <label htmlFor="security">Security Name</label>
+                            <label htmlFor="stock_id">Security Name</label>
                             <div>
-                                <select disabled={stock !== "no-stock"} className="order-form_select" name="security" value={values["security"]} onChange={e => handleChange(e)}>
-                                    <option value={''}>{stock === "no-stock" ? 'Select Company':  `${stock}`}</option>
+                                <select disabled={stock !== "no-stock"} className="order-form_select" name="stock_id" value={values["stock_id"]} onChange={e => handleChange(e)}>
+                                    <option value={''}>{stock === "no-stock" ? 'Select Company' : `${stock}`}</option>
                                     {sortedData.map(data => (
                                         <option value={data.id} >{data.ticker}</option>
                                     ))}
@@ -85,30 +82,30 @@ const Buy = ()=>{
                         <div className="security-price form-group">
                             <label htmlFor="price">Price</label>
                             <div>
-                                <input 
-                                    type="text" 
-                                    name="price" 
-                                    id="" 
-                                    value = {values["price"]}
+                                <input
+                                    type="text"
+                                    name="price"
+                                    id=""
+                                    value={values["price"]}
                                     onChange={e => handleChange(e)}
                                 />
-                                
+
                             </div>
                         </div>
                         <div className="security-quantity form-group">
                             <label htmlFor="quantity">Quantity</label>
                             <div>
-                                <input 
-                                    type="text" 
-                                    name="quantity" 
-                                    id="" 
+                                <input
+                                    type="text"
+                                    name="quantity"
+                                    id=""
                                     placeholder="Should be in lots of 100 e.g 200, 300, 10000"
                                     value={values["quantity"]}
                                     onChange={e => handleChange(e)}
-                                    />
+                                />
                             </div>
                         </div>
-                        
+
                         <Button primary >Place Order</Button>
                     </form>
                 </div>

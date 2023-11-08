@@ -33,19 +33,21 @@ async function createUser(user) {
 
         const response = await sendRequest(`${BASE_URL}/users`, options)
 
-        if (response.status === 400 && response.statusText === "BAD REQUEST") {
+        if (response.status !== 201) {
             const err = await response.json()
+
+            const error = !err.error.errors ? [{ error: err.error.message, status: 400 }] : err.error.errors
+
             return {
                 status: 400,
                 data: null,
-                error: err
+                error: error
             }
         }
-        const data = await response.json()
-        const token = data["token"]
+        const token = await response.json()
         setAuthToken(token)
         return {
-            status: 200,
+            status: 201,
             data: "OK",
             error: null
         }
@@ -63,26 +65,26 @@ async function login(formData) {
     try {
         const response = await sendRequest(`${BASE_URL}/auth/login`, options)
 
-        if (response.status === 400 && response.statusText === "BAD REQUEST") {
+        if (response.status === 400) {
             const err = await response.json()
+            const error = err.error.errors
             return {
                 status: 400,
                 data: null,
-                error: err
+                error: error
             }
         }
-        if (response.status === 404 && response.statusText === "NOT FOUND") {
+        if (response.status === 404) {
             const err = await response.json()
+            const error = err.error.message
             return {
                 status: 404,
                 data: null,
-                error: err
+                error: error
             }
         }
 
         const token = await response.json()
-        console.log(token)
-
         setAuthToken(token)
         return {
             status: 200,
@@ -289,10 +291,9 @@ async function getStocks() {
 
 async function buyStock(data) {
     const options = createRequestOptions("POST", data)
-
-    const portfolioId = data["id"]
+    console.log(data)
     try {
-        const response = await sendRequest(`${BASE_URL}/portfolios/${portfolioId}/buy`, options)
+        const response = await sendRequest(`${BASE_URL}/portfolios/buy`, options)
         if (response.status === 401) {
             const err = await response.json()
             return {
@@ -327,10 +328,10 @@ async function buyStock(data) {
 }
 async function sellStock(data) {
     const options = createRequestOptions("POST", data)
+    console.log(data)
 
-    const portfolioId = data["id"]
     try {
-        const response = await sendRequest(`${BASE_URL}/portfolios/${portfolioId}/sell`, options)
+        const response = await sendRequest(`${BASE_URL}/portfolios/sell`, options)
 
         if (response.status === 401) {
             const err = await response.json()
