@@ -40,7 +40,7 @@ class UserController:
         if password != confirm_password:
             return make_response(jsonify({"error": {
                 "message": "Unprocesable data",
-                "error": [{"confirm_password": "password must match confirm password"}]
+                "errors": [{"confirm_password": "password must match confirm password"}]
             }}), 400)
         try:
             user = User(fname, lname, email, password)
@@ -69,7 +69,7 @@ class UserController:
             return make_response(jsonify({
                 "error": {
                     "message": "Cannot process empty data",
-                    "error": [
+                    "errors": [
                         {"email": "Provide a valid email address"},
                         {"password": "provide your password to login"}
                     ]
@@ -84,7 +84,7 @@ class UserController:
             return make_response(jsonify({
                 "error": {
                     "message": "User not found",
-                    "error": []
+                    "errors": []
                 }
             }), 404)
 
@@ -94,7 +94,7 @@ class UserController:
         except AuthenticationError as err:
             return make_response(jsonify({"error": {
                 "message": err.errors,
-                "error": [{"password": err.errors}]
+                "errors": [{"password": err.errors}]
             }}), 400)
 
     @staticmethod
@@ -102,7 +102,7 @@ class UserController:
         if not user:
             return make_response(jsonify({"error": {
                 "message": "user not found",
-                "error": []
+                "errors": []
             }}), 404)
         portfolio = user.user_portfolio()
 
@@ -124,7 +124,7 @@ class UserController:
         if not user:
             return make_response(jsonify({"error": {
                 "message": "User not found",
-                "error": []
+                "errors": []
             }}), 404)
         user_dict = user.to_dict()
 

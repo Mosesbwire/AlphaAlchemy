@@ -56,7 +56,7 @@ class PortfolioController:
 
         data = req.get_json()
         stock_id = data.get("stock_id")
-        bid_price = data.get("bid_price")
+        bid_price = data.get("price")
         quantity = data.get("quantity")
 
         stock = Stock.get_stock_by_id(stock_id)
@@ -90,7 +90,7 @@ class PortfolioController:
 
         data = req.get_json()
         stock_id = data.get("stock_id")
-        ask_price = data.get("ask_price")
+        ask_price = data.get("price")
         quantity = data.get("quantity")
 
         stock = Stock.get_stock_by_id(stock_id)
