@@ -7,6 +7,8 @@ import Home from './pages/HomePage/Home'
 import Portfolio from './pages/Portfolio/Portfolio'
 import Order from './pages/Order/Order'
 import Transaction from './pages/Transaction/Transaction'
+import ToastContainer from './ToastContainer.jsx'
+
 
 import './App.css'
 
@@ -14,13 +16,14 @@ function App() {
 
   return (
     <>
+      <ToastContainer />
       <Router>
         <AuthContextProvider>
           <Routes>
             <Route element={<Layout />}>
               <Route path="/home" element={<Home />} />
               <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/portfolio/:id/order" element={<Order />} />
+              <Route path="/portfolio/order" element={<Order />} />
               <Route path="/portfolio/:name/:id/transactions" element={<Transaction />} />
             </Route>
             <Route path="/login" element={<Login />} />
