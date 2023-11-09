@@ -1,10 +1,12 @@
 import React from "react";
 import { useParams, Navigate, useLocation } from 'react-router-dom'
 import Button from "../../components/Button/Button"
+import Loading from "../../components/Loader/Loading"
 import apiService from "../../services/apiService";
 import useFetch from "../../hooks/useFetch"
 import useForm from "../../hooks/useForm";
 import useSubmitForm from "../../hooks/useSubmitForm";
+import { toast } from "react-toastify"
 import './Order.css'
 
 const Buy = () => {
@@ -33,7 +35,7 @@ const Buy = () => {
             }
         })
     }
-    const remainingBal = action === "buy" ? user.balance - orderValue : user.balance + orderValue
+    const remainingBal = action === "buy" ? user.balance - orderValue : Number(user.balance)
 
     sortedData.sort((objA, objB) => {
         if (objA.ticker < objB.ticker) return -1
@@ -46,7 +48,16 @@ const Buy = () => {
     }
 
     if (isLoading || isSubmitting) {
-        return <div>Loading Data.....</div>
+        return <Loading />
+    }
+
+    if (orderError) {
+        toast.error(orderError.error, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: false,
+            theme: "light"
+        })
+
     }
 
     if (orderData) {

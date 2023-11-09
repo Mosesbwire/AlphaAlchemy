@@ -291,7 +291,7 @@ async function getStocks() {
 
 async function buyStock(data) {
     const options = createRequestOptions("POST", data)
-    console.log(data)
+
     try {
         const response = await sendRequest(`${BASE_URL}/portfolios/buy`, options)
         if (response.status === 401) {
@@ -328,7 +328,7 @@ async function buyStock(data) {
 }
 async function sellStock(data) {
     const options = createRequestOptions("POST", data)
-    console.log(data)
+
 
     try {
         const response = await sendRequest(`${BASE_URL}/portfolios/sell`, options)
