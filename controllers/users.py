@@ -107,7 +107,11 @@ class UserController:
         portfolio = user.user_portfolio()
 
         if not portfolio:
-            return make_response(jsonify({"User has no portfolio. Create portfolio"}), 200)
+
+            return make_response(jsonify({"error": {
+                "message": "User has no portolio. Create portfolio",
+                "errors": []
+            }}), 404)
         data = FetchData.get_stock_action()
         full_portfolio = {}
         stocks = portfolio.portfolio_details(data)
