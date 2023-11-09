@@ -18,3 +18,10 @@ def get_portfolio():
 
     res = UserController.get_portfolio(Auth.logged_user(request))
     return res
+
+
+@app_views.route("/users/portfolio/status", methods=["GET"])
+@Auth.is_authenticated
+def has_portfolio():
+    res = UserController.user_has_portfolio(Auth.logged_user(request))
+    return res

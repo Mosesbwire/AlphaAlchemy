@@ -98,6 +98,18 @@ class UserController:
             }}), 400)
 
     @staticmethod
+    def user_has_portfolio(user):
+        if not user:
+            return make_response(jsonify({"error": {
+                "message": "user not found",
+                "errors": []
+            }}), 404)
+        portfolio = user.user_portfolio()
+        has_portfolio = True if portfolio else False
+
+        return make_response(jsonify({"has_portfolio": has_portfolio}), 200)
+
+    @staticmethod
     def get_portfolio(user):
         if not user:
             return make_response(jsonify({"error": {
@@ -124,13 +136,12 @@ class UserController:
     def get_user_by_id(req):
         user_id = req.user_id
         user = User.get_user_by_id(user_id)
-
+        print(user)
         if not user:
             return make_response(jsonify({"error": {
                 "message": "User not found",
                 "errors": []
             }}), 404)
         user_dict = user.to_dict()
-
         user_dict["balance"] = user.acc_balance
         return make_response(jsonify({"user": user_dict}), 200)
