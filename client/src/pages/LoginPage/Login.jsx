@@ -30,7 +30,7 @@ const Login = () => {
     }
 
     if (data && !isSubmitting) {
-        setIsAuthenticated(true)
+        // setIsAuthenticated(true)
         return <Navigate to={"/home"} replace={true} />
     }
 

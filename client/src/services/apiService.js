@@ -227,6 +227,7 @@ async function getPortfolio() {
 
         if (response.status === 404) {
             const err = await response.json()
+            console.log(err)
             return {
                 status: 404,
                 data: null,
