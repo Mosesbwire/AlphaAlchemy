@@ -189,6 +189,20 @@ async function getMarketMetrics() {
     }
 }
 
+async function getPortfolioStatus() {
+    const options = createRequestOptions('GET')
+    try {
+        const response = await sendRequest(`${BASE_URL}/users/portfolio/status`, options)
+        return {
+            status: 200,
+            data: await response.json(),
+            error: null
+        }
+    } catch (error) {
+
+    }
+}
+
 async function createPortfolio(formData) {
     const options = createRequestOptions('POST', formData)
     try {
@@ -417,5 +431,6 @@ export default {
     buyStock,
     sellStock,
     fetchPortfolioTransactions,
-    logout
+    logout,
+    getPortfolioStatus
 }

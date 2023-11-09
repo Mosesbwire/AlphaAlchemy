@@ -9,6 +9,7 @@ import useModal from "../../hooks/useModal";
 import CreatePortfolio from "../CreatePortfolio/CreatePortfolio";
 import apiService from "../../services/apiService";
 import useSubmitForm from "../../hooks/useSubmitForm";
+import useFetch from "../../hooks/useFetch"
 import { v4 as uuid } from "uuid"
 import './Header.css'
 
@@ -16,8 +17,10 @@ import './Header.css'
 
 const Header = () => {
     const [isOpen, setOpenMenu] = useState(false)
+    const [showNavLink, setShowNavLInk] = useState(false)
     const [openModal, modalHandler] = useModal()
     const [onSubmit, data, isSubmitting, error] = useSubmitForm(apiService.createPortfolio)
+    const [pData, pError, pIsLoading] = useFetch(apiService.getPortfolioStatus)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -29,6 +32,11 @@ const Header = () => {
 
     }, [data, error, isSubmitting])
 
+    useEffect(() => {
+        if (pData) {
+            setShowNavLInk(pData.has_portfolio)
+        }
+    }, [pData, pError, pIsLoading])
 
     const logout = async () => {
         const data = await apiService.logout()
@@ -46,7 +54,7 @@ const Header = () => {
 
     const navItems = [
         <Link to={'/home'} key={uuid()}><li className="nav-links">Home</li></Link>,
-        <li className="nav-links" onClick={modalHandler} key={uuid()}>New Portfolio</li>,
+        <li className={`nav-links ${showNavLink ? 'show_no_nav_link' : 'show_nav_link'}`} onClick={modalHandler} key={uuid()}>New Portfolio</li>,
         <Link to={'/portfolio'} key={uuid()}><li className="nav-links">Portfolio</li></Link>,
         <li className="nav-links" onClick={logout} key={uuid()}>LogOut</li>
     ]
