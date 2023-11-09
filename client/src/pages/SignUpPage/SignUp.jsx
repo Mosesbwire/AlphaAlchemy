@@ -5,13 +5,12 @@ import Logo from "../../components/Logo/Logo";
 import apiService from "../../services/apiService";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import Loading from "../../components/Loader/Loading";
-import { useAuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify"
 import './SignUp.css'
 
 const SignUp = () => {
     const [onSubmit, data, isSubmitting, error] = useSubmitForm(apiService.createUser)
-    const { isAuthenticated, setIsAuthenticated } = useAuthContext()
+
 
     if (isSubmitting) {
         return <Loading />

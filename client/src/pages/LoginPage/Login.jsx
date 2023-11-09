@@ -5,14 +5,13 @@ import Logo from "../../components/Logo/Logo"
 import Loading from "../../components/Loader/Loading"
 import useSubmitForm from "../../hooks/useSubmitForm"
 import apiService from "../../services/apiService"
-import { useAuthContext } from "../../context/AuthContext"
 import { toast } from "react-toastify"
-import { v4 as uuid } from "uuid"
+
 import "./Login.css"
 
 const Login = () => {
     const [onSubmit, data, isSubmitting, error] = useSubmitForm(apiService.login)
-    const { isAuthenticated, setIsAuthenticated } = useAuthContext()
+
     const toastId = useRef(null)
     if (isSubmitting) {
         return <Loading />
@@ -30,7 +29,6 @@ const Login = () => {
     }
 
     if (data && !isSubmitting) {
-        // setIsAuthenticated(true)
         return <Navigate to={"/home"} replace={true} />
     }
 

@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import MarketStatistics from "../../components/MarketStat/TotalMarketStat";
 import PerfomanceSummary from "../../components/StockDataSummary/PerfomanceSummary";
 import Table from "../../components/Table/Table";
@@ -7,7 +6,6 @@ import Loading from "../../components/Loader/Loading";
 import apiService from "../../services/apiService";
 import useFetch from "../../hooks/useFetch";
 import { prepMarketData, prepStockData } from "../../services/processData"
-import { useAuthContext } from "../../context/AuthContext"
 import './Home.css'
 
 const tableHeader = [
@@ -29,9 +27,6 @@ const classes = ['d-block', 'd-block', 'd-block', 'd-block', 'd-sm-none d-md-blo
 
 const Home = () => {
     const [data, error, isLoading] = useFetch(apiService.getMarketMetrics)
-    const { isAuthenticated, setIsAuthenticated } = useAuthContext()
-    useFetch(apiService.getLoggedInUser)
-    const navigate = useNavigate()
     const marketData = data ? prepMarketData(data["market_metrics"]) : []
     const gainers = data ? data["gainers"] : []
     const losers = data ? data["losers"] : []
@@ -47,9 +42,6 @@ const Home = () => {
         return <Loading />
     }
 
-    // if (!isAuthenticated) {
-    //     return navigate('/login', { replace: true })
-    // }
 
     return (
         <div>
