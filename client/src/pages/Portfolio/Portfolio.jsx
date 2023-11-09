@@ -5,6 +5,7 @@ import { faMoneyBillAlt } from '@fortawesome/free-solid-svg-icons'
 import Stats from "../../components/Portfolio/PortfolioStat/Stats";
 import Table from "../../components/Table/Table";
 import Button from "../../components/Button/Button";
+import Loading from "../../components/Loader/Loading";
 import DoughnutChart from "../../components/Chart/Doughnut/Doughnut";
 import Actions from "./Action";
 import apiService from "../../services/apiService";
@@ -50,12 +51,14 @@ const Portfolio = () => {
         "d-sm-none d-md-block", "d-block", "d-sm-none d-md-none d-lg-block", "d-sm-none d-md-block", "d-sm-none d-md-block", "d-sm-none d-md-block", "d-block", "d-block"
     ]
     if (isLoading) {
-        return <div>Loading...</div>
+        return <Loading />
     }
 
     if (error) {
         console.log(error)
-        return <div>Error Occured. 404</div>
+        return <div className="no-portfolio">
+            <h1>No portfolio linked to this account. <span className="create-portfolio__link">Click New portfolio to create portfolio</span>.</h1>
+        </div>
     }
     return (
         <div className="">
@@ -83,7 +86,7 @@ const Portfolio = () => {
                 </div>
                 {stocks.length > 0 ?
                     <Table header={holdingsHeader} data={holdings} classes={classes} />
-                    : <div>Click here to buy stocks for your portfolio</div>}
+                    : <div className="stocks-info">No stocks available in this portfolio. Click the buy button to view stocks you can purchase.</div>}
             </div>
         </div>
     )

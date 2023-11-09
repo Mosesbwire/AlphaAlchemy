@@ -61,6 +61,26 @@
     margin-bottom: 1em;
 }
 
+.no-portfolio {
+    color: var(--primary-highlight-color);
+    padding: 1em;
+    font-size: .75em;
+    text-align: center;
+}
+
+.create-portfolio__link {
+    color: var(--secondary-highlight-color);
+    text-decoration: underline;
+}
+
+.stocks-info {
+    text-align: center;
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--secondary-highlight-color);
+
+}
+
 @media(min-width: 48em) {
     .portfolio-stats {
         grid-template-columns: repeat(2, 1fr);
