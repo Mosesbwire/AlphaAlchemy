@@ -1,13 +1,14 @@
 import React from "react";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faCaretUp, faCaretDown} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { v4 as uuid } from "uuid"
 import './StockPerfomanceSummary.css'
 
 
-const StockPerfomanceSummary = ({section})=>{
-    const classes = {Gainers:"gainers", Losers: "losers", Movers: "movers"}
-    const carets = {Gainers: faCaretUp, Losers:faCaretDown, Movers: ""}
-    return(
+const StockPerfomanceSummary = ({ section }) => {
+    const classes = { Gainers: "gainers", Losers: "losers", Movers: "movers" }
+    const carets = { Gainers: faCaretUp, Losers: faCaretDown, Movers: "" }
+    return (
         <div className="stock-perfomance-summary">
             <div className={`title ${classes[section.title]}`}>
                 <p>{section.title}</p>
@@ -20,18 +21,18 @@ const StockPerfomanceSummary = ({section})=>{
             </div>
             <div className="data-section">
                 {section.data.map(data => (
-                    <div className="data-row row">
-                        {section.title !== "Movers" ? 
-                        <>
-                            <p>{data.ticker}</p>
-                            <p>{data.price}</p>
-                            <p className={`${classes[section.title]}-change`}>{data["%change"]}<span><FontAwesomeIcon icon={carets[section.title]}/></span></p>
+                    <div className="data-row row" key={uuid()}>
+                        {section.title !== "Movers" ?
+                            <>
+                                <p>{data.ticker}</p>
+                                <p>{data.price}</p>
+                                <p className={`${classes[section.title]}-change`}>{data["%change"]}<span><FontAwesomeIcon icon={carets[section.title]} /></span></p>
 
-                        </> : 
-                        <>
-                            <p>{data.ticker}</p>
-                            <p>{data.volume}</p>
-                        </>}
+                            </> :
+                            <>
+                                <p>{data.ticker}</p>
+                                <p>{data.volume}</p>
+                            </>}
                     </div>
                 ))}
 

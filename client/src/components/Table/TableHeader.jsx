@@ -1,11 +1,12 @@
 import React from "react";
+import { v4 as uuid } from "uuid"
 import './Table.css'
 
-const TableHeader = ({header, classes})=>{
+const TableHeader = ({ header, classes }) => {
     return (
         <div className="table-header">
             {header.map((text, idx) => (
-                <div className={`${classes[idx]}`}>{text}</div>
+                <div className={`${classes[idx]}`} key={uuid()}>{text}</div>
             ))}
         </div>
     )

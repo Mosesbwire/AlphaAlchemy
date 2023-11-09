@@ -9,8 +9,9 @@ import useModal from "../../hooks/useModal";
 import CreatePortfolio from "../CreatePortfolio/CreatePortfolio";
 import apiService from "../../services/apiService";
 import useSubmitForm from "../../hooks/useSubmitForm";
+import { v4 as uuid } from "uuid"
 import './Header.css'
-import useFetch from "../../hooks/useFetch";
+
 
 
 const Header = () => {
@@ -44,10 +45,10 @@ const Header = () => {
     }
 
     const navItems = [
-        <Link to={'/home'}><li className="nav-links">Home</li></Link>,
-        <li className="nav-links" onClick={modalHandler}>New Portfolio</li>,
-        <Link to={'/portfolio'}><li className="nav-links">Portfolio</li></Link>,
-        <li className="nav-links" onClick={logout}>LogOut</li>
+        <Link to={'/home'} key={uuid()}><li className="nav-links">Home</li></Link>,
+        <li className="nav-links" onClick={modalHandler} key={uuid()}>New Portfolio</li>,
+        <Link to={'/portfolio'} key={uuid()}><li className="nav-links">Portfolio</li></Link>,
+        <li className="nav-links" onClick={logout} key={uuid()}>LogOut</li>
     ]
 
     return (

@@ -1,10 +1,10 @@
 import img from '../../assets/loading.gif'
 import './Loading.css'
-const Loading = ()=>{
+const Loading = () => {
     return (
         <div className='loading-page'>
-        
-            <img src={img} alt="" srcset="" />
+
+            <img src={img} alt="" srcSet="" />
         </div>
     )
 }

@@ -85,7 +85,7 @@ const Buy = () => {
                                 <select disabled={stock !== "no-stock"} className="order-form_select" name="stock_id" value={values["stock_id"]} onChange={e => handleChange(e)}>
                                     <option value={''}>{stock === "no-stock" ? 'Select Company' : `${stock}`}</option>
                                     {sortedData.map(data => (
-                                        <option value={data.id} >{data.ticker}</option>
+                                        <option value={data.id} key={data.id}>{data.ticker}</option>
                                     ))}
                                 </select>
                             </div>
