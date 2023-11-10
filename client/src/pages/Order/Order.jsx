@@ -35,7 +35,7 @@ const Buy = () => {
             }
         })
     }
-    const remainingBal = action === "buy" ? user.balance - orderValue : Number(user.balance)
+    const remainingBal = action === "buy" ? 50000 - orderValue : Number(50000)
 
     sortedData.sort((objA, objB) => {
         if (objA.ticker < objB.ticker) return -1
@@ -69,7 +69,7 @@ const Buy = () => {
             <div className="d-md-none d-lg-none sm-acc-details">
                 <div className=" row-flex  container">
                     <p>Account Balance</p>
-                    <p>KES {user.balance}</p>
+                    <p>KES {50000}</p>
                 </div>
             </div>
             <div className="buy-process">
@@ -124,7 +124,7 @@ const Buy = () => {
             <div className="account-details d-sm-none d-md-block d-lg-block">
                 <div className="available-funds row-flex">
                     <p>Available Funds</p>
-                    <p>KES {user.balance}</p>
+                    <p>KES {50000}</p>
                 </div>
                 <div className="order-value row-flex">
                     <p>Order Value</p>

@@ -1,16 +1,17 @@
 
-export function prepMarketData(data){
+import { DateTime } from "luxon"
+export function prepMarketData(data) {
     let marketData = []
     delete data.status
-    Object.keys(data).forEach(key =>{
+    Object.keys(data).forEach(key => {
         let obj = {}
-        if (key === "deals"){
+        if (key === "deals") {
             obj["title"] = "Deals"
         }
-        if (key === "turnover"){
+        if (key === "turnover") {
             obj["title"] = "Equity Turnover"
         }
-        if (key === "volume"){
+        if (key === "volume") {
             obj["title"] = "Shares Traded"
         }
 
@@ -22,9 +23,9 @@ export function prepMarketData(data){
     return marketData
 }
 
-export function prepStockData(data){
+export function prepStockData(data) {
     let marketData = []
-    data.forEach(dt =>{
+    data.forEach(dt => {
         let dataPoint = []
         dataPoint.push(dt["ticker"])
         dataPoint.push(dt["prev"])
@@ -39,4 +40,11 @@ export function prepStockData(data){
     })
 
     return marketData
+}
+
+export function formattedDate(datetime) {
+    let date = new Date(datetime)
+    const newFormat = { ...DateTime.DATETIME_SHORT_WITH_SECONDS, };
+    date = DateTime.fromJSDate(date).toFormat('yyyy-MM-dd HH:MM:ss')
+    return date
 }

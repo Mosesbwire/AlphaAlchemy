@@ -384,7 +384,7 @@ async function fetchPortfolioTransactions(portfolioId) {
     const options = createRequestOptions("GET")
 
     try {
-        const response = await sendRequest(`${BASE_URL}/portfolio/${portfolioId}/transactions`, options)
+        const response = await sendRequest(`${BASE_URL}/portfolio/transactions`, options)
 
         if (response.status === 401) {
             const err = await response.json()

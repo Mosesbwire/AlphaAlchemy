@@ -1,40 +1,42 @@
 import React from "react";
-import {useParams} from 'react-router-dom'
+import { DateTime } from "luxon"
 import Table from "../../components/Table/Table"
 import apiService from "../../services/apiService";
 import useFetch from "../../hooks/useFetch";
+import { formattedDate } from "../../services/processData"
 import './Transaction.css'
 
-const Transaction = ()=>{
-    const  { id, name } = useParams()
-    const [transactionData, error, isLoading] = useFetch(apiService.fetchPortfolioTransactions, id)
-    const header = ["date", "type", "security", "shares", "price","cost"]
+const Transaction = () => {
+
+    const [transactionData, error, isLoading] = useFetch(apiService.fetchPortfolioTransactions)
+    const header = ["date", "type", "security", "shares", "price", "cost"]
     let data = []
     const user = JSON.parse(sessionStorage.getItem("user"))
     let totalBuys = 0
     let totalSells = 0
-    if (transactionData){
-        transactionData.forEach(transaction =>{
+    if (transactionData) {
+        transactionData.forEach(transaction => {
+
             let tdata = [
-                transaction.created_at.split(" ")[0], 
-                transaction.transaction_type, 
+                formattedDate(transaction.created_at),
+                transaction.transaction_type,
                 transaction.item,
                 transaction.quantity,
-                (transaction.price / 100),
-                (transaction.total/ 100) 
+                transaction.price,
+                transaction.total
             ]
 
             if (transaction.transaction_type === "buy") {
-                totalBuys += transaction.total / 100
+                totalBuys += +transaction.total
             } else {
-                totalSells += transaction.total / 100
+                totalSells += +transaction.total
             }
-            
+
             data.push(tdata)
         })
     }
 
-    const clickHandler = (e)=>{
+    const clickHandler = (e) => {
         console.log('clicked')
         console.log(e.target.innerText.toLowerCase())
         let dt = transactionData.filter(tr => tr.transaction_type === e.target.innerText.toLowerCase())
@@ -45,14 +47,14 @@ const Transaction = ()=>{
         <div>
             <div className="container">
                 <div className="transaction-header">
-                    <p>{name}</p>
+
                 </div>
                 <div className="transaction-summary">
                     <div className="transaction-summary_category balance-category">
                         <div className="summary_title">
                             <p>Balance</p>
                         </div>
-                        <p className="trs-summary-data">KES {user.balance}</p>
+                        <p className="trs-summary-data">KES {"50,000"}</p>
                     </div>
                     <div className="transaction-summary_category cash-flow-category">
                         <div className="summary_title">
@@ -77,7 +79,7 @@ const Transaction = ()=>{
                 </div>
             </div>
             <div>
-                <Table header={header} classes={classes} data={data}/>
+                <Table header={header} classes={classes} data={data} />
             </div>
         </div>
     )
