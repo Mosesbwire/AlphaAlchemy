@@ -29,3 +29,11 @@ def sell():
     resp = PortfolioController.sell_stock(user, request)
 
     return resp
+
+
+@app_views.route("/portfolio/transactions", methods=["GET"])
+@Auth.is_authenticated
+def transactions():
+    resp = PortfolioController.portfolio_transactions(
+        Auth.logged_user(request))
+    return resp

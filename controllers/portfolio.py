@@ -7,6 +7,7 @@ from flask import make_response, jsonify
 from models.portfolio import Portfolio
 from models.stock import Stock
 from models.user import User
+from utils.currency.conversion import to_unit_currency
 
 
 class PortfolioController:
@@ -109,3 +110,25 @@ class PortfolioController:
         except ValueError as err:
             msg = err.args[0]
             return make_response(jsonify({"error": msg}), 400)
+
+    @staticmethod
+    def portfolio_transactions(user):
+        if not user:
+            return make_response(jsonify({"error": {
+                "message": "User not found",
+                "error": []
+            }}), 404)
+        portfolio = user.user_portfolio()
+
+        if not portfolio:
+            return make_response(jsonify({"message": "User does not have a portfolio. Create portfolio"}), 400)
+
+        transactions = portfolio.portfolio_transactions()
+
+        if not transactions:
+            return make_response(jsonify([]), 200)
+
+        transactions = list(map(lambda tr: {"created_at": tr.created_at, "id": tr.id, "item": tr.item, "price": to_unit_currency(
+            tr.price), "total": to_unit_currency(tr.total), "quantity": tr.quantity, "transaction_type": tr.transaction_type, }, transactions))
+
+        return make_response(jsonify(transactions), 200)

@@ -168,3 +168,7 @@ class Portfolio(BaseModel, Base):
                     details.append(obj)
 
         return details
+
+    def portfolio_transactions(self):
+        transactions = self.transactions
+        return transactions

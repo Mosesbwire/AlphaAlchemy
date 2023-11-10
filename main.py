@@ -34,5 +34,5 @@ if __name__ == "__main__":
     # ps = portfolio.sell_stock(110, 100, st_1)
     stock_data = FetchData.get_stock_action()
     details = portfolio.portfolio_details(stock_data)
-
-    print(details)
+    transactions = portfolio.portfolio_transactions()
+    print(transactions)
