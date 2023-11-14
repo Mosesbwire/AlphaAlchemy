@@ -25,7 +25,7 @@ const StockPerfomanceSummary = ({ section }) => {
                         {section.title !== "Movers" ?
                             <>
                                 <p>{data.ticker}</p>
-                                <p>{data.price}</p>
+                                <p>{Number(data.current).toFixed(2)}</p>
                                 <p className={`${classes[section.title]}-change`}>{data["%change"]}<span><FontAwesomeIcon icon={carets[section.title]} /></span></p>
 
                             </> :

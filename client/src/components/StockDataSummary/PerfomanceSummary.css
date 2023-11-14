@@ -1,7 +1,6 @@
-
 .perfomance-summary-container {
-   padding-top: 1em;
-   padding-bottom: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 .tabs {
@@ -11,10 +10,11 @@
     font-weight: 600;
     font-size: 1.125em;
 }
-.tabs > * {
+
+.tabs>* {
     flex: 1;
     text-align: center;
-    
+
 }
 
 .active-indicator {
@@ -24,19 +24,23 @@
 .Gainers-tab {
     color: var(--secondary-highlight-color);
 }
+
 .Losers-tab {
     color: var(--danger-color);
 }
+
 .Movers-tab {
     color: var(--primary-highlight-color);
 }
 
 .inactive {
     display: none;
+
 }
 
 .active {
     display: block;
+
 }
 
 .section-data {
@@ -46,7 +50,7 @@
     width: 90%;
 }
 
-@media(min-width: 48em){
+@media(min-width: 48em) {
     .tabs {
         display: none;
     }
@@ -62,9 +66,9 @@
 
 }
 
-@media(min-width: 64em){
+@media(min-width: 64em) {
 
-    .perfomance-data{
+    .perfomance-data {
         display: flex;
         column-gap: 1em;
     }

@@ -4,72 +4,73 @@ import { v4 as uuid } from "uuid"
 import './PerfomanceSummary.css'
 
 
-
-
 const PerfomanceSummary = ({ gainers, losers, movers }) => {
     const summarySections = [
         { title: "Gainers", firstHeading: "Price", secondHeading: "Change", data: gainers },
         { title: "Losers", firstHeading: "Price", secondHeading: "Change", data: losers },
         { title: "Movers", firstHeading: "Volume", secondHeading: "", data: movers }
     ]
-    const tabRef = useRef(null)
-    const tabBtnRef = useRef(null)
-    let btnTabs;
-
-    useEffect(() => {
-        btnTabs = Array.from(tabBtnRef.current.children)
-        btnTabs.forEach(tab => {
-            if (tab.classList.contains("Gainers-tab")) {
-                tab.click()
-            }
-        })
-    }, [])
-
-    const inactivateCurrentTab = (tab) => {
-        if (tab.classList.contains("active")) {
-            tab.classList.remove("active")
-            tab.classList.add("inactive")
-        }
-    }
-    const activateTab = (tab, tabClassName) => {
-        if (tab.classList.contains(tabClassName)) {
-            tab.classList.remove("inactive")
-            tab.classList.add("active")
-        }
-    }
 
     const targetClasses = [{ btn: "Gainers-tab", tab: "Gainers" },
     { btn: "Losers-tab", tab: "Losers" },
     { btn: "Movers-tab", tab: "Movers" }
     ]
-
-    const handleClick = (e) => {
-        const tabs = Array.from(tabRef.current.children)
-        btnTabs.forEach(btn => {
-            if (btn.classList.contains("active-indicator")) {
-                btn.classList.remove("active-indicator")
-            }
-        })
-
-        targetClasses.forEach(targetClass => {
-            if (e.target.className === targetClass.btn) {
-                tabs.forEach(tab => {
-                    inactivateCurrentTab(tab)
-                    activateTab(tab, targetClass.tab)
-                })
-            }
-        })
-        e.target.classList.add("active-indicator")
+    const activateTab = (target, className) => {
+        if (target.classList.contains(className)) {
+            target.classList.remove("inactive")
+            target.classList.add("active")
+        }
     }
+
+    const inactivateCurrentTab = (target) => {
+        if (target.classList.contains("active")) {
+            target.classList.remove("active")
+            target.classList.add("inactive")
+        }
+    }
+
+    const tabBtns = useRef(null)
+    const tabs = useRef(null)
+
+    const handleTabClick = (e) => {
+
+        if (tabBtns.current && tabs.current) {
+            const tabChildren = Array.from(tabs.current.children)
+
+            Array.from(tabBtns.current.children).forEach(btn => {
+                if (btn.classList.contains("active-indicator")) {
+                    btn.classList.remove("active-indicator")
+                }
+            })
+            targetClasses.forEach(tc => {
+                if (e.target.className === tc.btn) {
+                    tabChildren.forEach(tab => {
+                        inactivateCurrentTab(tab)
+                        activateTab(tab, tc.tab)
+                    })
+                }
+            })
+            e.target.classList.add("active-indicator")
+        }
+    }
+
+    useEffect(() => {
+        const btns = document.getElementById("tabs")
+
+        const defaultTabBtn = btns.children[0]
+
+        defaultTabBtn.click()
+
+    }, [])
 
     return (
         <div className="perfomance-summary-container container">
-            <div className="tabs" onClick={e => handleClick(e)} ref={tabBtnRef}>
+            <div className="tabs" id="tabs" ref={tabBtns} onClick={handleTabClick}>
                 {summarySections.map(section => (
                     <div className={`${section.title}-tab`} key={uuid()}>{section.title}</div>
                 ))}
             </div>
-            <div ref={tabRef} className="perfomance-data">
+            <div className="perfomance-data" id="perfomance-data" ref={tabs}>
                 {summarySections.map((section) => (
                     <div className={`section-data ${section.title} inactive`} key={uuid()}>
                         <StockPerfomanceSummary section={section} />
