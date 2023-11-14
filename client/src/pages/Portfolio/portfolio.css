@@ -32,7 +32,13 @@
 
 .portfolio-actions>* {
     flex: 1;
+
 }
+
+.portfolio-actions>a>button {
+    width: 100%;
+}
+
 
 .portfolio-stats {
     display: grid;

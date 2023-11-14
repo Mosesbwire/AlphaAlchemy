@@ -123,4 +123,8 @@ li {
         width: 50%;
         position: relative;
     }
+
+    .nav-links {
+        color: white;
+    }
 }
