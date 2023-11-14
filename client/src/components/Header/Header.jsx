@@ -48,14 +48,10 @@ const Header = () => {
         setOpenMenu(!isOpen)
     }
 
-    if (isSubmitting) {
-        return <div>Creating Portfolio</div>
-    }
-
     const navItems = [
-        <Link to={'/home'} key={uuid()}><li className="nav-links">Home</li></Link>,
+        <Link to={'/home'} onClick={handleClick} key={uuid()}><li className="nav-links">Home</li></Link>,
         <li className={`nav-links ${showNavLink ? 'show_no_nav_link' : 'show_nav_link'}`} onClick={modalHandler} key={uuid()}>New Portfolio</li>,
-        <Link to={'/portfolio'} key={uuid()}><li className="nav-links">Portfolio</li></Link>,
+        <Link to={'/portfolio'} onClick={handleClick} key={uuid()}><li className="nav-links">Portfolio</li></Link>,
         <li className="nav-links" onClick={logout} key={uuid()}>LogOut</li>
     ]
 

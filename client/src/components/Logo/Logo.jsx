@@ -1,9 +1,12 @@
+import { Link } from "react-router-dom"
 import './Logo.css'
 
-function Logo(){
-    return(
+function Logo() {
+    return (
         <div className='logo'>
-            <p>ALPHAALCHEMY.</p>
+            <Link to={'/home'}>
+                <p>ALPHAALCHEMY.</p>
+            </Link>
         </div>
     )
 }

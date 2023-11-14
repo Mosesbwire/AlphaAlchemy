@@ -67,6 +67,7 @@ li {
 .nav-links {
     margin-bottom: 1em;
     cursor: pointer;
+    color: var(--contrast-color-dark-200);
 }
 
 .show_no_nav_link {

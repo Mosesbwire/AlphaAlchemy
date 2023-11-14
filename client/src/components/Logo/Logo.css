@@ -1,6 +1,8 @@
-
 .logo {
     font-weight: 700;
-    color: var(--secondary-highlight-color);
     font-size: 1.125em;
+}
+
+.logo>a {
+    color: var(--secondary-highlight-color);
 }
