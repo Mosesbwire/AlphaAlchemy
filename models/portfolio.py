@@ -64,12 +64,17 @@ class Portfolio(BaseModel, Base):
             return None
 
     def add_stock(self, stock: Stock, quantity: int, portfolio_stock=None):
+
         if portfolio_stock:
+
             qty = portfolio_stock.stock_quantity + quantity
             portfolio_stock.stock_quantity = qty
+
             return portfolio_stock
         try:
+
             ps = PortfolioStock(quantity, stock, self)
+
             return ps.create()
         except ValueError as e:
             return None
@@ -78,7 +83,7 @@ class Portfolio(BaseModel, Base):
         """ carry out action to buy stocks"""
         transaction_type = "buy"
         stmt = select(PortfolioStock).where(
-            PortfolioStock.stock_id == stock.id)
+            PortfolioStock.stock_id == stock.id).where(PortfolioStock.portfolio_id == self.id)
 
         if bid_price <= 0:
             raise ValueError("Bid price cannot be zero or less than zero")
@@ -109,7 +114,7 @@ class Portfolio(BaseModel, Base):
 
     def remove_stock(self, stock: Stock, quantity: int):
         stmt = select(PortfolioStock).where(
-            PortfolioStock.stock_id == stock.id)
+            PortfolioStock.stock_id == stock.id).where(PortfolioStock.portfolio_id == self.id)
         portfolio_stock = models.storage.query(stmt)
 
         if not portfolio_stock:
@@ -121,6 +126,10 @@ class Portfolio(BaseModel, Base):
                 f"Action cannot be completed. {quantity} is larger than quantity in portfolio. {portfolio_stock.stock_quantity}")
 
         qty = portfolio_stock.stock_quantity - quantity
+
+        if qty == 0:
+            models.storage.delete(portfolio_stock)
+
         portfolio_stock.stock_quantity = qty
 
         return portfolio_stock

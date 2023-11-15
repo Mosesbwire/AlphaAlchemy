@@ -46,10 +46,8 @@ class UserController:
             user = User(fname, lname, email, password)
             if user:
                 user.save()
-                bal = user.acc_balance
-                user = user.to_dict()
-                user["balance"] = bal
-                return make_response(jsonify(user), 201)
+                jwt_token = Auth.generate_json_web_token(user.id)
+                return make_response(jsonify(jwt_token), 201)
         except ValueError as err:
             return make_response(jsonify({"error": {
                 "message": "Unprocessable entity",

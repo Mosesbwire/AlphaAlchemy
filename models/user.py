@@ -115,7 +115,7 @@ class User(BaseModel, Base):
         return self.acc_balance
 
     def decrease_balance(self, amount):
-        print(amount)
+
         if amount > float(self.acc_balance):
             raise ValueError(
                 f"Action cannot be completed. {amount} is larger that current account balance: {self.acc_balance}")

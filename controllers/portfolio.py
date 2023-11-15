@@ -69,7 +69,8 @@ class PortfolioController:
                 float(bid_price), int(quantity), stock)
             if not updated_portfolio:
                 return make_response(jsonify({"error": {"message": "Transaction failed"}}), 400)
-            user.decrease_balance(float(bid_price))
+            user.decrease_balance(float(bid_price) * float(quantity))
+
             portfolio.update()
             resp = UserController.get_portfolio(user)
             return resp
@@ -103,7 +104,7 @@ class PortfolioController:
                 float(ask_price), int(quantity), stock)
             if not updated_portfolio:
                 return make_response(jsonify({"error": {"message": "Transaction failed"}}), 400)
-            user.increase_balance(float(quantity))
+            user.increase_balance(float(quantity) * float(ask_price))
             portfolio.update()
             resp = UserController.get_portfolio(user)
             return resp
