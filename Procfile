@@ -1,0 +1,1 @@
+web: gunicorn --workers 1 --timeout 1000 --host 0.0.0.0  api.v1.wsgi:app
