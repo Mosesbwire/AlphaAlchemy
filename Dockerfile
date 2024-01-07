@@ -38,4 +38,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "api.v1.wsgi:app"]
+CMD ["gunicorn","--workers", "1", "--timeout", "1000",  "--bind", "0.0.0.0:5000", "api.v1.wsgi:app"]
