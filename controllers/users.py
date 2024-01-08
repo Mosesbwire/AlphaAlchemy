@@ -141,6 +141,5 @@ class UserController:
                 "errors": []
             }}), 404)
         user_dict = user.to_dict()
-        user_dict.pop("_sa_instance_state")
         user_dict["balance"] = user.acc_balance
         return make_response(jsonify({"user": user_dict}), 200)

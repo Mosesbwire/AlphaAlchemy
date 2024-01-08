@@ -50,10 +50,10 @@ class BaseModel:
         updated_at = self.updated_at
 
         instance_dict["created_at"] = created_at.strftime(date_format)
-
         instance_dict["updated_at"] = updated_at.strftime(date_format)
-
-        # instance_dict.pop("_sa_instance_state")
         instance_dict.pop("password", None)
+
+        instance_dict = {key: val for (
+            key, val) in instance_dict.items() if key != "_sa_instance_state"}
 
         return instance_dict
