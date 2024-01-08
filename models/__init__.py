@@ -21,7 +21,9 @@ DB_URL = f"mysql+mysqldb://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 storage = Storage(DB_URL)
 storage.reload()
 
-if os.getenv("ENV") == "PRODUCTION":
+dbStockData = Stock.get_stocks()
+print(dbStockData)
+if os.getenv("ENV") == "PRODUCTION" and not dbStockData:
     stocks = FetchData.get_stocks()
 
     for stock in stocks:
