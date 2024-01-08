@@ -1,5 +1,5 @@
-import React from "react";
-import { useParams, Navigate, useLocation } from 'react-router-dom'
+import React, { useEffect, useContext } from "react";
+import { useLocation } from 'react-router-dom'
 import Button from "../../components/Button/Button"
 import Loading from "../../components/Loader/Loading"
 import apiService from "../../services/apiService";
@@ -7,6 +7,7 @@ import useFetch from "../../hooks/useFetch"
 import useForm from "../../hooks/useForm";
 import useSubmitForm from "../../hooks/useSubmitForm";
 import { toast } from "react-toastify"
+import { UserContext } from "../../context/UserContext";
 import './Order.css'
 
 const Buy = () => {
@@ -21,7 +22,11 @@ const Buy = () => {
 
     const [onSubmit, orderData, isSubmitting, orderError] = useSubmitForm(orderFunction)
     const sortedData = data ? data.stocks : []
-    const user = JSON.parse(sessionStorage.getItem("user"))
+    const [user, updateUser] = useContext(UserContext)
+    const balance = user ? user.balance : 0
+    useEffect(() => {
+        resetForm()
+    }, [orderData])
 
     let orderValue = 0
 
@@ -35,7 +40,7 @@ const Buy = () => {
             }
         })
     }
-    const remainingBal = action === "buy" ? 50000 - orderValue : Number(50000)
+    const remainingBal = action === "buy" ? Number(balance) - orderValue : Number(balance)
 
     sortedData.sort((objA, objB) => {
         if (objA.ticker < objB.ticker) return -1
@@ -45,6 +50,7 @@ const Buy = () => {
     const submitForm = async (e) => {
         e.preventDefault()
         onSubmit(values)
+        await updateUser()
     }
 
     if (isLoading || isSubmitting) {
@@ -61,7 +67,12 @@ const Buy = () => {
     }
 
     if (orderData) {
-        return <Navigate to={`/portfolio`} />
+
+        toast.success(`Transaction successful`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: true,
+            theme: "light"
+        })
     }
 
     return (
@@ -69,7 +80,7 @@ const Buy = () => {
             <div className="d-md-none d-lg-none sm-acc-details">
                 <div className=" row-flex  container">
                     <p>Account Balance</p>
-                    <p>KES {50000}</p>
+                    <p>KES {balance}</p>
                 </div>
             </div>
             <div className="buy-process">
@@ -124,7 +135,7 @@ const Buy = () => {
             <div className="account-details d-sm-none d-md-block d-lg-block">
                 <div className="available-funds row-flex">
                     <p>Available Funds</p>
-                    <p>KES {50000}</p>
+                    <p>KES {balance}</p>
                 </div>
                 <div className="order-value row-flex">
                     <p>Order Value</p>

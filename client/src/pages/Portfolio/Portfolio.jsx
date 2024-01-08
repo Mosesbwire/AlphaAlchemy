@@ -84,7 +84,7 @@ const Portfolio = () => {
                 <div className="container">
                     <p>Holdings</p>
                 </div>
-                {stocks.length > 0 ?
+                {stocks && stocks.length > 0 ?
                     <Table header={holdingsHeader} data={holdings} classes={classes} />
                     : <div className="stocks-info">No stocks available in this portfolio. Click the buy button to view stocks you can purchase.</div>}
             </div>

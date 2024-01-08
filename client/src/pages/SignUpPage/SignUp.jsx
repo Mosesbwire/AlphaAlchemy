@@ -23,8 +23,8 @@ const SignUp = () => {
             theme: "light"
         })
     }
-    if (data) {
-        setIsAuthenticated(true)
+    if (data && !isSubmitting) {
+
         return <Navigate to="/home" replace={true} />
     }
     return (

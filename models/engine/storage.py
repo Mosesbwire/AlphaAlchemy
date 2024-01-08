@@ -36,7 +36,7 @@ class Storage:
 
     def __init__(self, dburl):
         """ constructor """
-        self.__engine = create_engine(dburl, echo=False)
+        self.__engine = create_engine(dburl, echo=False, pool_size=10)
 
         ENV = os.getenv("ENV")
 

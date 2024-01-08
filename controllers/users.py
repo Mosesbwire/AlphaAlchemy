@@ -134,7 +134,7 @@ class UserController:
     def get_user_by_id(req):
         user_id = req.user_id
         user = User.get_user_by_id(user_id)
-        print(user)
+
         if not user:
             return make_response(jsonify({"error": {
                 "message": "User not found",

@@ -107,6 +107,7 @@ class PortfolioController:
             user.increase_balance(float(quantity) * float(ask_price))
             portfolio.update()
             resp = UserController.get_portfolio(user)
+
             return resp
         except ValueError as err:
             msg = err.args[0]

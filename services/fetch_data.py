@@ -44,11 +44,13 @@ class FetchData:
     def get_stocks():
         raw_stock_data = requests.get(STOCK_API_URL).json()
         stocks = []
+        unique_ticker = set()
         for sector, companies in raw_stock_data.items():
             for ticker, company in companies.items():
-                stocks.append(
-                    {"ticker": ticker, "sector": sector, "name": company})
-
+                if ticker not in unique_ticker:
+                    stocks.append(
+                        {"ticker": ticker, "sector": sector, "name": company})
+                unique_ticker.add(ticker)
         return stocks
 
     @classmethod

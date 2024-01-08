@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { DateTime } from "luxon"
 import Table from "../../components/Table/Table"
 import apiService from "../../services/apiService";
 import useFetch from "../../hooks/useFetch";
 import { formattedDate } from "../../services/processData"
+import { UserContext } from "../../context/UserContext";
 import './Transaction.css'
 
 const Transaction = () => {
@@ -11,7 +12,8 @@ const Transaction = () => {
     const [transactionData, error, isLoading] = useFetch(apiService.fetchPortfolioTransactions)
     const header = ["date", "type", "security", "shares", "price", "cost"]
     let data = []
-    const user = JSON.parse(sessionStorage.getItem("user"))
+    const [user, updateUser] = useContext(UserContext)
+    const balance = user ? user.balance : 0
     let totalBuys = 0
     let totalSells = 0
     if (transactionData) {
@@ -37,10 +39,7 @@ const Transaction = () => {
     }
 
     const clickHandler = (e) => {
-        console.log('clicked')
-        console.log(e.target.innerText.toLowerCase())
         let dt = transactionData.filter(tr => tr.transaction_type === e.target.innerText.toLowerCase())
-        console.log(dt)
     }
     const classes = ["d-block", "d-sm-none d-md-block", "d-sm-none d-md-block", "d-block", "d-block", "d-block"]
     return (
@@ -54,7 +53,7 @@ const Transaction = () => {
                         <div className="summary_title">
                             <p>Balance</p>
                         </div>
-                        <p className="trs-summary-data">KES {"50,000"}</p>
+                        <p className="trs-summary-data">KES {balance}</p>
                     </div>
                     <div className="transaction-summary_category cash-flow-category">
                         <div className="summary_title">

@@ -26,8 +26,8 @@ const Header = () => {
     useEffect(() => {
         if (!isSubmitting && data) {
             modalHandler()
-            navigate(`/portfolio}`, { replace: true })
-
+            navigate(`/portfolio`, { replace: true })
+            setShowNavLInk(true)
         }
 
     }, [data, error, isSubmitting])
@@ -36,7 +36,7 @@ const Header = () => {
         if (pData) {
             setShowNavLInk(pData.has_portfolio)
         }
-    }, [pData, pError, pIsLoading])
+    }, [pData, pIsLoading])
 
     const logout = async () => {
         const data = await apiService.logout()
@@ -50,8 +50,8 @@ const Header = () => {
 
     const navItems = [
         <Link to={'/home'} onClick={handleClick} key={uuid()}><li className="nav-links">Home</li></Link>,
-        <li className={`nav-links ${showNavLink ? 'show_no_nav_link' : 'show_nav_link'}`} onClick={modalHandler} key={uuid()}>New Portfolio</li>,
-        <Link to={'/portfolio'} onClick={handleClick} key={uuid()}><li className="nav-links">Portfolio</li></Link>,
+        <li className={`nav-links ${showNavLink ? 'show_no_nav_link' : 'show_nav_link'}`} onClick={modalHandler} key={uuid()}>Create Portfolio</li>,
+        <Link to={'/portfolio'} onClick={handleClick} key={uuid()}><li className={`nav-links ${showNavLink ? 'show_nav_link' : 'show_no_nav_link'}`}>Portfolio</li></Link>,
         <li className="nav-links" onClick={logout} key={uuid()}>LogOut</li>
     ]
 

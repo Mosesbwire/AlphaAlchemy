@@ -1,8 +1,8 @@
 import setAuthToken from "./setAuthToken"
 
-const HOST = import.meta.env.VITE_BACKEND_HOST
-const PORT = import.meta.env.VITE_PORT
-const BASE_URL = `http://${HOST}:${PORT}/api/v1`
+// const BASE_URL = `https://alpha-alchemy.onrender.com/api/v1`
+
+const BASE_URL = `http://127.0.0.1:5001/api/v1`
 
 async function sendRequest(url, options) {
 
@@ -136,7 +136,7 @@ async function getLoggedInUser() {
 
         const data = await response.json()
         const user = data.user
-        sessionStorage.setItem('user', JSON.stringify(user))
+        sessionStorage.setItem('user', JSON.stringify(user));
         return {
             status: 200,
             data: user,
@@ -190,6 +190,7 @@ async function getMarketMetrics() {
 }
 
 async function getPortfolioStatus() {
+
     const options = createRequestOptions('GET')
     try {
         const response = await sendRequest(`${BASE_URL}/users/portfolio/status`, options)
