@@ -31,3 +31,5 @@ if os.getenv("ENV") == "PRODUCTION":
             st.save()
         except ValueError as e:
             print("Error occured")
+        except Exception as e:
+            print(f'MYSQL ERROR: {e}')
