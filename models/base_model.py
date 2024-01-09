@@ -46,11 +46,6 @@ class BaseModel:
         date_format = "%Y-%m-%d %H:%M:%S.%f"
         instance_dict = self.__dict__
 
-        created_at = self.created_at
-        updated_at = self.updated_at
-
-        instance_dict["created_at"] = created_at.strftime(date_format)
-        instance_dict["updated_at"] = updated_at.strftime(date_format)
         instance_dict.pop("password", None)
 
         instance_dict = {key: val for (
