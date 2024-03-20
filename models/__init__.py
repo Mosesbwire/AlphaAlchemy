@@ -9,11 +9,6 @@ from models.stock import Stock
 from services.fetch_data import FetchData
 import os
 
-# PWD = '8djRrDIxy7eDIXVRBd5cawwptGXZ92aM'
-# url = 'postgres://alpha_alchemy_db_user:8djRrDIxy7eDIXVRBd5cawwptGXZ92aM@dpg-cnt8kq6n7f5s73f7lvgg-a/alpha_alchemy_db'
-# external = 'postgres://alpha_alchemy_db_user:8djRrDIxy7eDIXVRBd5cawwptGXZ92aM@dpg-cnt8kq6n7f5s73f7lvgg-a.oregon-postgres.render.com/alpha_alchemy_db'
-
-
 DB_NAME = os.getenv("DATABASE")
 DB_USERNAME = os.getenv("USERNAME")
 DB_PASSWORD = os.getenv("PASSWORD")
