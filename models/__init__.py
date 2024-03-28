@@ -17,7 +17,11 @@ DB_PORT = os.getenv("PORT")
 
 
 # DB_URL = f"mysql+mysqldb://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
-DB_URL = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+if os.getenv("ENV") == "PRODUCTION":
+    DB_URL = os.getenv("DB_URL")
+else:
+    DB_URL = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
 
 storage = Storage(DB_URL)
 storage.reload()
